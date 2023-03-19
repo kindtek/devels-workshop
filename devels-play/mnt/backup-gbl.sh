@@ -1,8 +1,8 @@
 #!/bin/bash
 
 backup_mnt_location=${1:-/mnt/data}
-_GABRIEL=${2:-gbl}
-_HALOS=${3:-halos}
+_GABRIEL=gbl
+_HALOS=halos
 
 if [ -z $WSL_DISTRO_NAME ] 
 then
@@ -31,10 +31,10 @@ sudo cp -arf dwork/mnt/backup-custom.sh ${backup_mnt_location}/${username}/backu
 sudo cp -arf dwork/mnt/backup-custom.sh ${backup_mnt_location}/gbl/backup-${username}.sh && cp -arf dwork/mnt/backup-custom.sh /home/gbl/${username}.sh && \
 sudo cp -arf dwork/mnt/backup-custom.sh ${backup_mnt_location}/${username}/backup-gbl.sh && cp -arf dwork/mnt/backup-${username}.sh /home/gbl/gbl.sh && \
 sudo cp -arf dwork/mnt/backup-custom.sh ${backup_mnt_location}/gbl/backup-gbl.sh && cp -arf dwork/mnt/backup-custom.sh /home/gbl/backup-gbl.sh && \
-sudo cp -arf dwork/mnt/backup-devel.sh ${backup_mnt_location}/devel/backup-devel.sh && \
-sudo cp -arf dwork/mnt/backup-devel.sh ${backup_mnt_location}/${username}/backup-devel.sh && cp -arf dwork/mnt/backup-devel.sh /home/${username}/backup-devel.sh  && \
-sudo cp -arf dwork/mnt/backup-devel.sh ${backup_mnt_location}/gbl/backup-devel.sh && cp -arf dwork/mnt/backup-devel.sh /home/gbl/backup-devel.sh  && \
-sudo cp -arf dwork/mnt/backup-devel.sh /home/devel/backup-devel.sh && \
+sudo cp -arf dwork/mnt/backup-dvl.sh ${backup_mnt_location}/devel/backup-dvl.sh && \
+sudo cp -arf dwork/mnt/backup-dvl.sh ${backup_mnt_location}/${username}/backup-dvl.sh && cp -arf dwork/mnt/backup-dvl.sh /home/${username}/backup-dvl.sh  && \
+sudo cp -arf dwork/mnt/backup-dvl.sh ${backup_mnt_location}/gbl/backup-dvl.sh && cp -arf dwork/mnt/backup-dvl.sh /home/gbl/backup-dvl.sh  && \
+sudo cp -arf dwork/mnt/backup-dvl.sh /home/devel/backup-dvl.sh && \
 # # make rwx for owner and rx for group - none for others
 # sudo chmod 750 -R ${backup_mnt_location}/${username} && \
 # sudo chmod 755 ${backup_mnt_location}/${username} && \
