@@ -1,5 +1,4 @@
 #!/bin/bash
-
 backup_mnt_location=${1:-/mnt/data}
 _GBL=${2:-gbl}
 _HALOS=${3:-halos}
