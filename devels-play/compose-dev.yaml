@@ -1,0 +1,97 @@
+version: "3.8"
+name: devels-work-ubuntu
+services:
+  # chown-hel:
+  #   # Need a user priviliged enough to chown
+  #   user: 'root'
+  #   # Specify the group in question
+  #   group_add:
+  #     - horns
+  #   volumes:
+  #     # The volume to chown
+  #     - hel-data:/tmp/change-ownership
+  #   command: chown -R dvl:horns /tmp/change-ownership
+  skel:
+    # Need a user priviliged enough to chown
+    user: root
+    # Specify the group in question
+    group_add:
+      - horns
+    image: kindtek/dplay:ubuntu-skel
+    build:
+      context: .
+      target: dplay_skel
+      args:
+        - username=${username:-gbl}
+      dockerfile: dockerfile.ubuntu.yaml
+      # network: ${COMPOSE_PROJECT_NAME}_default
+    init: true
+    volumes:
+      - hel-data:/tmp/dvl
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+    command: chown -R dvl:horns /tmp/dvl
+
+  git:
+    entrypoint:
+      - sleep
+      - infinity
+    image: kindtek/dplay:ubuntu-git
+    # extends: skel
+    build:
+      context: .
+      target: dplay_git
+      args:
+        - username=${username:-gbl}
+      dockerfile: dockerfile.ubuntu.yaml
+    depends_on:
+      skel:
+        # Wait for the ownership to change
+        condition: service_completed_successfully
+    volumes:
+      - hel-data:/home/dvl
+  msdot:
+    extends: git
+    image: kindtek/dplay:ubuntu-msdot
+    build:
+      context: .
+      target: dplay_msdot
+      args:
+        - username=${username:-gbl}
+      dockerfile: dockerfile.ubuntu.yaml
+  dind:
+    extends: msdot
+    image: kindtek/dplay:ubuntu-dind
+    build:
+      context: .
+      target: dplay_dind
+      args:
+        - username=${username:-gbl}
+      dockerfile: dockerfile.ubuntu.yaml
+
+  gui:
+    extends: dind
+    image: kindtek/dplay:ubuntu-gui
+    build:
+      context: .
+      target: dplay_gui
+      args:
+        - username=${username:-gbl}
+      dockerfile: dockerfile.ubuntu.yaml
+  cuda:
+    extends: gui
+    image: kindtek/dplay:ubuntu-cuda
+    build:
+      context: .
+      target: dplay_cuda
+      args:
+        - username=${username:-gbl}
+      dockerfile: dockerfile.ubuntu.yaml
+volumes:
+  hel-data:
+
+networks:
+  "${COMPOSE_PROJECT_NAME}_default":
+    driver: overlay
+    attachable: true

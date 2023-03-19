@@ -1,0 +1,43 @@
+version: '3.8'
+name: devels-work-alpine
+services:
+  skel:
+    entrypoint:
+      - sleep
+      - infinity
+    image: kindtek/dplay:alpine-skel
+    build:
+      context: .
+      target: dplay_skel
+      args:
+        - username=${username:-gbl
+      dockerfile: dockerfile.alpine.yaml
+    init: true
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+      - type: bind
+        source: ~/
+        target: /home/host
+
+  msdot:
+    entrypoint:
+      - sleep
+      - infinity
+    image: kindtek/dplay:alpine-msdot
+    build:
+      context: .
+      target: dplay_msdot
+      args:
+        - username=${username:-gbl
+      dockerfile: dockerfile.alpine.yaml
+
+    init: true
+    volumes:
+      - type: bind
+        source: /var/run/docker.sock
+        target: /var/run/docker.sock
+      - type: bind
+        source: ~/
+        target: /home/host

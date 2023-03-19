@@ -1,0 +1,15 @@
+[submodule "zfs"]
+	path = zfs
+	url = https://github.com/kindtek/zfs
+	branch = zfs-2.1-release
+	active = true
+	shallow = true
+	recurse = false
+[submodule "linux"]
+	path = linux
+	url = https://github.com/kindtek/linux.git
+	branch = latest-release
+	active = true
+	shallow = true
+	recurse = false
+	# update = none
