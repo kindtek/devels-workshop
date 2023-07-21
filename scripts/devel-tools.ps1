@@ -501,33 +501,33 @@ function cleanup_installation {
 
 function get_wsl_distro_list {
     $env:WSL_UTF8 = 1
-    $distro_list = wsl.exe --list | Where-Object { $_ -and $_ -ne 'Windows Subsystem for Linux Distributions:' }
-    $distro_list = $distro_list -replace '^(.*)\s.*$', '$1'
-    $distro_list_final = @()
-    for ($i = 0; $i -le $distro_list.length - 1; $i++) {
-        if (!($distro_list[$i] -like "docker-desktop*") -and ($distro_list[$i] -ne "kalilinux-kali-rolling-latest")){
-            $distro_list_final += $distro_list[$i]
+    $distro_array = wsl.exe --list | Where-Object { $_ -and $_ -ne 'Windows Subsystem for Linux Distributions:' }
+    $distro_array = $distro_array -replace '^(.*)\s.*$', '$1'
+    $distro_array_final = @()
+    for ($i = 0; $i -le $distro_array.length - 1; $i++) {
+        if (!($distro_array[$i] -like "docker-desktop*") -and ($distro_array[$i] -ne "kalilinux-kali-rolling-latest")){
+            $distro_array_final += $distro_array[$i]
         }
     } 
-    return $distro_list_final
+    return $distro_array_final
 }
 
 function wsl_distro_list_display {
     param (
         $distro_array
     )
-    if ([string]::IsNullOrEmpty($distro_array)){
+    if ($distro_array.length -eq 0){
         $distro_array = get_wsl_distro_list
     }
     $default_wsl_distro = get_default_wsl_distro
     for ($i = 0; $i -le $distro_array.length - 1; $i++) {
         if ($distro_array[$i] -eq $default_wsl_distro){
-            $default_tag = ' (default)'
+            $default_tag = '(default)'
 
         } else {
             $default_tag = ''
         }
-        write-host "`t$($i+1))`t$($distro_array[$i])$default_tag"
+        write-host "`t$($i+1))`t$($distro_array[$i]) $default_tag"
     }
 }
 
@@ -536,7 +536,7 @@ function wsl_distro_list_select {
         $distro_array,
         $distro_num
     )
-    if ([string]::IsNullOrEmpty($distro_array)){
+    if (($distro_array.length -eq 0)){
         $distro_array = get_wsl_distro_list
     }
     if ([string]::IsNullOrEmpty($distro_num)){
