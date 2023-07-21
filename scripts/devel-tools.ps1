@@ -377,8 +377,8 @@ function start_docker_desktop {
 }
 
 function require_docker_online_new_win {
-    # start_dvlp_process_popmin "require_docker_online" 
-    require_docker_online
+    start_dvlp_process_popmin "require_docker_online" '' '' 
+    # require_docker_online
 }
 
 function require_docker_online {
