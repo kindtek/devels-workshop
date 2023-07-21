@@ -526,10 +526,15 @@ function wsl_distro_list_display {
 
 function wsl_distro_list_select {
     param (
-        $distro_arraylist,
+        $distro_array,
         $distro_num
     )
-    $distro_array = get_wsl_distro_list
+    if ([string]::IsNullOrEmpty($distro_array)){
+        $distro_array = get_wsl_distro_list
+    }
+    if ([string]::IsNullOrEmpty($distro_num)){
+        return $null
+    }  
     for ($i = 0; $i -le $distro_array.length - 1; $i++) {
         if ($i -eq $($distro_num - 1)) {
             echo "$($distro_array[$i]) selected"
