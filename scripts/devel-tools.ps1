@@ -537,7 +537,6 @@ function wsl_distro_list_select {
     }  
     for ($i = 0; $i -le $distro_array.length - 1; $i++) {
         if ($i -eq $($distro_num - 1)) {
-            echo "$($distro_array[$i]) selected"
             return $distro_array[$i]
         }
     }
