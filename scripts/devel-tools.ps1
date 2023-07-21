@@ -519,8 +519,15 @@ function wsl_distro_list_display {
     if ([string]::IsNullOrEmpty($distro_array)){
         $distro_array = get_wsl_distro_list
     }
+    $default_wsl_distro = get_default_wsl_distro
     for ($i = 0; $i -le $distro_array.length - 1; $i++) {
-        write-host "`t$($i+1))`t$($distro_array[$i])"
+        if ($distro_array[$i] -eq $default_wsl_distro){
+            $default_tag = ' (default)'
+
+        } else {
+            $default_tag = ''
+        }
+        write-host "`t$($i+1))`t$($distro_array[$i])$default_tag"
     }
 }
 
