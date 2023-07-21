@@ -195,6 +195,12 @@ function reset_docker_settings {
     &$Env:ProgramFiles\Docker\Docker\DockerCli.exe -SwitchLinuxEngine;
 }
 
+function reset_docker_settings_hard {
+    reset_docker_settings
+    &$Env:ProgramFiles\Docker\Docker\DockerCli.exe -SwitchLinuxEngine -ResetToDefault;
+
+}
+
 function reset_wsl_settings {
     cmd.exe /c net stop LxssManager
     cmd.exe /c net start LxssManager
@@ -444,7 +450,7 @@ function require_docker_online {
                     if ( $docker_cycles -gt 3 ) {
                         Write-Host "resetting docker engine ....."
                         try {
-                            &$Env:ProgramFiles\Docker\Docker\DockerCli.exe -SwitchLinuxEngine -ResetToDefault;
+                            reset_docker_settings_hard
                         }
                         catch {}
                     }
