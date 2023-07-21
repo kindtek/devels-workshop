@@ -4,13 +4,15 @@ $host.UI.RawUI.BackgroundColor = "Black"
 $global:devel_tools = 'sourced'
 try {
     set_dvlp_envs
-} catch {
+}
+catch {
     if ((!([string]::IsNullOrEmpty($env:KINDTEK_DEVEL_SPAWN))) -and (Test-Path -Path "$env:KINDTEK_DEVEL_SPAWN" -PathType Leaf)) {
         # write-output "dvltls 8: dot sourcing devel-spawn"
         . $env:KINDTEK_DEVEL_SPAWN
         $global:devel_spawn = 'sourced'
         # echo 'devel_spawn sourced'
-    } elseif ((Test-Path -Path "${USERPROFILE}/dvlp.ps1" -PathType Leaf)) {
+    }
+    elseif ((Test-Path -Path "${USERPROFILE}/dvlp.ps1" -PathType Leaf)) {
         # write-output "dvltls 11: dot sourcing dvlp"
         . ${USERPROFILE}/dvlp.ps1
         $global:devel_spawn = 'sourced'
@@ -497,10 +499,44 @@ function cleanup_installation {
     }
 }
 
-function wsl_distro_list {
+function get_wsl_distro_list {
     $env:WSL_UTF8 = 1
     $distro_list = wsl.exe --list | Where-Object { $_ -and $_ -ne 'Windows Subsystem for Linux Distributions:' }
-    return $distro_list -replace '^(.*)\s.*$', '$1'
+    $distro_list = $distro_list -replace '^(.*)\s.*$', '$1'
+    $distro_list_final = @()
+    for ($i = 0; $i -le $distro_list.length - 1; $i++) {
+        if (!($distro_list[$i] -like "docker-desktop*") -and ($distro_list[$i] -ne "kalilinux-kali-rolling-latest")){
+            $distro_list_final += $distro_list[$i]
+        }
+    } 
+    return $distro_list_final
+}
+
+function wsl_distro_list_display {
+    param (
+        $distro_array
+    )
+    if ([string]::IsNullOrEmpty($distro_array)){
+        $distro_array = get_wsl_distro_list
+    }
+    for ($i = 0; $i -le $distro_array.length - 1; $i++) {
+        write-host "`t$($i+1))`t$($distro_array[$i])"
+    }
+}
+
+function wsl_distro_list_select {
+    param (
+        $distro_arraylist,
+        $distro_num
+    )
+    $distro_array = get_wsl_distro_list
+    for ($i = 0; $i -le $distro_array.length - 1; $i++) {
+        if ($i -eq $($distro_num - 1)) {
+            echo "$($distro_array[$i]) selected"
+            return $distro_array[$i]
+        }
+    }
+    return $null
 }
 
 function wsl_distro_menu {
