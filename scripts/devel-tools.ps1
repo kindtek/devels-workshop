@@ -530,13 +530,14 @@ function wsl_distro_list_display {
     }
     $default_wsl_distro = get_default_wsl_distro
     for ($i = 0; $i -le $distro_array.length - 1; $i++) {
-        if ($distro_array[$i] -eq $default_wsl_distro){
+        $distro_name = $distro_array[$i]
+        if ($distro_name -eq $default_wsl_distro){
             $default_tag = '(default)'
 
         } else {
             $default_tag = ''
         }
-        write-host "`t$($i+1))`t$($distro_array[$i]) $default_tag"
+        write-host "`t$($i+1))`t$distro_name $default_tag"
     }
 }
 
