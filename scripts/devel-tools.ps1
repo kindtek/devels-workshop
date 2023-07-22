@@ -386,7 +386,7 @@ function require_docker_online {
     $docker_tries = 0
     $docker_cycles = 0
     $docker_settings_reset = $true
-    $sleep_time = 3
+    $sleep_time = 5
     Write-Host "`r`n`r`nloading docker desktop ..."
     Write-Host "waiting for docker backend to come online ..."  
     do {   
@@ -398,10 +398,10 @@ function require_docker_online {
             $docker_tries++
             Write-Host "${docker_cycles}.${docker_tries}"
             if ( (is_docker_desktop_online) -eq $false ) {
-                if ( ($docker_tries -eq 1 -And $docker_cycles -eq 0) -And ((is_docker_backend_online) -eq $false)) {
+                if ( ($docker_tries -eq 1 -And $docker_cycles -eq 0) -And (is_docker_backend_online -eq $false)) {
                     Write-Host "error messages are expected when first starting docker. please wait ..."
                     # give extra time first time through
-                    Start-Sleep -s 10
+                    Start-Sleep -s 15
                 }
                 if (($docker_tries % 2) -eq 0) {
                     write-host ""
