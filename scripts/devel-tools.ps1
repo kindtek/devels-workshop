@@ -343,6 +343,7 @@ function is_docker_desktop_online {
 
 function start_docker_desktop {
     try {
+        Write-Host "`r`n`r`nstarting docker desktop ..."
         env_refresh 
         Start-Process "Docker Desktop.exe" 
     }
@@ -387,8 +388,7 @@ function require_docker_online {
     $docker_cycles = 0
     $docker_settings_reset = $true
     $sleep_time = 5
-    Write-Host "`r`n`r`nloading docker desktop ..."
-    Write-Host "waiting for docker backend to come online ..."  
+    # Write-Host "waiting for docker backend to come online ..."  
     do {   
         try {
             if ( (is_docker_desktop_online) -eq $false ) {
