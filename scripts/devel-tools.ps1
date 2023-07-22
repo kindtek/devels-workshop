@@ -396,7 +396,7 @@ function require_docker_online {
             }
             # launch docker desktop and keep it open 
             $docker_tries++
-            Write-Host "${docker_cycles}.${docker_tries}"
+            # Write-Host "${docker_cycles}.${docker_tries}"
             if ( (is_docker_desktop_online) -eq $false ) {
                 if ( ($docker_tries -eq 1 -And $docker_cycles -eq 0) -And (is_docker_backend_online -eq $false)) {
                     Write-Host "error messages are expected when first starting docker. please wait ..."
@@ -473,7 +473,7 @@ function require_docker_online {
                     Start-Sleep -s $sleep_time
                     Write-Host ""
                 }
-                Write-Host "docker desktop is now online"
+                # Write-Host "docker desktop is now online"
                 $check_again = 'n'
             }
             
