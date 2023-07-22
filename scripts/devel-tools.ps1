@@ -343,8 +343,10 @@ function is_docker_desktop_online {
 
 function start_docker_desktop {
     try {
-        Write-Host "`r`n`r`nstarting docker desktop ..."
         env_refresh 
+    } catch {}
+    try {
+        Write-Host "`r`n`r`nstarting docker desktop ..."
         Start-Process "Docker Desktop.exe" 
     }
     catch {
@@ -391,25 +393,25 @@ function require_docker_online {
     # Write-Host "waiting for docker backend to come online ..."  
     do {   
         try {
-            if ( (is_docker_desktop_online) -eq $false ) {
+            if ( is_docker_desktop_online -eq $false ) {
                 start_docker_desktop
             }
             # launch docker desktop and keep it open 
             $docker_tries++
             # Write-Host "${docker_cycles}.${docker_tries}"
-            if ( (is_docker_desktop_online) -eq $false ) {
+            if ( is_docker_desktop_online -eq $false ) {
                 if ( ($docker_tries -eq 1 -And $docker_cycles -eq 0) -And (is_docker_backend_online -eq $false)) {
                     Write-Host "error messages are expected when first starting docker. please wait ..."
                     # give extra time first time through
                     Start-Sleep -s 15
                 }
-                if (($docker_tries % 2) -eq 0) {
+                if ($docker_tries % 2 -eq 0) {
                     write-host ""
                     $sleep_time += 1
                     Start-Sleep -s $sleep_time
                     Write-Host ""
                 }
-                elseif (($docker_tries % 3) -eq 0) {
+                elseif ($docker_tries % 3 -eq 0) {
                     # start distro_list_num over
                     # $docker_attempt1 = $docker_attempt2 = $false
                     # automatically restart docker on try 3 then prompt for restart after that
@@ -423,18 +425,18 @@ function require_docker_online {
                     if ( $restart -ine 'n' -And $restart -ine 'no' -And (($docker_tries % 9) -eq 0)) {
                         wsl_docker_restart
                     }
-                    elseif (($docker_tries % 15) -eq 0) {
+                    elseif ($docker_tries % 15 -eq 0) {
                         $docker_tries = 0
                         $docker_cycles++
                     }
                 }
-                elseif (($docker_tries % 13) -eq 0) {
+                elseif ($docker_tries % 13 -eq 0) {
                     wsl_docker_full_restart_new_win
                 }
             
-                if ((($docker_tries % 7) -eq 0) ) {
+                if (($docker_tries % 7 -eq 0) ) {
                     $wsl_docker_restart = $false                 
-                    if ((is_docker_backend_online) -eq $true -And (is_docker_desktop_online) -eq $false) {
+                    if (is_docker_backend_online -eq $true -And is_docker_desktop_online -eq $false) {
                         # backend is online but desktop isn't
                         if ($docker_cycles -gt 1) {
                             reset_wsl_settings
@@ -481,12 +483,12 @@ function require_docker_online {
         catch {
             Write-Host "error connecting to docker"
         }
-    } while ( ((is_docker_desktop_online) -eq $false) -And ( $check_again -ine 'n' -And $check_again -ine 'no') )
-    if ( ((is_docker_desktop_online) -eq $false) -And ( $check_again -ine 'n' -Or $check_again -ine 'no') ) {
+    } while ( (is_docker_desktop_online -eq $false) -And ( $check_again -ine 'n' -And $check_again -ine 'no') )
+    if ( (is_docker_desktop_online -eq $false) -And ( $check_again -ine 'n' -Or $check_again -ine 'no') ) {
         Write-Host "docker failed to start."
     }
     # Set-PSDebug -Trace 0;
-    return (is_docker_desktop_online)
+    return is_docker_desktop_online
 }
 
 function cleanup_installation {
