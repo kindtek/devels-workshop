@@ -543,8 +543,8 @@ function wsl_distro_list_display {
 
 function wsl_distro_list_select {
     param (
-        $distro_array,
-        $distro_num
+        [array]$distro_array,
+        [int]$distro_num
     )
     if (($distro_array.length -eq 0)){
         $distro_array = get_wsl_distro_list
