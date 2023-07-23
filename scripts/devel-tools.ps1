@@ -535,8 +535,19 @@ function wsl_distro_list_display {
         $distro_array = get_wsl_distro_list
     }
     $default_wsl_distro = get_default_wsl_distro
-    for ($i = 0; $i -le $distro_array.length - 1; $i++) {
-        $distro_name = $distro_array[$i]
+    if ($distro_array.length -gt 1){    
+        for ($i = 0; $i -le $distro_array.length - 1; $i++) {
+            $distro_name = $distro_array[$i]
+            if ($distro_name -eq $default_wsl_distro){
+                $default_tag = '(default)'
+
+            } else {
+                $default_tag = ''
+            }
+            write-host "`t$($i+1))`t$distro_name $default_tag"
+        }
+    } else {
+        $distro_name = $distro_array[0]
         if ($distro_name -eq $default_wsl_distro){
             $default_tag = '(default)'
 
@@ -564,26 +575,6 @@ function wsl_distro_list_select {
         }
     }
     return $null
-}
-
-function wsl_distro_menu {
-    param (
-        $distro_list
-    )
-    $env:WSL_UTF8 = 1
-    $distro_list_num = 0
-
-    # Loop through each distro and prompt to remove
-    foreach ($distro in $distro_list) {
-    
-        if ($distro.IndexOf("docker-desktop") -lt 0) {
-            $distro_name = $distro_list -replace '^(.*)\s.*$', '$1'
-            $distro_list_num += 1
-            # $distro_name = $distro_name.Split('', [System.StringSplitOptions]::RemoveEmptyEntries) -join ''
-            # $distro_name -replace '\s', ''
-            Write-Host "$distro_list_num $distro_name"
-        }
-    }
 }
 
 function wsl_distro_menu_get {
