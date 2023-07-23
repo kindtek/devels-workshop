@@ -515,11 +515,15 @@ function get_wsl_distro_list {
     $distro_array = wsl.exe --list | Where-Object { $_ -and $_ -ne 'Windows Subsystem for Linux Distributions:' }
     $distro_array = $distro_array -replace '^(.*)\s.*$', '$1'
     $distro_array_final = @()
-    for ($i = 0; $i -le $distro_array.length - 1; $i++) {
-        if (!($distro_array[$i] -like "docker-desktop*") -and ($distro_array[$i] -ne "kalilinux-kali-rolling-latest")){
-            $distro_array_final += $distro_array[$i]
-        }
-    } 
+    if ($distro_array.length -gt 1){    
+        for ($i = 0; $i -le $distro_array.length - 1; $i++) {
+            if (!($distro_array[$i] -like "docker-desktop*") -and ($distro_array[$i] -ne "kalilinux-kali-rolling-latest")){
+                $distro_array_final += $distro_array[$i]
+            }
+        } 
+    } else {
+        $distro_array_final = $distro_array
+    }
     return $distro_array_final
 }
 
