@@ -544,7 +544,13 @@ function wsl_distro_list_display {
             } else {
                 $default_tag = ''
             }
-            write-host "`t$($i+1))`t$distro_name $default_tag"
+            if ($distro_array[$i].length -gt 1){
+                write-host "`t$($i+1))`t$distro_name $default_tag"
+            } else {
+                $distro_name = $distro_array
+                write-host "`t$($i+1))`t$distro_name $default_tag"
+                break
+            }
         }
     } else {
         $distro_name = $distro_array[0]
@@ -571,7 +577,11 @@ function wsl_distro_list_select {
     }  
     for ($i = 0; $i -le $distro_array.length - 1; $i++) {
         if ($i -eq $($distro_num - 1)) {
-            return $distro_array[$i]
+            if ($distro_array[$i].length -gt 1){
+                return $distro_array[$i]
+            } else {
+                return $distro_array
+            }
         }
     }
     return $null
