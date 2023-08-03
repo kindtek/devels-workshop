@@ -55,7 +55,7 @@ function install_dependencies {
             New-Item -ItemType Directory -Force -Path $git_path | Out-Null
         }
     } else {
-        $git_path = $env:KINDTEK_WIN_GIT_PATH
+        $git_path = $env:KINDTEK_WIN_DVLW_PATH
     }
     $software_name = "Windows Terminal"
     if (!(Test-Path -Path "$git_path/.wterminal-installed" -PathType Leaf)) {
@@ -379,7 +379,9 @@ function start_docker_desktop {
                     env_refresh 
                     Start-Process "c:\docker\docker desktop.exe"
                 }
-                catch {} 
+                catch {
+                    install_dependencies
+                } 
             }
         }
     }
