@@ -50,7 +50,13 @@ function install_dependencies {
     param ( $git_path )
     
     Write-Host "`r`nThe following programs will be installed or updated`r`n`t- Windows Terminal`r`n`t- Visual Studio Code`r`n`t- Docker Desktop`r`n`t- Python 3.10`r`n`t" -ForegroundColor Magenta
-    
+    if (!([string]::IsNullOrEmpty($git_path))){
+        if (!(Test-Path -Path "$git_path")){
+            New-Item -ItemType Directory -Force -Path $git_path | Out-Null
+        }
+    } else {
+        $git_path = $env:KINDTEK_WIN_GIT_PATH
+    }
     $software_name = "Windows Terminal"
     if (!(Test-Path -Path "$git_path/.wterminal-installed" -PathType Leaf)) {
         Write-Host "Installing $software_name ..." -ForegroundColor DarkCyan
@@ -80,10 +86,10 @@ function install_dependencies {
         # winget uninstall --id=Docker.DockerDesktop
         # winget install --id=Docker.DockerDesktop --location="c:\docker" --silent --locale en-US --accept-package-agreements --accept-source-agreements
         # winget upgrade --id=Docker.DockerDesktop --location="c:\docker" --silent --locale en-US --accept-package-agreements --accept-source-agreements
-        start_dvlp_process_pop "write-host 'installing $software_name ...';winget install --id=Docker.DockerDesktop --silent --locale en-US --accept-package-agreements --accept-source-agreements;winget upgrade --id=Docker.DockerDesktop --silent --locale en-US --accept-package-agreements --accept-source-agreements;exit;"
         # update using rolling stable url
         Write-Host "Downloading $software_name update/installation file ..." -ForegroundColor DarkCyan
         start_dvlp_process_pop "write-host 'downloading $software_name ...';Invoke-WebRequest -Uri https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe -OutFile DockerDesktopInstaller.exe;.write-host 'installing $software_name ...';\DockerDesktopInstaller.exe;Remove-Item DockerDesktopInstaller.exe -Force -ErrorAction SilentlyContinue;exit;" 'wait'
+        start_dvlp_process_pop "write-host 'installing $software_name ...';winget install --id=Docker.DockerDesktop --silent --locale en-US --accept-package-agreements --accept-source-agreements;winget upgrade --id=Docker.DockerDesktop --silent --locale en-US --accept-package-agreements --accept-source-agreements;exit;"
         # & 'C:\Program Files\Docker\Docker\Docker Desktop.exe'
         # "Docker Desktop Installer.exe" install --accept-license --backend=wsl-2 --installation-dir=c:\docker 
         Write-Host "$software_name installed" -ForegroundColor DarkCyan | Out-File -FilePath "$git_path/.docker-installed"
