@@ -46,8 +46,20 @@ function install_windows_features {
     return $new_install
 }
 
+function dependencies_installed {
+    if ((!(Test-Path -Path "$env:KINDTEK_WIN_DVLW_PATH/.docker-installed" -PathType Leaf)) -or (!(Test-Path -Path "$env:KINDTEK_WIN_DVLW_PATH/.vscode-installed" -PathType Leaf)) -or (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.github-installed" -PathType Leaf)) -or (!(Test-Path -Path "$env:KINDTEK_WIN_DVLW_PATH/.winget-installed" -PathType Leaf)) -or (!(Test-Path -Path "$env:KINDTEK_WIN_DVLW_PATH/.wterminal-installed" -PathType Leaf)) -or (!(Test-Path -Path "$env:KINDTEK_WIN_DVLW_PATH/.python-installed" -PathType Leaf))) {
+        return $false
+    } else {
+        return $true
+    }
+}
+
 function install_dependencies {
     param ( $git_path )
+    # if dependencies not makred installed return true only if a dependency was actually newly installed
+    if (dependencies_installed -eq $true){
+        return $false
+    }
     
     Write-Host "`r`nThe following programs will be installed or updated`r`n`t- Windows Terminal`r`n`t- Visual Studio Code`r`n`t- Docker Desktop`r`n`t- Python 3.10`r`n`t" -ForegroundColor Magenta
     if (!([string]::IsNullOrEmpty($git_path))){
@@ -631,15 +643,15 @@ function run_installer {
 
     $new_install = install_dependencies $env:KINDTEK_WIN_DVLW_PATH
     if ($new_install -eq $true) {
-        Write-Host -NoNewline "`r`nwaiting for installation processes to complete ..."
+        while (dependencies_installed -eq $false) {
+            Write-Host -NoNewline "`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`nplease wait for installation processes to complete ..." -ForegroundColor White -BackgroundColor Black
 
-        while ((!(Test-Path -Path "$env:KINDTEK_WIN_DVLW_PATH/.docker-installed" -PathType Leaf)) -and (!(Test-Path -Path "$env:KINDTEK_WIN_DVLW_PATH/.vscode-installed" -PathType Leaf)) -and (!(Test-Path -Path "$env:KINDTEK_WIN_DVLW_PATH/.wterminal-installed" -PathType Leaf)) -and (!(Test-Path -Path "$env:KINDTEK_WIN_DVLW_PATH/.python-installed" -PathType Leaf))) {
             Start-Sleep 10
-            Write-Host -NoNewline "."
+            Write-Host -NoNewline "." -ForegroundColor White -BackgroundColor Black
             Start-Sleep 1
-            Write-Host -NoNewline "."
+            Write-Host -NoNewline "." -ForegroundColor White -BackgroundColor Black
             Start-Sleep 1
-            Write-Host -NoNewline "."
+            Write-Host -NoNewline "." -ForegroundColor White -BackgroundColor Black
         }
 
         Write-Host "`r`n`r`nsoftware installations complete! restart(s) may be needed to begin WSL import phase. `r`n`r`n" 
