@@ -232,7 +232,7 @@ function reset_wsl_settings {
 }
 
 function wsl_docker_full_restart_new_win {
-    start_dvlp_process_popmin "wsl_docker_full_restart;exit;" 'wait'
+    start_dvlp_process_popmin "wsl_docker_full_restart"
 }
 
 function wsl_docker_full_restart {
@@ -278,7 +278,7 @@ function wsl_docker_full_restart {
 }
 
 function wsl_docker_restart_new_win {
-    start_dvlp_process_popmin "wsl_docker_restart;exit;" 'wait'
+    start_dvlp_process_popmin "wsl_docker_restart"
 }
 
 function wsl_docker_restart {
@@ -323,7 +323,7 @@ function env_refresh {
 }
 
 function env_refresh_new_win {
-    start_dvlp_process_popmin "wsl_docker_full_restart;exit;" 'wait'
+    start_dvlp_process_popmin "wsl_docker_full_restart" 
     # env_refresh
 }
 
@@ -400,7 +400,7 @@ function start_docker_desktop {
 }
 
 function require_docker_online_new_win {
-    start_dvlp_process_popmin 'require_docker_online' 'wait' '' 
+    start_dvlp_process_popmin 'require_docker_online;exit;' 'wait' '' 
     # require_docker_online
 }
 
