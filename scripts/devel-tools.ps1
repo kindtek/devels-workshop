@@ -273,6 +273,7 @@ function wsl_docker_full_restart {
     catch {}
     try {
         cmd.exe /c net start com.docker.service
+        require_docker_online
     }
     catch {}
 }
@@ -300,11 +301,12 @@ function wsl_docker_restart {
     Write-Output "starting wsl ..."
     try {
         powershell.exe -Command wsl.exe --exec echo 'wsl restarted';
-        Write-Output "starting docker ..."
     }
     catch {}
+    Write-Output "starting docker ..."
     try {
         powershell.exe -Command cmd.exe /c net start com.docker.service
+        require_docker_online
     }
     catch {}
     try {
