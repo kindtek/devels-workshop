@@ -98,6 +98,8 @@ function install_docker {
     } catch {
             Write-Host "error installing $software_name" -ForegroundColor DarkCyan
     }
+        return $new_install
+
 }
 
 function install_vscode {
@@ -116,10 +118,23 @@ function install_vscode {
     } catch {
             Write-Host "error installing $software_name" -ForegroundColor DarkCyan
     }
+    return $new_install
 }
 
+function install_wterminal {
+    $software_name = "Windows Terminal"
+    if (!(Test-Path -Path "$git_path/.wterminal-installed" -PathType Leaf)) {
+        Write-Host "Installing $software_name ..." -ForegroundColor DarkCyan
+        start_dvlp_process_pop "write-host 'Installing $software_name ...';winget install Microsoft.PowerShell;winget install Microsoft.WindowsTerminal --silent --locale en-US --accept-package-agreements --accept-source-agreements;winget upgrade Microsoft.WindowsTerminal --silent --locale en-US --accept-package-agreements --accept-source-agreements;exit;"
+        Write-Host "$software_name installed" -ForegroundColor DarkCyan | Out-File -FilePath "$git_path/.wterminal-installed"
+        $new_install = $true
+    }
+    else {
+        Write-Host "$software_name already installed" -ForegroundColor DarkCyan
+    }  
+    return $new_install
+}
 function install_dependencies {
-    param ( $git_path )
     # if dependencies not makred installed return true only if a dependency was actually newly installed
     if (dependencies_installed -eq $true){
         return $false
@@ -142,6 +157,11 @@ function install_dependencies {
 
     $new_install = install_python
     if ($new_install){
+        $reboot_prompt = $true
+    }
+
+    $new_install = install_wterminal 
+    if ($new_install) {
         $reboot_prompt = $true
     }
 
