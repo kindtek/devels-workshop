@@ -6,7 +6,7 @@ try {
     set_dvlp_envs
 }
 catch {
-    if ((!([string]::IsNullOrEmpty($env:KINDTEK_DEVEL_SPAWN))) -and (Test-Path -Path "$env:KINDTEK_DEVEL_SPAWN" -PathType Leaf)) {
+    if ((!([string]::IsNullOrEmpty($env:KINDTEK_DEVEL_SPAWN))) -And (Test-Path -Path "$env:KINDTEK_DEVEL_SPAWN" -PathType Leaf)) {
         # write-output "dvltls 8: dot sourcing devel-spawn"
         . $env:KINDTEK_DEVEL_SPAWN
         $global:devel_spawn = 'sourced'
@@ -47,7 +47,7 @@ function install_windows_features {
 }
 
 function dependencies_installed {
-    if ((!(Test-Path -Path "$env:KINDTEK_WIN_DVLW_PATH/.docker-installed" -PathType Leaf)) -or (!(Test-Path -Path "$env:KINDTEK_WIN_DVLW_PATH/.vscode-installed" -PathType Leaf)) -or (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.github-installed" -PathType Leaf)) -or (!(Test-Path -Path "$env:KINDTEK_WIN_DVLW_PATH/.winget-installed" -PathType Leaf)) -or (!(Test-Path -Path "$env:KINDTEK_WIN_DVLW_PATH/.wterminal-installed" -PathType Leaf)) -or (!(Test-Path -Path "$env:KINDTEK_WIN_DVLW_PATH/.python-installed" -PathType Leaf))) {
+    if ((!(Test-Path -Path "$env:KINDTEK_WIN_DVLW_PATH/.docker-installed" -PathType Leaf)) -Or (!(Test-Path -Path "$env:KINDTEK_WIN_DVLW_PATH/.vscode-installed" -PathType Leaf)) -Or (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.github-installed" -PathType Leaf)) -Or (!(Test-Path -Path "$env:KINDTEK_WIN_DVLW_PATH/.winget-installed" -PathType Leaf)) -Or (!(Test-Path -Path "$env:KINDTEK_WIN_DVLW_PATH/.wterminal-installed" -PathType Leaf)) -Or (!(Test-Path -Path "$env:KINDTEK_WIN_DVLW_PATH/.python-installed" -PathType Leaf))) {
         return $false
     } else {
         return $true
@@ -571,12 +571,12 @@ function cleanup_installation {
 
 function get_wsl_distro_list {
     $env:WSL_UTF8 = 1
-    $distro_array = wsl.exe --list | Where-Object { $_ -and $_ -ne 'Windows Subsystem for Linux Distributions:' }
+    $distro_array = wsl.exe --list | Where-Object { $_ -And $_ -ne 'Windows Subsystem for Linux Distributions:' }
     $distro_array = $distro_array -replace '^(.*)\s.*$', '$1'
     $distro_array_final = @()
     if ($distro_array.length -gt 1){    
         for ($i = 0; $i -le $distro_array.length - 1; $i++) {
-            if (!($distro_array[$i] -like "docker-desktop*") -and ($distro_array[$i] -ne "$env:KINDTEK_FAILSAFE_WSL_DISTRO")){
+            if (!($distro_array[$i] -like "docker-desktop*") -And ($distro_array[$i] -ne "$env:KINDTEK_FAILSAFE_WSL_DISTRO")){
                 $distro_array_final += $distro_array[$i]
             }
         } 
