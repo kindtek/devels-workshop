@@ -576,7 +576,7 @@ function get_wsl_distro_list {
     $distro_array_final = @()
     if ($distro_array.length -gt 1){    
         for ($i = 0; $i -le $distro_array.length - 1; $i++) {
-            if (!($distro_array[$i] -like "docker-desktop*") -and ($distro_array[$i] -ne "kalilinux-kali-rolling-latest")){
+            if (!($distro_array[$i] -like "docker-desktop*") -and ($distro_array[$i] -ne "$env:KINDTEK_FAILSAFE_WSL_DISTRO")){
                 $distro_array_final += $distro_array[$i]
             }
         } 
