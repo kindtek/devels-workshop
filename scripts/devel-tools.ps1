@@ -594,7 +594,7 @@ function wsl_distro_list_display {
         $distro_array = get_wsl_distro_list
     }
     $default_wsl_distro = get_default_wsl_distro
-    if ($distro_array.length -gt 1){    
+    if ([array]::Exists( $distro_array) -and !([array]::Empty(( $distro_array)) -and $distro_array.length -gt 1)){    
         for ($i = 0; $i -le $distro_array.length - 1; $i++) {
             $distro_name = $distro_array[$i]
             if ($distro_name -eq $default_wsl_distro){
@@ -612,14 +612,18 @@ function wsl_distro_list_display {
             }
         }
     } else {
-        $distro_name = $distro_array[0]
-        if ($distro_name -eq $default_wsl_distro){
-            $default_tag = '(default)'
+        # try {
+            $distro_name = $distro_array[0]
+            if ($distro_name -eq $default_wsl_distro){
+                $default_tag = '(default)'
 
-        } else {
-            $default_tag = ''
-        }
-        write-host "`t$($i+1))`t$distro_name $default_tag"
+            } else {
+                $default_tag = ''
+            }
+            write-host "`t$($i+1))`t$distro_name $default_tag"
+        # } catch {
+        #     # empty
+        # }
     }
 }
 
