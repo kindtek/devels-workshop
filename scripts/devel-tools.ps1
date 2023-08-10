@@ -39,15 +39,13 @@ function reboot_prompt {
 }
 
 function install_windows_features {
-    param ( $git_path )
-    $new_install = $false
     $winconfig = "$env:KINDTEK_WIN_DVLADV_PATH/add-windows-features.ps1"
-    &$winconfig = Invoke-Expression -command "$env:KINDTEK_WIN_DVLADV_PATHF/add-windows-features.ps1"
-    return $new_install
+    &$winconfig = Invoke-Expression -command "$env:KINDTEK_WIN_DVLADV_PATH/add-windows-features.ps1"
+    return
 }
 
 function dependencies_installed {
-    if ((!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.docker-installed" -PathType Leaf)) -Or (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.vscode-installed" -PathType Leaf)) -Or (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.github-installed" -PathType Leaf)) -Or (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.winget-installed" -PathType Leaf)) -Or (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.wterminal-installed" -PathType Leaf)) -Or (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.python-installed" -PathType Leaf))) {
+    if ((!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.docker-installed" -PathType Leaf)) -Or (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.github-installed" -PathType Leaf)) -Or (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.winget-installed" -PathType Leaf)) ) {
         return $false
     } else {
         return $true
@@ -56,18 +54,23 @@ function dependencies_installed {
 
 function install_python {
     $software_name = "Python"
+    $new_install = $false
+
     try {
         if (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.python-installed" -PathType Leaf)) {
             $new_install = $true
-            Write-Host "Installing $software_name ..." -ForegroundColor DarkCyan
+            Write-Host "Installing $software_name - close window to cancel install" -ForegroundColor DarkCyan
             # @TODO: add cdir and python to install with same behavior as other installs above
             # not eloquent at all but good for now
-            start_dvlp_process_pop "write-host 'installing $software_name ...';winget install --id=Python.Python.3.10 --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements;winget upgrade --id=Python.Python.3.10 --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements;exit;"
+            start_dvlp_process_pop "
+            write-host 'installing $software_name ...';
+            winget install --id=Python.Python.3.10 --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements;
+            winget upgrade --id=Python.Python.3.10 --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements;
+            Write-Host '$software_name installed' -ForegroundColor DarkCyan | Out-File -FilePath '$env:KINDTEK_WIN_GIT_PATH/.python-installed'
+            exit;"
             # ... even tho cdir does not appear to be working on windows
             # $cmd_command = pip install cdir
             # Start-Process -FilePath PowerShell.exe -NoNewWindow -ArgumentList $cmd_command
-        
-            Write-Host "$software_name installed" -ForegroundColor DarkCyan | Out-File -FilePath "$env:KINDTEK_WIN_GIT_PATH/.python-installed"
         }
         else {
             Write-Host "$software_name already installed" -ForegroundColor DarkCyan
@@ -76,22 +79,29 @@ function install_python {
 
     return $new_install
 }
-
 function install_docker {
     $software_name = "Docker Desktop"
+    $new_install = $false
+
     try {
         if (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.docker-installed" -PathType Leaf)) {
-            Write-Host "Installing $software_name ..." -ForegroundColor DarkCyan
+            # Write-Host "Installing $software_name ..." -ForegroundColor DarkCyan
             # winget uninstall --id=Docker.DockerDesktop
             # winget install --id=Docker.DockerDesktop --source winget --location="c:\docker" --silent --locale en-US --accept-package-agreements --accept-source-agreements
             # winget upgrade --id=Docker.DockerDesktop --source winget --location="c:\docker" --silent --locale en-US --accept-package-agreements --accept-source-agreements
             # update using rolling stable url
             Write-Host "Downloading $software_name update/installation file ..." -ForegroundColor DarkCyan
-            start_dvlp_process_pop "write-host 'downloading $software_name ...';Invoke-WebRequest -Uri https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe -OutFile DockerDesktopInstaller.exe;write-host 'installing $software_name ...';.\DockerDesktopInstaller.exe;Remove-Item DockerDesktopInstaller.exe -Force -ErrorAction SilentlyContinue;exit;" 'wait'
+            start_dvlp_process_pop "
+            write-host 'downloading $software_name ...';
+            Invoke-WebRequest -Uri https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe -OutFile DockerDesktopInstaller.exe;write-host 'installing $software_name ...';
+            write-host 'downloading $software_name ...';
+            .\DockerDesktopInstaller.exe;
+            Remove-Item DockerDesktopInstaller.exe -Force -ErrorAction SilentlyContinue;
+            Write-Host '$software_name installed' -ForegroundColor DarkCyan | Out-File -FilePath '$env:KINDTEK_WIN_GIT_PATH/.docker-installed'
+            exit;" 'wait'
             # start_dvlp_process_pop "write-host 'installing $software_name ...';winget install --id=Docker.DockerDesktop --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements;winget upgrade --id=Docker.DockerDesktop --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements;exit;"
             # & 'C:\Program Files\Docker\Docker\Docker Desktop.exe'
             # "Docker Desktop Installer.exe" install --accept-license --backend=wsl-2 --installation-dir=c:\docker 
-            Write-Host "$software_name installed" -ForegroundColor DarkCyan | Out-File -FilePath "$env:KINDTEK_WIN_GIT_PATH/.docker-installed"
             $new_install = $true
         }
         else {
@@ -105,14 +115,47 @@ function install_docker {
 
 }
 
+function install_dependencies {
+    # if dependencies not makred installed return true only if a dependency was actually newly installed
+    if (dependencies_installed -eq $true){
+        return
+    }
+    
+    Write-Host "`r`nThe following program will be installed or updated`r`n`t- Docker Desktop`r`n`t" -ForegroundColor Magenta
+    if (!(Test-Path -Path "$env:KINDTEK_WIN_DVLW_PATH")){
+            New-Item -ItemType Directory -Force -Path "$env:KINDTEK_WIN_DVLW_PATH" | Out-Null
+    } else {
+        New-Item -ItemType Directory -Force -Path "$env:USERPROFILE/repos/kindtek" | Out-Null
+    }
+
+    # save docker for last then wait for docker to be installed
+    $new_install = install_docker
+    if ($new_install){
+        $reboot_prompt = $true
+    }
+
+    return $reboot_prompt
+    # this is used for x11 / gui stuff .. @TODO: add the option one day maybe
+    # choco install vcxsrv microsoft-windows-terminal wsl.exe -y
+    
+}
+
 function install_vscode {
     $software_name = "Visual Studio Code (VSCode)"
+    $new_install = $false
+
     try {        
         if (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.vscode-installed" -PathType Leaf)) {
-            Write-Host "Installing $software_name ..." -ForegroundColor DarkCyan
+            Write-Host "Installing $software_name - close window to cancel install" -ForegroundColor DarkCyan
             # Invoke-Expression [string]$env:KINDTEK_NEW_PROC_NOEXIT -command "winget install Microsoft.VisualStudioCode --silent --locale en-US --accept-package-agreements --accept-source-agreements --override '/SILENT /mergetasks=`"!runcode,addcontextmenufiles,addcontextmenufolders`"'" 
-            start_dvlp_process_pop "write-host 'Installing $software_name ...';winget install Microsoft.VisualStudioCode --source winget --override '/SILENT /mergetasks=`"!runcode, addcontextmenufiles, addcontextmenufolders`"';winget upgrade Microsoft.VisualStudioCode --source winget --override '/SILENT /mergetasks=`"!runcode, addcontextmenufiles, addcontextmenufolders`"';exit;"
-            Write-Host "$software_name installed" -ForegroundColor DarkCyan | Out-File -FilePath "$env:KINDTEK_WIN_GIT_PATH/.vscode-installed"
+            start_dvlp_process_pop "
+            try {
+                write-host 'Installing $software_name ...';
+                winget install Microsoft.VisualStudioCode --source winget --override '/SILENT /mergetasks=`"!runcode, addcontextmenufiles, addcontextmenufolders`"';
+                winget upgrade Microsoft.VisualStudioCode --source winget --override '/SILENT /mergetasks=`"!runcode, addcontextmenufiles, addcontextmenufolders`"';
+                Write-Host '$software_name installed' -ForegroundColor DarkCyan | Out-File -FilePath '$env:KINDTEK_WIN_GIT_PATH/.vscode-installed'
+                exit;
+            } catch {}"
             $new_install = $true
         }
         else {
@@ -127,11 +170,20 @@ function install_vscode {
 
 function install_wterminal {
     $software_name = "Windows Terminal"
+    $new_install = $false
     try {
         if (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.wterminal-installed" -PathType Leaf)) {
-            Write-Host "Installing $software_name ..." -ForegroundColor DarkCyan
-            start_dvlp_process_pop "write-host 'Installing $software_name ...';winget install Microsoft.PowerShell;winget install Microsoft.WindowsTerminal --silent --locale en-US --accept-package-agreements --accept-source-agreements;winget upgrade Microsoft.WindowsTerminal --silent --locale en-US --accept-package-agreements --accept-source-agreements;exit;"
-            Write-Host "$software_name installed" -ForegroundColor DarkCyan | Out-File -FilePath "$env:KINDTEK_WIN_GIT_PATH/.wterminal-installed"
+            Write-Host "Installing $software_name - close window to cancel install" -ForegroundColor DarkCyan
+            start_dvlp_process_pop "
+            try {
+                write-host 'Installing $software_name ...';
+                winget install Microsoft.PowerShell;
+                winget install Microsoft.WindowsTerminal --silent --locale en-US --accept-package-agreements --accept-source-agreements;
+                winget upgrade Microsoft.WindowsTerminal --silent --locale en-US --accept-package-agreements --accept-source-agreements;
+                Write-Host '$software_name installed' -ForegroundColor DarkCyan | Out-File -FilePath '$env:KINDTEK_WIN_GIT_PATH/.wterminal-installed'
+                exit;
+            }
+            catch {}"
             $new_install = $true
         }
         else {
@@ -141,45 +193,20 @@ function install_wterminal {
 
     return $new_install
 }
-function install_dependencies {
-    # if dependencies not makred installed return true only if a dependency was actually newly installed
-    if (dependencies_installed -eq $true){
-        return $false
-    }
-    
-    Write-Host "`r`nThe following programs will be installed or updated`r`n`t- Windows Terminal`r`n`t- Visual Studio Code`r`n`t- Docker Desktop`r`n`t- Python 3.10`r`n`t" -ForegroundColor Magenta
+function install_recommends {
+    Write-Host "`r`nThe following recommended (optional) programs will be installed or updated`r`n`t- Windows Terminal`r`n`t- Visual Studio Code`r`n`t- Python 3.10`r`n`t" -ForegroundColor Magenta
     if (!(Test-Path -Path "$env:KINDTEK_WIN_DVLW_PATH")){
             New-Item -ItemType Directory -Force -Path "$env:KINDTEK_WIN_DVLW_PATH" | Out-Null
     } else {
         New-Item -ItemType Directory -Force -Path "$env:USERPROFILE/repos/kindtek" | Out-Null
     }
+    install_wterminal
+    install_vscode
+    install_python
 
-    $new_install = install_vscode  
-    if ($new_install){
-        $reboot_prompt = $true
-    }
+    return
 
-    $new_install = install_docker
-    if ($new_install){
-        $reboot_prompt = $true
-    }
-
-    $new_install = install_python
-    if ($new_install){
-        $reboot_prompt = $true
-    }
-
-    $new_install = install_wterminal 
-    if ($new_install) {
-        $reboot_prompt = $true
-    }
-
-    return $reboot_prompt
-    # this is used for x11 / gui stuff .. @TODO: add the option one day maybe
-    # choco install vcxsrv microsoft-windows-terminal wsl.exe -y
-    
 }
-
 function ini_docker_config {
     param ( $new_integrated_distro )
     $config_file = "$env:APPDATA\Docker\settings.json"
@@ -569,11 +596,11 @@ function cleanup_installation {
     )
     set_dvlp_envs_new_win 
     try {
-        Remove-Item "$env:KINDTEK_WIN_DVLW_PATH".replace($repo_src_name, "install-$repo_src_owner-$repo_src_name.ps1") -Force -ErrorAction SilentlyContinue
+        Remove-Item "$env:USERPROFILE/dvlp.ps1" -Force -ErrorAction SilentlyContinue
         Write-Host "`r`nCleaning up..  `r`n"
-        Remove-Item "$env:KINDTEK_WIN_DVLW_PATH".replace($repo_src_name, "DockerDesktopInstaller.exe") -Force -ErrorAction SilentlyContinue
+        Remove-Item "$env:KINDTEK_WIN_DVLADV_PATH/DockerDesktopInstaller.exe" -Force -ErrorAction SilentlyContinue
         # make extra sure this is not a folder that is not important (ie: system32 - which is a default location)
-        if ($env:KINDTEK_WIN_DVLW_PATH.Contains($repo_src_name) -And $env:KINDTEK_WIN_DVLW_PATH.NotContains("System32") ) {
+        if ($env:KINDTEK_WIN_DVLW_PATH.Contains('kindtek') -And $env:KINDTEK_WIN_DVLW_PATH.NotContains("System32") ) {
             Remove-Item $env:KINDTEK_WIN_DVLW_PATH -Recurse -Confirm -Force -ErrorAction SilentlyContinue
         }
     }
@@ -689,16 +716,14 @@ function run_installer {
     $env:KINDTEK_OLD_DEFAULT_WSL_DISTRO = get_default_wsl_distro
     # jump to bottom line without clearing scrollback
     # Write-Host "$([char]27)[2J" 
-    $new_install = install_windows_features $env:KINDTEK_WIN_DVLW_PATH 
-    if ($new_install -eq $true) {
-        Write-Host "`r`nwindows features installations complete! restart may be needed to continue. `r`n`r`n" 
-        reboot_prompt
-    }
-
-    $new_install = install_dependencies 
-    if ($new_install -eq $true) {
+    install_windows_features
+    install_recommends
+    $new_dependency_install = install_dependencies 
+    if ($new_dependency_install -eq $true) {
+            Write-Host -NoNewline "`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n
+            please wait for installation processes to complete ..." -ForegroundColor White -BackgroundColor Black
         while (dependencies_installed -eq $false) {
-            Write-Host -NoNewline "`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`nplease wait for installation processes to complete ..." -ForegroundColor White -BackgroundColor Black
+            
 
             Start-Sleep 10
             Write-Host -NoNewline "." -ForegroundColor White -BackgroundColor Black
@@ -708,7 +733,7 @@ function run_installer {
             Write-Host -NoNewline "." -ForegroundColor White -BackgroundColor Black
         }
 
-        Write-Host "`r`n`r`nsoftware installations complete! restart(s) may be needed to begin WSL import phase. `r`n`r`n" 
+        Write-Host "`r`n`r`nsoftware installations complete! restart(s) may be needed to begin WSL import phase. `r`n`r`n" -ForegroundColor Magenta -BackgroundColor Yellow
 
         reboot_prompt
     }
