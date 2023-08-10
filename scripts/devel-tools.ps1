@@ -346,9 +346,10 @@ function wsl_docker_full_restart {
     catch {}
     try {
         cmd.exe /c net start com.docker.service
-        require_docker_online
+        
     }
     catch {}
+    require_docker_online
 }
 
 function wsl_docker_restart_new_win {
@@ -379,10 +380,10 @@ function wsl_docker_restart {
     Write-Output "starting docker ..."
     try {
         powershell.exe -Command cmd.exe /c net start com.docker.service
-        require_docker_online
     }
     catch {}
     try {
+        require_docker_online
         powershell.exe -Command wsl.exe --exec echo 'docker restarted';
     }
     catch {}
@@ -447,7 +448,7 @@ function start_docker_desktop {
             ([void]( New-Item -path alias:'docker' -Value 'C:\Program Files\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
             ([void]( New-Item -path alias:'Docker Desktop' -Value 'C:\Program Files\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
             ([void]( New-Item -path alias:'Docker Desktop.exe' -Value 'C:\Program Files\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
-            env_refresh 
+            # env_refresh 
             Start-Process "C:\Program Files\docker\docker\Docker Desktop.exe" 
         }
         catch {
@@ -455,7 +456,7 @@ function start_docker_desktop {
                 ([void]( New-Item -path alias:'docker' -Value 'c:\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
                 ([void]( New-Item -path alias:'Docker Desktop' -Value 'c:\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
                 ([void]( New-Item -path alias:'Docker Desktop.exe' -Value 'c:\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
-                env_refresh 
+                # env_refresh 
                 Start-Process "c:\docker\docker\Docker Desktop.exe"
             }
             catch {
@@ -463,7 +464,7 @@ function start_docker_desktop {
                     ([void]( New-Item -path alias:'docker' -Value ':\docker\docker desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
                     ([void]( New-Item -path alias:'Docker Desktop' -Value ':\docker\docker desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
                     ([void]( New-Item -path alias:'Docker Desktop.exe' -Value 'c:\docker\docker desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
-                    env_refresh 
+                    # env_refresh 
                     Start-Process "c:\docker\docker desktop.exe"
                 }
                 catch {
@@ -480,7 +481,7 @@ function require_docker_online_new_win {
 }
 
 function require_docker_online {
-    # Set-PSDebug -Trace 2;
+    Set-PSDebug -Trace 2;
     [int]$docker_tries = 0
     [int]$docker_cycles = 0
     $docker_settings_reset = $true
@@ -491,8 +492,6 @@ function require_docker_online {
             if (is_docker_desktop_online -eq $false) {
                 start_docker_desktop
             }
-            # launch docker desktop and keep it open 
-            $docker_tries++
             # Write-Host "${docker_cycles}.${docker_tries}"
             if (is_docker_desktop_online -eq $false) {
                 if ($docker_tries -eq 1 -And $docker_cycles -eq 0 -And $(is_docker_backend_online) -eq $false) {
@@ -575,7 +574,6 @@ function require_docker_online {
                 # Write-Host "docker desktop is now online"
                 $check_again = 'n'
             }
-            
         }
         catch {
             Write-Host "oops ... there was a problem starting docker"
@@ -723,8 +721,6 @@ function run_installer {
             Write-Host -NoNewline "`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n
             please wait for installation processes to complete ..." -ForegroundColor White -BackgroundColor Black
         while (dependencies_installed -eq $false) {
-            
-
             Start-Sleep 10
             Write-Host -NoNewline "." -ForegroundColor White -BackgroundColor Black
             Start-Sleep 1
