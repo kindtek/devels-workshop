@@ -549,7 +549,7 @@ function require_docker_online {
         Write-Host "could not connect to docker"
     }
     # Set-PSDebug -Trace 0;
-    return (is_docker_desktop_online)
+    return $(is_docker_desktop_online)
 }
 
 function cleanup_installation {
