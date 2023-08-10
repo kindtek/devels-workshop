@@ -454,10 +454,10 @@ function require_docker_online_new_win {
 
 function require_docker_online {
     # Set-PSDebug -Trace 2;
-    $docker_tries = 0
-    $docker_cycles = 0
+    [int]$docker_tries = 0
+    [int]$docker_cycles = 0
     $docker_settings_reset = $true
-    $sleep_time = 5
+    [int]$sleep_time = 5
     # Write-Host "waiting for docker backend to come online ..."  
     do {   
         try {
@@ -467,8 +467,8 @@ function require_docker_online {
             # launch docker desktop and keep it open 
             $docker_tries++
             # Write-Host "${docker_cycles}.${docker_tries}"
-            if (is_docker_desktop_online -eq $false ) {
-                if ( $docker_tries -eq 1 -And $docker_cycles -eq 0 -And $(is_docker_backend_online) -eq $false) {
+            if (is_docker_desktop_online -eq $false) {
+                if ($docker_tries -eq 1 -And $docker_cycles -eq 0 -And $(is_docker_backend_online) -eq $false) {
                     Write-Host "error messages are expected when first starting docker. please wait ..."
                     # give extra time first time through
                     Start-Sleep -s 15
@@ -483,7 +483,7 @@ function require_docker_online {
                     # start distro_list_num over
                     # $docker_attempt1 = $docker_attempt2 = $false
                     # automatically restart docker on try 3 then prompt for restart after that
-                    if ( $docker_tries -gt 8 ) {
+                    if ($docker_tries -gt 8) {
                         # $restart = Read-Host "Restart docker? ([y]n)"
                         $restart = 'y'
                     }
@@ -491,9 +491,11 @@ function require_docker_online {
                         $restart = 'n'
                     }
                     if ( $restart -ine 'n' -And $restart -ine 'no' -And $docker_tries % 9 -eq 0) {
+                        # allowed to restart on cycle 9
                         wsl_docker_restart
                     }
                     elseif ($docker_tries % 15 -eq 0) {
+                        # next cycle 
                         $docker_tries = 0
                         $docker_cycles++
                     }
