@@ -710,29 +710,8 @@ function wsl_distro_menu_get {
 }
 
 function run_installer {
-    # log default distro
-    $env:KINDTEK_OLD_DEFAULT_WSL_DISTRO = get_default_wsl_distro
-    # jump to bottom line without clearing scrollback
-    # Write-Host "$([char]27)[2J" 
-    install_windows_features
-    install_recommends
-    $new_dependency_install = install_dependencies 
-    if ($new_dependency_install -eq $true) {
-            Write-Host -NoNewline "`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n`r`n
-            please wait for installation processes to complete ..." -ForegroundColor White -BackgroundColor Black
-        while (dependencies_installed -eq $false) {
-            Start-Sleep 10
-            Write-Host -NoNewline "." -ForegroundColor White -BackgroundColor Black
-            Start-Sleep 1
-            Write-Host -NoNewline "." -ForegroundColor White -BackgroundColor Black
-            Start-Sleep 1
-            Write-Host -NoNewline "." -ForegroundColor White -BackgroundColor Black
-        }
 
-        Write-Host "`r`n`r`nsoftware installations complete! restart(s) may be needed to begin WSL import phase. `r`n`r`n" -ForegroundColor Magenta -BackgroundColor Yellow
-
-        reboot_prompt
-    }
+    
 
     
 
