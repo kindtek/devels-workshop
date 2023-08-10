@@ -672,8 +672,6 @@ function wsl_distro_menu_get {
 }
 
 function run_installer {
-
-    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
     # log default distro
     $env:KINDTEK_OLD_DEFAULT_WSL_DISTRO = get_default_wsl_distro
     # jump to bottom line without clearing scrollback
