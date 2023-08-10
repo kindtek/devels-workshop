@@ -85,7 +85,7 @@ function install_docker {
             # winget upgrade --id=Docker.DockerDesktop --source winget --location="c:\docker" --silent --locale en-US --accept-package-agreements --accept-source-agreements
             # update using rolling stable url
             Write-Host "Downloading $software_name update/installation file ..." -ForegroundColor DarkCyan
-            start_dvlp_process_pop "write-host 'downloading $software_name ...';Invoke-WebRequest -Uri https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe -OutFile DockerDesktopInstaller.exe;.write-host 'installing $software_name ...';\DockerDesktopInstaller.exe;Remove-Item DockerDesktopInstaller.exe -Force -ErrorAction SilentlyContinue;exit;" 'wait'
+            start_dvlp_process_pop "write-host 'downloading $software_name ...';Invoke-WebRequest -Uri https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe -OutFile DockerDesktopInstaller.exe;write-host 'installing $software_name ...';.\DockerDesktopInstaller.exe;Remove-Item DockerDesktopInstaller.exe -Force -ErrorAction SilentlyContinue;exit;" 'wait'
             # start_dvlp_process_pop "write-host 'installing $software_name ...';winget install --id=Docker.DockerDesktop --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements;winget upgrade --id=Docker.DockerDesktop --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements;exit;"
             # & 'C:\Program Files\Docker\Docker\Docker Desktop.exe'
             # "Docker Desktop Installer.exe" install --accept-license --backend=wsl-2 --installation-dir=c:\docker 
