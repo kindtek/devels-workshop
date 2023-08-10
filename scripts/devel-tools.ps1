@@ -496,6 +496,8 @@ function require_docker_online_new_win {
 }
 
 function require_docker_online {
+    Set-PSDebug -Trace 2
+
     [int]$docker_tries = 0
     [int]$docker_cycles = 0
     $docker_settings_reset = $true
