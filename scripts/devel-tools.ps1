@@ -45,7 +45,7 @@ function install_windows_features {
 }
 
 function dependencies_installed {
-    if ((!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.docker-installed" -PathType Leaf)) -Or (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.github-installed" -PathType Leaf)) -Or (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.winget-installed" -PathType Leaf)) ) {
+    if ((!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.docker-installed" -PathType Leaf)) -Or (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.github-installed" -PathType Leaf)) -Or (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.winget-installed" -PathType Leaf)) -Or (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.windowsfeatures-installed" -PathType Leaf))) {
         return $false
     } else {
         return $true
@@ -481,7 +481,6 @@ function require_docker_online_new_win {
 }
 
 function require_docker_online {
-    Set-PSDebug -Trace 2;
     [int]$docker_tries = 0
     [int]$docker_cycles = 0
     $docker_settings_reset = $true
