@@ -704,7 +704,7 @@ function get_wsl_distro_list {
     if ($distro_array.length -gt 1){    
         for ($i = 0; $i -le $distro_array.length - 1; $i++) {
             if (!($distro_array[$i] -like "docker-desktop*") -And ($distro_array[$i] -ne "$env:KINDTEK_FAILSAFE_WSL_DISTRO")){
-                $distro_array_final += $distro_array[$i]
+                $distro_array_final += "$($distro_array[$i])"
             }
         } 
     } else {
@@ -723,8 +723,8 @@ function wsl_distro_list_display {
     $default_wsl_distro = get_default_wsl_distro
     if ($distro_array.length -gt 0){    
         for ($i = 0; $i -le $distro_array.length - 1; $i++) {
-            $distro_name = $distro_array[$i]
-            if ($distro_name -eq $default_wsl_distro){
+            $distro_name = "$($distro_array[$i])"
+            if ($distro_name -eq "$default_wsl_distro"){
                 $default_tag = '(default)'
 
             } else {
@@ -768,9 +768,9 @@ function wsl_distro_list_select {
     for ($i = 0; $i -le $distro_array.length - 1; $i++) {
         if ($i -eq $($distro_num - 1)) {
             if ($distro_array[$i].length -gt 1){
-                return $distro_array[$i]
+                return "$($distro_array[$i])"
             } else {
-                return $distro_array
+                return "$($distro_array)"
             }
         }
     }
@@ -793,7 +793,7 @@ function wsl_distro_menu_get {
             $distro_list_num += 1
             # $distro_name = $distro_name.Split('', [System.StringSplitOptions]::RemoveEmptyEntries) -join ''
             # $distro_name -replace '\s', ''
-            return $distro_name
+            return "$distro_name"
         }
     }
 }
