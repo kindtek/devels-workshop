@@ -361,7 +361,7 @@ function reset_docker_settings {
     cmd.exe /c net start LxssManager
     Write-Host "clearing docker settings"
     Push-Location $env:APPDATA\Docker
-    Delete-Item "settings.json.old" | Out-Null
+    Remove-Item "settings.json.old" | Out-Null
     Move-Item -Path "settings.json" "settings.json.old" -Force | Out-Null
     Pop-Location
     &$Env:ProgramFiles\Docker\Docker\DockerCli.exe -SwitchLinuxEngine;
