@@ -74,7 +74,16 @@ function reboot_prompt {
             Start-Sleep -Milliseconds 250
             Write-Host -NoNewline " 0"
             Start-Sleep -Milliseconds 100
-            New-Item -Path "$env:AppData\Microsoft\Windows\Start Menu\Programs\Startup\dvlp-spawn.cmd" -Value "start wt -p windows cmd.exe /c  powershell.exe -ExecutionPolicy RemoteSigned -File $($env:USERPROFILE)\dvlp.ps1 $($global:devel_spawn_args)" -Force | Out-Null
+            if (!(Test-Path "$env:TEMP\spawnlogs.txt")){
+                '' > "$env:TEMP\spawnlogs.txt"
+            }
+            New-Item -Path "$env:AppData\Microsoft\Windows\Start Menu\Programs\Startup\dvlp-spawn.cmd" -Value "
+            PowerShell -Command `"Set-ExecutionPolicy Unrestricted`" >> `"$env:TEMP\spawnlogs.txt`" 2>&1
+
+            start wt -p windows cmd.exe /c  powershell.exe -ExecutionPolicy RemoteSigned -File `"$($env:USERPROFILE)\dvlp.ps1 $($global:devel_spawn_args)`" >> `"$env:TEMP\StartupLog.txt`" 2>&1
+            PowerShell -Command `"Set-ExecutionPolicy RemoteSigned`" >> `"$env:TEMP\spawnlogs.txt`" 2>&1
+            cmd /k
+            " -Force | Out-Null
         }
 
         # Restart-Computer
