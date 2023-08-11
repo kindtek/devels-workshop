@@ -571,7 +571,7 @@ function require_docker_online_new_win {
 }
 
 function require_docker_online {
-    Set-PSDebug -Trace 2
+    # Set-PSDebug -Trace 2
 
     [int]$docker_tries = 0
     [int]$docker_cycles = 0
@@ -675,7 +675,6 @@ function require_docker_online {
     } else {
         Write-Host "could not connect to docker"
     }
-    Set-PSDebug -Trace 2;
     return $(is_docker_desktop_online)
 }
 
