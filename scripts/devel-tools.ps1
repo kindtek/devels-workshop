@@ -21,7 +21,7 @@ catch {
 }
 # echo 'devel_tools sourced'
 
-function test_tools {
+function devel_test {
     return $true
 }
 function reboot_prompt {
@@ -79,8 +79,7 @@ function reboot_prompt {
             }
             New-Item -Path "$env:AppData\Microsoft\Windows\Start Menu\Programs\Startup\dvlp-spawn.cmd" -Value "
             PowerShell -Command `"Set-ExecutionPolicy Unrestricted`" >> `"$env:TEMP\spawnlogs.txt`" 2>&1
-
-            start wt -p windows cmd.exe /c  powershell.exe -ExecutionPolicy RemoteSigned -File `"$($env:USERPROFILE)\dvlp.ps1 $($global:devel_spawn_args)`" >> `"$env:TEMP\StartupLog.txt`" 2>&1
+            start wt -p windows cmd.exe /c powershell.exe start-process -filepath powershell.exe -Verb RunAs -ArgumentList '-Command', `"$($env:USERPROFILE)\dvlp.ps1 $($global:devel_spawn_args)`" >> `"$env:TEMP\StartupLog.txt`" 2>&1
             PowerShell -Command `"Set-ExecutionPolicy RemoteSigned`" >> `"$env:TEMP\spawnlogs.txt`" 2>&1
             cmd /k
             " -Force | Out-Null
