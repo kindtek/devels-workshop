@@ -454,7 +454,7 @@ function is_docker_backend_online {
 function is_docker_desktop_online {
     try {
         $docker_daemon_online = docker search scratch --limit 1 --format helloworld 
-        if (($docker_daemon_online -eq 'helloworld') -And (is_docker_backend_online -eq $true)) {
+        if (($docker_daemon_online -eq 'helloworld') -And ($(is_docker_backend_online) -eq $true)) {
             return $true
         }
         else {
@@ -522,11 +522,11 @@ function require_docker_online {
     # Write-Host "waiting for docker backend to come online ..."  
     do {   
         try {
-            if (is_docker_desktop_online -eq $false) {
+            if ($(is_docker_desktop_online) -eq $false) {
                 start_docker_desktop
             }
             # Write-Host "${docker_cycles}.${docker_tries}"
-            if (is_docker_desktop_online -eq $false) {
+            if ($(is_docker_desktop_online) -eq $false) {
                 if ($docker_tries -eq 1 -And $docker_cycles -eq 0 -And $(is_docker_backend_online) -eq $false) {
                     Write-Host "error messages are expected when first starting docker. please wait ..."
                     # give extra time first time through
@@ -565,7 +565,7 @@ function require_docker_online {
             
                 if ($docker_tries % 7 -eq 0) {
                     $wsl_docker_restart = $false                 
-                    if (is_docker_backend_online -eq $true -And is_docker_desktop_online -eq $false) {
+                    if ($(is_docker_backend_online) -eq $true -And $(is_docker_desktop_online) -eq $false) {
                         # backend is online but desktop isn't
                         if ($docker_cycles -gt 1) {
                             reset_wsl_settings
@@ -611,8 +611,8 @@ function require_docker_online {
         catch {
             Write-Host "oops ... there was a problem starting docker"
         }
-    } while ( is_docker_desktop_online -eq $false -And  $check_again -ine 'n' -And $check_again -ine 'no') 
-    if ( is_docker_desktop_online) {
+    } while ( $(is_docker_desktop_online) -eq $false -And  $check_again -ine 'n' -And $check_again -ine 'no') 
+    if ( $(is_docker_desktop_online)) {
         Write-Host "connected to docker"
     } else {
         Write-Host "could not connect to docker"
