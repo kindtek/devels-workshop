@@ -78,7 +78,7 @@ function reboot_prompt {
         }
 
         # Restart-Computer
-        Restart-Computer -WhatIf
+        Restart-Computer
     } 
     
     # else {
