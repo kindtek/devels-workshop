@@ -1,7 +1,7 @@
 $host.UI.RawUI.ForegroundColor = "White"
 $host.UI.RawUI.BackgroundColor = "Black"
-export WSL_UTF8=1
-WSLENV="$WSLENV":WSL_UTF8
+# export WSL_UTF8=1
+# WSLENV="$WSLENV":WSL_UTF8
 
 $global:devel_tools = 'sourced'
 try {
