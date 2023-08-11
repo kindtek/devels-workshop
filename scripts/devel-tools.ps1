@@ -88,7 +88,24 @@ function install_docker {
 
 }
 function dependencies_installed {
+    param (
+        $verbose_output
+    )
     if ((!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.docker-installed" -PathType Leaf)) -Or (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.github-installed" -PathType Leaf)) -Or (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.winget-installed" -PathType Leaf)) -Or (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.windowsfeatures-installed" -PathType Leaf))) {
+        if ($verbose_output)
+            {if (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.windowsfeatures-installed" -PathType Leaf)){
+                Write-Host "windows features not installed"
+            }
+            if (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.winget-installed" -PathType Leaf)){
+                Write-Host "winget not installed"
+            }
+            if (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.github-installed" -PathType Leaf)){
+                Write-Host "git not installed"
+            }
+            if (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.docker-installed" -PathType Leaf)){
+                Write-Host "docker not installed"
+            }
+        }
         return $false
     } else {
         return $true
