@@ -22,7 +22,7 @@ catch {
 # echo 'devel_tools sourced'
 
 function devel_test {
-    return $true
+    return
 }
 function reboot_prompt {
     param (
