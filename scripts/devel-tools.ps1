@@ -25,12 +25,62 @@ function test_tools {
     return $true
 }
 function reboot_prompt {
-    $confirmation = Read-Host "`r`nType 'reboot now'`r`n`t ..or hit ENTER to skip" 
-
-    if ($confirmation -ieq 'reboot now') {
-        Write-Host "`r`nRestarting computer ... r`n"
-        Restart-Computer
+    param (
+        $skip_prompt
+    )
+    if ($skip_prompt -ieq "reboot now" -or $skip_prompt -ieq "reboot continue"  -or $skip_prompt -ieq "reboot" ){
+        $confirmation = $skip_prompt
+    } else {
+        $confirmation = Read-Host "`r`nType 'reboot'`r`n`t ..or hit ENTER to skip" 
     }
+
+    if ($confirmation -ieq 'reboot') {
+        $confirmation = Read-Host "`r`nType 'continue' to automatically continue this installation`r`n`t ..or hit ENTER to skip" 
+        if ($confirmation -eq 'continue') {
+            $confirmation = 'reboot continue'
+        } else {
+            $confirmation = 'reboot now'
+        }
+    } 
+    if ($confirmation -ieq 'reboot now' -or $confirmation -ieq 'reboot continue') {
+        if ($confirmation -ieq 'reboot now') {
+            Write-Host "`r`nRestarting computer ... r`n"
+        } elseif ($confirmation -ieq 'reboot continue'){
+            Write-Host "`r`n       --- USE CTRL + C TO CANCEL --- `r`n"
+            Write-Host "`r`nRestarting computer and continuing after restart... `r`n"
+            Write-Host -NoNewline "`r`n`t3"
+            Start-Sleep -Milliseconds 250
+            Write-Host -NoNewline "`r`n`t."
+            Start-Sleep -Milliseconds 250
+            Write-Host -NoNewline "`r`n`t."
+            Start-Sleep -Milliseconds 250
+            Write-Host -NoNewline "`r`n`t."
+            Start-Sleep -Milliseconds 250
+            Write-Host -NoNewline "`r`n`t2"
+            Start-Sleep -Milliseconds 250
+            Write-Host -NoNewline "`r`n`t."
+            Start-Sleep -Milliseconds 250
+            Write-Host -NoNewline "`r`n`t."
+            Start-Sleep -Milliseconds 250
+            Write-Host -NoNewline "`r`n`t."
+            Start-Sleep -Milliseconds 250
+            Write-Host -NoNewline " 1"
+            Start-Sleep -Milliseconds 250
+            Write-Host -NoNewline "`r`n`t."
+            Start-Sleep -Milliseconds 250
+            Write-Host -NoNewline "`r`n`t."
+            Start-Sleep -Milliseconds 250
+            Write-Host -NoNewline "`r`n`t."
+            Start-Sleep -Milliseconds 250
+            Write-Host -NoNewline " 0"
+            Start-Sleep -Milliseconds 100
+            New-Item -Path "$env:AppData\Microsoft\Windows\Start Menu\Programs\Startup\dvlp-spawn.cmd" -Value "start wt -p windows cmd.exe /c  powershell.exe -ExecutionPolicy RemoteSigned -File $($env:USERPROFILE)\dvlp.ps1 $($global:devel_spawn_args)"
+        }
+
+        # Restart-Computer
+        Restart-Computer -WhatIf
+    } 
+    
     # else {
     #     # powershell.exe -Command "$env:KINDTEK_WIN_DVLW_PATH\choco\src\chocolatey.resources\redirects\RefreshEnv.cmd"
     #     Write-Host "`r`n"
