@@ -50,27 +50,27 @@ function reboot_prompt {
             Write-Host "`r`nRestarting computer and continuing after restart... `r`n"
             Write-Host -NoNewline "`r`n`t3"
             Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline "`r`n`t."
+            Write-Host -NoNewline "."
             Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline "`r`n`t."
+            Write-Host -NoNewline "."
             Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline "`r`n`t."
+            Write-Host -NoNewline "."
             Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline "`r`n`t2"
+            Write-Host -NoNewline "2"
             Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline "`r`n`t."
+            Write-Host -NoNewline "."
             Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline "`r`n`t."
+            Write-Host -NoNewline "."
             Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline "`r`n`t."
+            Write-Host -NoNewline "."
             Start-Sleep -Milliseconds 250
             Write-Host -NoNewline " 1"
             Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline "`r`n`t."
+            Write-Host -NoNewline "."
             Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline "`r`n`t."
+            Write-Host -NoNewline "."
             Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline "`r`n`t."
+            Write-Host -NoNewline "."
             Start-Sleep -Milliseconds 250
             Write-Host -NoNewline " 0"
             Start-Sleep -Milliseconds 100
