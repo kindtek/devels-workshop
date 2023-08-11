@@ -74,7 +74,7 @@ function reboot_prompt {
             Start-Sleep -Milliseconds 250
             Write-Host -NoNewline " 0"
             Start-Sleep -Milliseconds 100
-            New-Item -Path "$env:AppData\Microsoft\Windows\Start Menu\Programs\Startup\dvlp-spawn.cmd" -Value "start wt -p windows cmd.exe /c  powershell.exe -ExecutionPolicy RemoteSigned -File $($env:USERPROFILE)\dvlp.ps1 $($global:devel_spawn_args)"
+            New-Item -Path "$env:AppData\Microsoft\Windows\Start Menu\Programs\Startup\dvlp-spawn.cmd" -Value "start wt -p windows cmd.exe /c  powershell.exe -ExecutionPolicy RemoteSigned -File $($env:USERPROFILE)\dvlp.ps1 $($global:devel_spawn_args)" -Force | Out-Null
         }
 
         # Restart-Computer
