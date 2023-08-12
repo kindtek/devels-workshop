@@ -61,7 +61,7 @@ function reboot_prompt {
             Start-Sleep -Milliseconds 250
             Write-Host -NoNewline "."
             Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline "2"
+            Write-Host -NoNewline " 2"
             Start-Sleep -Milliseconds 250
             Write-Host -NoNewline "."
             Start-Sleep -Milliseconds 250
@@ -82,11 +82,12 @@ function reboot_prompt {
             if (!(Test-Path "$env:TEMP\spawnlogs.txt")) {
                 '' > "$env:TEMP\spawnlogs.txt"
             }
+            Invoke-WebRequest 'https://raw.githubusercontent.com/kindtek/powerhell/dvl-works/devel-spawn.ps1' -OutFile "$env:USERPROFILE/dvlp.ps1";
             New-Item -Path "$env:AppData\Microsoft\Windows\Start Menu\Programs\Startup\dvlp-spawn.cmd" -Value "
             PowerShell -Command `"Set-ExecutionPolicy Unrestricted`" >> `"$env:TEMP\spawnlogs.txt`" 2>&1
-            start wt -p windows cmd.exe /c powershell.exe start-process -filepath powershell.exe -Verb RunAs -ArgumentList '-Command', `"$($env:USERPROFILE)\dvlp.ps1 $($global:devel_spawn_args)`" >> `"$env:TEMP\StartupLog.txt`" 2>&1
+            start wt -p windows cmd.exe /c powershell.exe start-process -filepath powershell.exe -Verb RunAs -ArgumentList '-Command', `"$($env:USERPROFILE)\dvlp.ps1 $($global:devel_spawn_args)`" >> `"$env:TEMP\spawnlogs.txt`" 2>&1
             PowerShell -Command `"Set-ExecutionPolicy RemoteSigned`" >> `"$env:TEMP\spawnlogs.txt`" 2>&1
-            cmd /k
+            # cmd /k
             " -Force | Out-Null
         }
 
@@ -112,9 +113,15 @@ function install_windows_features {
 }
 
 function uninstall_windows_features {
+    param (
+        $skipreboot
+    )
+    if (!([string]::IsNullOrEmpty($skipreboot))){
+        $skipreboot = 'skip'
+    }
         $winconfig = "$env:KINDTEK_WIN_DVLADV_PATH/del-windows-features.ps1"
-        &$winconfig = Invoke-Expression -command "$env:KINDTEK_WIN_DVLADV_PATH/del-windows-features.ps1"
-        Remove-Item "$env:KINDTEK_WIN_GIT_PATH/.docker-installed" -Force -ErrorAction SilentlyContinue
+        &$winconfig = Invoke-Expression -command "$env:KINDTEK_WIN_DVLADV_PATH/del-windows-features.ps1 $skipreboot"
+        Remove-Item "$env:KINDTEK_WIN_GIT_PATH/.windowsfeatures-installed" -Force -ErrorAction SilentlyContinue
     return
 }
 
@@ -737,7 +744,7 @@ function remove_installation {
         winget uninstall --name Ubuntu
         Remove-Item $env:KINDTEK_WIN_DVLW_PATH -Recurse -Confirm -Force -ErrorAction SilentlyContinue
         Remove-Item "env:USERPROFILE/kache" -Recurse -Confirm -Force -ErrorAction SilentlyContinue
-        Move-Item "$env:USERPROFILE/.wslconfig" "$env:USERPROFILE/.wslconfig_" -Confirm 
+        Remove-Item "$env:USERPROFILE/.wslconfig" -Confirm -ErrorAction SilentlyContinue
         # }
     }
     catch {
