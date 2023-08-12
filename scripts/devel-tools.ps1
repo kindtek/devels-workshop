@@ -718,7 +718,7 @@ function get_wsl_distro_list {
     if ($distro_array.length -gt 1) {    
         for ($i = 0; $i -le $distro_array.length - 1; $i++) {
             if (!($distro_array[$i] -like "docker-*") -And ($distro_array[$i] -ne "$env:KINDTEK_FAILSAFE_WSL_DISTRO") -and (!([string]::IsNullOrWhiteSpace($distro_array[$i])))) {
-                $distro_array_final += "$($distro_array[$i])"
+                $distro_array_final += "`'$($distro_array[$i])`'"
             }
         } 
     }
