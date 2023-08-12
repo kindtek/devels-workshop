@@ -733,6 +733,7 @@ function remove_installation {
     )
     set_dvlp_envs_new_win 
     try {
+        powershell -File $("$(get_dvlp_env 'KINDTEK_WIN_DVLP_PATH')/scripts/wsl-remove-distros.ps1")
         Write-Host "`r`nDeleting $env:USERPROFILE/dvlp.ps1`r`n"
         Remove-Item "$env:USERPROFILE/dvlp.ps1" -Force -ErrorAction SilentlyContinue
         # Remove-Item "$env:USERPROFILE/DockerDesktopInstaller.exe" -Force -ErrorAction SilentlyContinue
