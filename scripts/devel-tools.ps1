@@ -741,8 +741,11 @@ function remove_installation {
         # if ($env:KINDTEK_WIN_DVLW_PATH.Contains('kindtek') -And $env:KINDTEK_WIN_DVLW_PATH.NotContains("System32") ) {
         uninstall_docker
         uninstall_windows_features
+        write-host "errors are to be expected while a script tries to remove all possible wsl installations from the system"
         winget uninstall --id kalilinux.kalilinux
         winget uninstall --name Ubuntu
+        winget uninstall --name "Windows Subsystem For Linux Update"
+        winget uninstall --name "Windows Subsystem For Linux WSLg Preview"
         Remove-Item $env:KINDTEK_WIN_DVLW_PATH -Recurse -Confirm -Force -ErrorAction SilentlyContinue
         Remove-Item "env:USERPROFILE/kache" -Recurse -Confirm -Force -ErrorAction SilentlyContinue
         Remove-Item "$env:USERPROFILE/.wslconfig" -Confirm -ErrorAction SilentlyContinue
