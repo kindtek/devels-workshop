@@ -111,6 +111,13 @@ function install_windows_features {
     return
 }
 
+function uninstall_windows_features {
+        $winconfig = "$env:KINDTEK_WIN_DVLADV_PATH/del-windows-features.ps1"
+        &$winconfig = Invoke-Expression -command "$env:KINDTEK_WIN_DVLADV_PATH/del-windows-features.ps1"
+        Remove-Item "$env:KINDTEK_WIN_GIT_PATH/.docker-installed" -Force -ErrorAction SilentlyContinue
+    return
+}
+
 function install_docker {
     param (
         $install_anyways
@@ -125,16 +132,19 @@ function install_docker {
             # winget install --id=Docker.DockerDesktop --source winget --location="c:\docker" --silent --locale en-US --accept-package-agreements --accept-source-agreements
             # winget upgrade --id=Docker.DockerDesktop --source winget --location="c:\docker" --silent --locale en-US --accept-package-agreements --accept-source-agreements
             # update using rolling stable url
-            Write-Host "Downloading $software_name update/installation file ..." -ForegroundColor DarkCyan
+            Write-Host "Downloading/installing basic version of $software_name ..." -ForegroundColor DarkCyan
+            start_dvlp_process_pop "write-host 'Downloading/installing basic version of $software_name ...';winget install --id=Docker.DockerDesktop --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements;winget upgrade --id=Docker.DockerDesktop --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements;exit;"
+            Write-Host "Downloading/installing updated version of $software_name ..." -ForegroundColor DarkCyan
             start_dvlp_process_pop "
             write-host 'downloading $software_name ...';
-            Invoke-WebRequest -Uri https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe -OutFile DockerDesktopInstaller.exe;write-host 'installing $software_name ...';
-            write-host 'downloading $software_name ...';
-            .\DockerDesktopInstaller.exe;
-            Remove-Item DockerDesktopInstaller.exe -Force -ErrorAction SilentlyContinue;
-            Write-Host '$software_name installed' -ForegroundColor DarkCyan | Out-File -FilePath '$env:KINDTEK_WIN_GIT_PATH/.docker-installed'
+            Invoke-WebRequest -Uri https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe -OutFile '`$env:USERPROFILE\DockerDesktopInstaller.exe';
+            write-host 'installing $software_name ...';
+            try {
+                .`$env:USERPROFILE\DockerDesktopInstaller.exe;
+                Write-Host '$software_name installed' -ForegroundColor DarkCyan | Out-File -FilePath '$env:KINDTEK_WIN_GIT_PATH/.docker-installed'
+                Remove-Item '`$env:USERPROFILE\DockerDesktopInstaller.exe' -Force -ErrorAction SilentlyContinue;
+            } 
             exit;" 'wait'
-            # start_dvlp_process_pop "write-host 'installing $software_name ...';winget install --id=Docker.DockerDesktop --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements;winget upgrade --id=Docker.DockerDesktop --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements;exit;"
             # & 'C:\Program Files\Docker\Docker\Docker Desktop.exe'
             # "Docker Desktop Installer.exe" install --accept-license --backend=wsl-2 --installation-dir=c:\docker 
             $new_install = $true
@@ -150,6 +160,25 @@ function install_docker {
     return $new_install
 
 }
+
+function uninstall_docker {
+    docker builder prune -af | Out-Null
+    docker system prune -af --volumes | Out-Null
+    wsl.exe --unregister docker-desktop | Out-Null
+    wsl.exe --unregister docker-desktop-data | Out-Null
+    Remove-Item "$env:APPDATA\Docker*" -Recurse -Force -Confirm:$false -ErrorAction SilentlyContinue
+    Remove-Item "$env:LOCALAPPDATA\Docker*" -Recurse -Force -Confirm:$false -ErrorAction SilentlyContinue
+    Remove-Item "$env:USERPROFILE\.docker" -Recurse -Force -Confirm:$false -ErrorAction SilentlyContinue
+    Remove-Item "$env:PROGRAMDATA\Docker*" -Recurse -Force -Confirm:$false -ErrorAction SilentlyContinue
+    winget uninstall --id=Docker.DockerDesktop
+    Remove-Item "$env:USERPROFILE/repos/kindtek/.docker-installed" -Force -ErrorAction SilentlyContinue
+}
+
+function reinstall_docker {
+    uninstall_docker
+    install_docker
+}
+
 function dependencies_installed {
     param (
         $verbose_output
@@ -691,18 +720,24 @@ function require_docker_online {
     return $(is_docker_desktop_online)
 }
 
-function cleanup_installation {
+function remove_installation {
     param (
         # OptionalParameters
     )
     set_dvlp_envs_new_win 
     try {
+        Write-Host "`r`nDeleting $env:USERPROFILE/dvlp.ps1`r`n"
         Remove-Item "$env:USERPROFILE/dvlp.ps1" -Force -ErrorAction SilentlyContinue
-        Write-Host "`r`nCleaning up..  `r`n"
-        Remove-Item "$env:USERPROFILE/DockerDesktopInstaller.exe" -Force -ErrorAction SilentlyContinue
+        # Remove-Item "$env:USERPROFILE/DockerDesktopInstaller.exe" -Force -ErrorAction SilentlyContinue
         # make extra sure this is not a folder that is not important (ie: system32 - which is a default location)
         # if ($env:KINDTEK_WIN_DVLW_PATH.Contains('kindtek') -And $env:KINDTEK_WIN_DVLW_PATH.NotContains("System32") ) {
+        uninstall_docker
+        uninstall_windows_features
+        winget uninstall --id kalilinux.kalilinux
+        winget uninstall --name Ubuntu
         Remove-Item $env:KINDTEK_WIN_DVLW_PATH -Recurse -Confirm -Force -ErrorAction SilentlyContinue
+        Remove-Item "env:USERPROFILE/kache" -Recurse -Confirm -Force -ErrorAction SilentlyContinue
+        Move-Item "$env:USERPROFILE/.wslconfig" "$env:USERPROFILE/.wslconfig_" -Confirm 
         # }
     }
     catch {
