@@ -30,9 +30,10 @@ function reboot_prompt {
     param (
         $skip_prompt
     )
-    if ($skip_prompt -ieq "reboot now" -or $skip_prompt -ieq "reboot continue"  -or $skip_prompt -ieq "reboot" ){
+    if ($skip_prompt -ieq "reboot now" -or $skip_prompt -ieq "reboot continue" -or $skip_prompt -ieq "reboot" ) {
         $confirmation = $skip_prompt
-    } else {
+    }
+    else {
         $confirmation = Read-Host "`r`nType 'reboot'`r`n`t ..or hit ENTER to skip" 
     }
 
@@ -40,14 +41,16 @@ function reboot_prompt {
         $confirmation = Read-Host "`r`nType 'continue' to automatically continue after next boot`r`n`t ..or hit ENTER to skip" 
         if ($confirmation -eq 'continue') {
             $confirmation = 'reboot continue'
-        } else {
+        }
+        else {
             $confirmation = 'reboot now'
         }
     } 
     if ($confirmation -ieq 'reboot now' -or $confirmation -ieq 'reboot continue') {
         if ($confirmation -ieq 'reboot now') {
             Write-Host "`r`nRestarting computer ... r`n"
-        } elseif ($confirmation -ieq 'reboot continue'){
+        }
+        elseif ($confirmation -ieq 'reboot continue') {
             Write-Host "`r`n       --- USE CTRL + C TO CANCEL --- `r`n"
             Write-Host "`r`nRestarting computer and continuing after restart... `r`n"
             Write-Host -NoNewline "`r`n`t3"
@@ -76,7 +79,7 @@ function reboot_prompt {
             Start-Sleep -Milliseconds 250
             Write-Host -NoNewline " 0"
             Start-Sleep -Milliseconds 100
-            if (!(Test-Path "$env:TEMP\spawnlogs.txt")){
+            if (!(Test-Path "$env:TEMP\spawnlogs.txt")) {
                 '' > "$env:TEMP\spawnlogs.txt"
             }
             New-Item -Path "$env:AppData\Microsoft\Windows\Start Menu\Programs\Startup\dvlp-spawn.cmd" -Value "
@@ -139,8 +142,9 @@ function install_docker {
         else {
             Write-Host "$software_name already installed"  -ForegroundColor DarkCyan 
         }
-    } catch {
-            Write-Host "error installing $software_name" -ForegroundColor DarkCyan
+    }
+    catch {
+        Write-Host "error installing $software_name" -ForegroundColor DarkCyan
     }
     
     return $new_install
@@ -151,22 +155,23 @@ function dependencies_installed {
         $verbose_output
     )
     if ((!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.docker-installed" -PathType Leaf)) -Or (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.github-installed" -PathType Leaf)) -Or (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.winget-installed" -PathType Leaf)) -Or (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.windowsfeatures-installed" -PathType Leaf))) {
-        if ($verbose_output)
-            {if (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.windowsfeatures-installed" -PathType Leaf)){
+        if ($verbose_output) {
+            if (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.windowsfeatures-installed" -PathType Leaf)) {
                 Write-Host "windows features not installed"
             }
-            if (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.winget-installed" -PathType Leaf)){
+            if (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.winget-installed" -PathType Leaf)) {
                 Write-Host "winget not installed"
             }
-            if (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.github-installed" -PathType Leaf)){
+            if (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.github-installed" -PathType Leaf)) {
                 Write-Host "git not installed"
             }
-            if (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.docker-installed" -PathType Leaf)){
+            if (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.docker-installed" -PathType Leaf)) {
                 Write-Host "docker not installed"
             }
         }
         return $false
-    } else {
+    }
+    else {
         return $true
     }
 }
@@ -175,14 +180,15 @@ function install_dependencies {
         $install_anyways
     )
     # if dependencies not makred installed return true only if a dependency was actually newly installed
-    if ($(dependencies_installed $true) -eq $true){
+    if ($(dependencies_installed $true) -eq $true) {
         return
     }
     
     Write-Host "`r`nThe following program will be installed or updated`r`n`t- Docker Desktop`r`n`t" -ForegroundColor Magenta
-    if ((!(Test-Path -Path "$env:KINDTEK_WIN_DVLW_PATH")) -or $install_anyways){
-            New-Item -ItemType Directory -Force -Path "$env:KINDTEK_WIN_DVLW_PATH" | Out-Null
-    } else {
+    if ((!(Test-Path -Path "$env:KINDTEK_WIN_DVLW_PATH")) -or $install_anyways) {
+        New-Item -ItemType Directory -Force -Path "$env:KINDTEK_WIN_DVLW_PATH" | Out-Null
+    }
+    else {
         New-Item -ItemType Directory -Force -Path "$env:USERPROFILE/repos/kindtek" | Out-Null
     }
 
@@ -217,8 +223,9 @@ function install_vscode {
         else {
             Write-Host "$software_name already installed" -ForegroundColor DarkCyan
         }
-    } catch {
-            Write-Host "error installing $software_name" -ForegroundColor DarkCyan
+    }
+    catch {
+        Write-Host "error installing $software_name" -ForegroundColor DarkCyan
     }
 
     return $new_install
@@ -249,7 +256,8 @@ function install_python {
         else {
             Write-Host "$software_name already installed" -ForegroundColor DarkCyan
         }
-    } catch {}
+    }
+    catch {}
 
     return $new_install
 }
@@ -260,7 +268,7 @@ function install_wterminal {
     $software_name = "Windows Terminal"
     $new_install = $false
     try {
-        if ((!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.wterminal-installed" -PathType Leaf)) -or $install_anyways){
+        if ((!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.wterminal-installed" -PathType Leaf)) -or $install_anyways) {
             Write-Host "Installing $software_name - close window to cancel install" -ForegroundColor DarkCyan
             start_dvlp_process_pop "
             try {
@@ -277,7 +285,8 @@ function install_wterminal {
         else {
             Write-Host "$software_name already installed" -ForegroundColor DarkCyan
         }  
-    } catch {}
+    }
+    catch {}
 
     return $new_install
 }
@@ -286,9 +295,10 @@ function install_recommends {
         $install_anyways
     )
     Write-Host "`r`nThe following recommended (optional) programs will be installed or updated`r`n`t- Windows Terminal`r`n`t- Visual Studio Code`r`n`t- Python 3.10`r`n`t" -ForegroundColor Magenta
-    if ((!(Test-Path -Path "$env:KINDTEK_WIN_DVLW_PATH")) -or $install_anyways){
-            New-Item -ItemType Directory -Force -Path "$env:KINDTEK_WIN_DVLW_PATH" | Out-Null
-    } else {
+    if ((!(Test-Path -Path "$env:KINDTEK_WIN_DVLW_PATH")) -or $install_anyways) {
+        New-Item -ItemType Directory -Force -Path "$env:KINDTEK_WIN_DVLW_PATH" | Out-Null
+    }
+    else {
         New-Item -ItemType Directory -Force -Path "$env:USERPROFILE/repos/kindtek" | Out-Null
     }
     install_wterminal $install_anyways
@@ -529,7 +539,8 @@ function is_docker_desktop_online {
 function start_docker_desktop {
     try {
         env_refresh 
-    } catch {}
+    }
+    catch {}
     try {
         Write-Host "`r`n`r`nstarting docker desktop ..."
         Start-Process "Docker Desktop.exe" 
@@ -670,10 +681,11 @@ function require_docker_online {
         catch {
             Write-Host "oops ... there was a problem starting docker"
         }
-    } while ( $(is_docker_desktop_online) -eq $false -And  $check_again -ine 'n' -And $check_again -ine 'no') 
+    } while ( $(is_docker_desktop_online) -eq $false -And $check_again -ine 'n' -And $check_again -ine 'no') 
     if ( $(is_docker_desktop_online)) {
         Write-Host "connected to docker"
-    } else {
+    }
+    else {
         Write-Host "could not connect to docker"
     }
     return $(is_docker_desktop_online)
@@ -687,11 +699,11 @@ function cleanup_installation {
     try {
         Remove-Item "$env:USERPROFILE/dvlp.ps1" -Force -ErrorAction SilentlyContinue
         Write-Host "`r`nCleaning up..  `r`n"
-        Remove-Item "$env:KINDTEK_WIN_DVLADV_PATH/DockerDesktopInstaller.exe" -Force -ErrorAction SilentlyContinue
+        Remove-Item "$env:USERPROFILE/DockerDesktopInstaller.exe" -Force -ErrorAction SilentlyContinue
         # make extra sure this is not a folder that is not important (ie: system32 - which is a default location)
-        if ($env:KINDTEK_WIN_DVLW_PATH.Contains('kindtek') -And $env:KINDTEK_WIN_DVLW_PATH.NotContains("System32") ) {
-            Remove-Item $env:KINDTEK_WIN_DVLW_PATH -Recurse -Confirm -Force -ErrorAction SilentlyContinue
-        }
+        # if ($env:KINDTEK_WIN_DVLW_PATH.Contains('kindtek') -And $env:KINDTEK_WIN_DVLW_PATH.NotContains("System32") ) {
+        Remove-Item $env:KINDTEK_WIN_DVLW_PATH -Recurse -Confirm -Force -ErrorAction SilentlyContinue
+        # }
     }
     catch {
         Write-Host "Run the following command to delete the repo and setup files:`r`nRemove-Item $env:KINDTEK_WIN_DVLW_PATH -Recurse -Confirm -Force`r`n"
@@ -703,13 +715,14 @@ function get_wsl_distro_list {
     $distro_array = wsl.exe --list --quiet | Where-Object { $_ -And $_ -ne 'Windows Subsystem for Linux Distributions:' }
     $distro_array = $distro_array -replace '^(.*)\s.*$', '$1'
     $distro_array_final = @()
-    if ($distro_array.length -gt 1){    
+    if ($distro_array.length -gt 1) {    
         for ($i = 0; $i -le $distro_array.length - 1; $i++) {
-            if (!($distro_array[$i] -like "docker-desktop*") -And ($distro_array[$i] -ne "$env:KINDTEK_FAILSAFE_WSL_DISTRO")){
+            if (!($distro_array[$i] -like "docker-desktop*") -And ($distro_array[$i] -ne "$env:KINDTEK_FAILSAFE_WSL_DISTRO")) {
                 $distro_array_final += "$($distro_array[$i])"
             }
         } 
-    } else {
+    }
+    else {
         $distro_array_final = $distro_array
     }
     return $distro_array_final
@@ -719,37 +732,41 @@ function wsl_distro_list_display {
     param (
         $distro_array
     )
-    if ($distro_array.length -eq 0){
+    if ($distro_array.length -eq 0) {
         $distro_array = get_wsl_distro_list
     }
     $default_wsl_distro = get_default_wsl_distro
-    if ($distro_array.length -gt 0){    
+    if ($distro_array.length -gt 0) {    
         for ($i = 0; $i -le $distro_array.length - 1; $i++) {
             $distro_name = "$($distro_array[$i])"
-            if ($distro_name -eq "$default_wsl_distro"){
+            if ($distro_name -eq "$default_wsl_distro") {
                 $default_tag = '(default)'
 
-            } else {
+            }
+            else {
                 $default_tag = ''
             }
-            if ($distro_array[$i].length -gt 0){
+            if ($distro_array[$i].length -gt 0) {
                 write-host "`t$($i+1))`t$distro_name $default_tag"
-            } else {
+            }
+            else {
                 $distro_name = $distro_array
                 write-host "`t$($i+1))`t$distro_name $default_tag"
                 break
             }
         }
-    } else {
+    }
+    else {
         # try {
-            $distro_name = $distro_array[0]
-            if ($distro_name -eq $default_wsl_distro){
-                $default_tag = '(default)'
+        $distro_name = $distro_array[0]
+        if ($distro_name -eq $default_wsl_distro) {
+            $default_tag = '(default)'
 
-            } else {
-                $default_tag = ''
-            }
-            write-host "`t$($i+1))`t$distro_name $default_tag"
+        }
+        else {
+            $default_tag = ''
+        }
+        write-host "`t$($i+1))`t$distro_name $default_tag"
         # } catch {
         #     # empty
         # }
@@ -761,17 +778,18 @@ function wsl_distro_list_select {
         [array]$distro_array,
         [int]$distro_num
     )
-    if (($distro_array.length -eq 0)){
+    if (($distro_array.length -eq 0)) {
         $distro_array = get_wsl_distro_list
     }
-    if ([string]::IsNullOrEmpty($distro_num)){
+    if ([string]::IsNullOrEmpty($distro_num)) {
         return $null
     }  
     for ($i = 0; $i -le $distro_array.length - 1; $i++) {
         if ($i -eq $($distro_num - 1)) {
-            if ($distro_array[$i].length -gt 1){
+            if ($distro_array[$i].length -gt 1) {
                 return "$($distro_array[$i])"
-            } else {
+            }
+            else {
                 return "$($distro_array)"
             }
         }
@@ -800,20 +818,3 @@ function wsl_distro_menu_get {
     }
 }
 
-function run_installer {
-
-    
-
-    
-
-
-    # Write-Host "$([char]27)[2J" 
-    # if (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.dvlp-installed" -PathType Leaf)) {
-    #     if (!(powershell ${function:require_docker_online} )) {
-    #         Write-Host "`r`nnot starting docker desktop.`r`n" 
-    #     }
-    #     # else {
-    #     #     ini_docker_config
-    #     # }
-    # }
-}
