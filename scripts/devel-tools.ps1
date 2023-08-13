@@ -176,8 +176,10 @@ function install_docker {
 }
 
 function uninstall_docker {
-    docker builder prune -af | Out-Null
-    docker system prune -af --volumes | Out-Null
+    Write-Host "please wait while docker is uninstalled"
+    start-sleep 5
+    # docker builder prune -af 
+    # docker system prune -af --volumes 
     wsl.exe --unregister docker-desktop | Out-Null
     wsl.exe --unregister docker-desktop-data | Out-Null
     Remove-Item "$env:APPDATA\Docker*" -Recurse -Force -Confirm:$false -ErrorAction SilentlyContinue
