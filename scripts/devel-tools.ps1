@@ -27,34 +27,6 @@ function devel_test {
     return
 }
 
-function start_countdown {
-    Write-Host -NoNewline "`r`n`t3"
-            Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline "."
-            Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline "."
-            Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline "."
-            Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline " 2"
-            Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline "."
-            Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline "."
-            Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline "."
-            Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline " 1"
-            Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline "."
-            Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline "."
-            Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline "."
-            Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline " 0"
-            Start-Sleep -Milliseconds 100
-}
 
 function reboot_prompt_embedded {
     # use to allow cancelling reboot without cancelling script that called reboot_prompt
