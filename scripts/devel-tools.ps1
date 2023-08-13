@@ -135,13 +135,12 @@ function install_docker {
             write-host 'you will need to confirm the docker desktop installer actions and close the installer window when finished'
             start_dvlp_process_pop "
             write-host 'downloading/installing $software_name ...';
-            set-psdebug -trace 2
             try {
                 .`$env:USERPROFILE\DockerDesktopInstaller.exe | Out-Null;
                 Write-Host '$software_name installed' -ForegroundColor DarkCyan | Out-File -FilePath '$env:KINDTEK_WIN_GIT_PATH/.docker-installed'
             } catch {
                 try {
-                    Invoke-RestMethod -Uri https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe -OutFile '`$env:USERPROFILE\DockerDesktopInstaller.exe' | Out-Null;
+                    Invoke-RestMethod -Uri https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe -OutFile `"`$env:USERPROFILE\DockerDesktopInstaller.exe`" | Out-Null;
                     .`$env:USERPROFILE\DockerDesktopInstaller.exe | Out-Null;
                     Write-Host '$software_name installed' -ForegroundColor DarkCyan | Out-File -FilePath '$env:KINDTEK_WIN_GIT_PATH/.docker-installed'
                 } catch {}
@@ -333,8 +332,8 @@ function install_recommends {
     else {
         New-Item -ItemType Directory -Force -Path "$env:USERPROFILE/repos/kindtek" | Out-Null
     }
-    $confirm_install = Read-Host "hit ENTER to install`r`n  ... or enter any character to skip"
-    if ($confirm_install = ''){
+    $confirm_install = 'Read-Host "hit ENTER to install`r`n  ... or enter any character to skip"'
+    if ($confirm_install -eq ''){
         start_dvlp_process_pop "
             try {
                 write-host 'installing windows terminal ...';
