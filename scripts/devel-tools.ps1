@@ -281,12 +281,9 @@ function install_python {
             Write-Host "Installing $software_name - close window to cancel install" -ForegroundColor DarkCyan
             # @TODO: add cdir and python to install with same behavior as other installs above
             # not eloquent at all but good for now
-            start_dvlp_process_pop "
-            write-host 'installing $software_name ...';
             winget install --id=Python.Python.3.10 --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements;
             winget upgrade --id=Python.Python.3.10 --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements;
-            Write-Host '$software_name installed' -ForegroundColor DarkCyan | Out-File -FilePath '$env:KINDTEK_WIN_GIT_PATH/.python-installed'
-            exit;"
+            Write-Host "$software_name installed" -ForegroundColor DarkCyan | Out-File -FilePath "$env:KINDTEK_WIN_GIT_PATH/.python-installed"
             # ... even tho cdir does not appear to be working on windows
             # $cmd_command = pip install cdir
             # Start-Process -FilePath PowerShell.exe -NoNewWindow -ArgumentList $cmd_command
@@ -308,16 +305,13 @@ function install_wterminal {
     try {
         if ((!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.wterminal-installed" -PathType Leaf)) -or $install_anyways) {
             Write-Host "Installing $software_name - close window to cancel install" -ForegroundColor DarkCyan
-            start_dvlp_process_pop "
             try {
-                write-host 'Installing $software_name ...';
                 winget install Microsoft.PowerShell;
                 winget install Microsoft.WindowsTerminal --silent --locale en-US --accept-package-agreements --accept-source-agreements;
                 winget upgrade Microsoft.WindowsTerminal --silent --locale en-US --accept-package-agreements --accept-source-agreements;
-                Write-Host '$software_name installed' -ForegroundColor DarkCyan | Out-File -FilePath '$env:KINDTEK_WIN_GIT_PATH/.wterminal-installed'
-                exit;
+                Write-Host "$software_name installed" -ForegroundColor DarkCyan | Out-File -FilePath "$env:KINDTEK_WIN_GIT_PATH/.wterminal-installed"
             }
-            catch {}"
+            catch {}
             $new_install = $true
         }
         else {
@@ -548,20 +542,6 @@ function wsl_docker_restart {
     catch {}
 }
 
-function env_refresh {
-    $orig_progress_flag = $global:progress_flag 
-    $refresh_envs = "$env:KINDTEK_WIN_GIT_PATH/RefreshEnv.cmd"
-    $global:progress_flag = 'silentlyContinue'
-    $progress_flag = 'SilentlyContinue'
-    Invoke-RestMethod "https://raw.githubusercontent.com/kindtek/choco/ac806ee5ce03dea28f01c81f88c30c17726cb3e9/src/chocolatey.resources/redirects/RefreshEnv.cmd" -OutFile $refresh_envs | Out-Null
-    $global:progress_flag = $orig_progress_flag
-}
-
-function env_refresh_new_win {
-    start_dvlp_process_popmin "wsl_docker_full_restart" 
-    # env_refresh
-}
-
 
 function is_docker_backend_online {
     try {
@@ -614,7 +594,7 @@ function start_docker_desktop {
             ([void]( New-Item -path alias:'docker' -Value 'C:\Program Files\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
             ([void]( New-Item -path alias:'Docker Desktop' -Value 'C:\Program Files\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
             ([void]( New-Item -path alias:'Docker Desktop.exe' -Value 'C:\Program Files\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
-            # env_refresh 
+            # env_refresh
              
             Start-Process "C:\Program Files\docker\docker\Docker Desktop.exe" -ArgumentList "-Wait" | Out-Null
         }
