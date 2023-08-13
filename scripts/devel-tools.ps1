@@ -743,6 +743,7 @@ function remove_installation {
     # make extra sure this is not a folder that is not important (ie: system32 - which is a default location)
     # if ($env:KINDTEK_WIN_DVLW_PATH.Contains('kindtek') -And $env:KINDTEK_WIN_DVLW_PATH.NotContains("System32") ) {
     uninstall_docker
+    Write-Host 'hit ENTER to continue'
     uninstall_windows_features 'skip reboot'
     write-host "uninstalling wsl ..errors are to be expected while a script tries to remove all possible wsl installations from the system"
     write-host "choose 'ignore' if prompted to close an application"
