@@ -751,6 +751,8 @@ function remove_installation {
     uninstall_docker
     uninstall_windows_features 'skip reboot'
     write-host "errors are to be expected while a script tries to remove all possible wsl installations from the system"
+    Remove-AppxPackage -package 'MicrosoftCorporationII.WindowsSubsystemForLinux'
+    Remove-AppxPackage -package 'kali-linux'
     winget uninstall --id kalilinux.kalilinux
     winget uninstall --name Ubuntu
     winget uninstall --name "Windows Subsystem For Linux Update"
