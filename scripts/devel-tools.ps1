@@ -180,13 +180,13 @@ function uninstall_docker {
     start-sleep 5
     # docker builder prune -af 
     # docker system prune -af --volumes 
-    wsl.exe --unregister docker-desktop | Out-Null
-    wsl.exe --unregister docker-desktop-data | Out-Null
+    # wsl.exe --unregister docker-desktop | Out-Null
+    # wsl.exe --unregister docker-desktop-data | Out-Null
+    winget uninstall --id=Docker.DockerDesktop
     Remove-Item "$env:APPDATA\Docker*" -Recurse -Force -Confirm:$false -ErrorAction SilentlyContinue
     Remove-Item "$env:LOCALAPPDATA\Docker*" -Recurse -Force -Confirm:$false -ErrorAction SilentlyContinue
     Remove-Item "$env:USERPROFILE\.docker" -Recurse -Force -Confirm:$false -ErrorAction SilentlyContinue
     Remove-Item "$env:PROGRAMDATA\Docker*" -Recurse -Force -Confirm:$false -ErrorAction SilentlyContinue
-    winget uninstall --id=Docker.DockerDesktop
     Remove-Item "$env:USERPROFILE/repos/kindtek/.docker-installed" -Force -ErrorAction SilentlyContinue
 }
 
