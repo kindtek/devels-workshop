@@ -541,7 +541,7 @@ function wsl_docker_restart {
 
 function is_docker_backend_online {
     try {
-        $docker_process = (Get-Process -ErrorAction SilentlyContinue 'com.docker.proxy')
+        $docker_process = $(Get-Process -ErrorAction SilentlyContinue 'com.docker.proxy')
     }
     catch {
         $docker_process = 'error'
@@ -556,7 +556,7 @@ function is_docker_backend_online {
 }
 function is_docker_desktop_online {
     try {
-        docker search scratch --limit 1 --format helloworld | Out-Null
+        $(docker search scratch --limit 1 --format helloworld) | Out-Null
         if ($?){
             $docker_daemon_online = docker search scratch --limit 1 --format helloworld 
             if (($docker_daemon_online -eq 'helloworld') -And ($(is_docker_backend_online) -eq $true)) {
