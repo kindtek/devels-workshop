@@ -363,9 +363,29 @@ function install_recommends {
     else {
         New-Item -ItemType Directory -Force -Path "$env:USERPROFILE/repos/kindtek" | Out-Null
     }
-    install_wterminal $install_anyways
-    install_vscode $install_anyways
-    install_python $install_anyways
+    $confirm_install = Read-Host "hit ENTER to install`r`n  ... or enter any character to skip"
+    if ($confirm_install = ''){
+        start_dvlp_process_pop "
+            try {
+                write-host 'installing windows terminal ...';
+                install_wterminal $install_anyways;
+            } catch {}" 
+        
+        install_vscode $install_anyways
+        start_dvlp_process_pop "
+        try {
+            write-host 'installing vs code ...';
+            install_vscode $install_anyways;
+        } catch {}" 
+    
+        install_python $install_anyways
+        start_dvlp_process_pop "
+        try {
+            write-host 'installing python ...';
+            install_python $install_anyways;
+        } catch {}" 
+    }
+
 
     return
 
@@ -769,6 +789,7 @@ function remove_installation {
     uninstall_docker
     uninstall_windows_features 'skip reboot'
     write-host "errors are to be expected while a script tries to remove all possible wsl installations from the system"
+    write-host "choose 'ignore' if prompted to wait for a process to end"
     Remove-AppxPackage -package 'MicrosoftCorporationII.WindowsSubsystemForLinux' -ErrorAction SilentlyContinue | Out-Null
     Remove-AppxPackage -package 'kali-linux' -ErrorAction SilentlyContinue | Out-Null
     winget uninstall --id kalilinux.kalilinux
