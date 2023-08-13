@@ -97,7 +97,7 @@ function reboot_prompt {
             if (!(Test-Path "$env:TEMP\spawnlogs.txt")) {
                 New-Item "$env:TEMP\spawnlogs.txt" -Value ''
             }
-            Invoke-WebRequest 'https://raw.githubusercontent.com/kindtek/powerhell/dvl-works/devel-spawn.ps1' -OutFile "$env:USERPROFILE/dvlp.ps1";
+            Invoke-RestMethod 'https://raw.githubusercontent.com/kindtek/powerhell/dvl-works/devel-spawn.ps1' -OutFile "$env:USERPROFILE/dvlp.ps1";
             New-Item -Path "$env:AppData\Microsoft\Windows\Start Menu\Programs\Startup\dvlp-spawn.cmd" -Value "
             # PowerShell -Command `"Set-ExecutionPolicy Unrestricted`" >> `"$env:TEMP\spawnlogs.txt`" 2>&1
             start wt -p windows cmd.exe /c echo 'please confirm administrator access to launch wsl devel' & powershell.exe start-process -filepath powershell.exe -Verb RunAs -ArgumentList '-Command', '$($env:USERPROFILE)\dvlp.ps1 $($global:devel_spawn_args)' >> `"$env:TEMP\spawnlogs.txt`" 2>&1
@@ -162,7 +162,7 @@ function install_docker {
             Write-Host "Downloading/installing updated version of $software_name ..." -ForegroundColor DarkCyan
             start_dvlp_process_pop "
             write-host 'downloading $software_name ...';
-            Invoke-WebRequest -Uri https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe -OutFile '`$env:USERPROFILE\DockerDesktopInstaller.exe';
+            Invoke-RestMethod -Uri https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe -OutFile '`$env:USERPROFILE\DockerDesktopInstaller.exe';
             write-host 'installing $software_name ...';
             try {
                 .`$env:USERPROFILE\DockerDesktopInstaller.exe;
@@ -555,7 +555,7 @@ function env_refresh {
     $refresh_envs = "$env:KINDTEK_WIN_GIT_PATH/RefreshEnv.cmd"
     $global:progress_flag = 'silentlyContinue'
     $progress_flag = 'SilentlyContinue'
-    Invoke-WebRequest "https://raw.githubusercontent.com/kindtek/choco/ac806ee5ce03dea28f01c81f88c30c17726cb3e9/src/chocolatey.resources/redirects/RefreshEnv.cmd" -OutFile $refresh_envs | Out-Null
+    Invoke-RestMethod "https://raw.githubusercontent.com/kindtek/choco/ac806ee5ce03dea28f01c81f88c30c17726cb3e9/src/chocolatey.resources/redirects/RefreshEnv.cmd" -OutFile $refresh_envs | Out-Null
     $global:progress_flag = $orig_progress_flag
 }
 
