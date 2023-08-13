@@ -731,32 +731,24 @@ function require_docker_online {
 }
 
 function remove_installation {
-    param (
-        # OptionalParameters
-    )
-    set_dvlp_envs_new_win 
-    try {
-        powershell -File $("$(get_dvlp_env 'KINDTEK_WIN_DVLP_PATH')/scripts/wsl-remove-distros.ps1")
-        Write-Host "`r`nDeleting $env:USERPROFILE/dvlp.ps1`r`n"
-        Remove-Item "$env:USERPROFILE/dvlp.ps1" -Force -ErrorAction SilentlyContinue
-        # Remove-Item "$env:USERPROFILE/DockerDesktopInstaller.exe" -Force -ErrorAction SilentlyContinue
-        # make extra sure this is not a folder that is not important (ie: system32 - which is a default location)
-        # if ($env:KINDTEK_WIN_DVLW_PATH.Contains('kindtek') -And $env:KINDTEK_WIN_DVLW_PATH.NotContains("System32") ) {
-        uninstall_docker
-        uninstall_windows_features 'skip'
-        write-host "errors are to be expected while a script tries to remove all possible wsl installations from the system"
-        winget uninstall --id kalilinux.kalilinux
-        winget uninstall --name Ubuntu
-        winget uninstall --name "Windows Subsystem For Linux Update"
-        winget uninstall --name "Windows Subsystem For Linux WSLg Preview"
-        Remove-Item "env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)" -Recurse -Confirm -Force -ErrorAction SilentlyContinue
-        Remove-Item "env:USERPROFILE/kache" -Recurse -Confirm -Force -ErrorAction SilentlyContinue
-        Remove-Item "$env:USERPROFILE/.wslconfig" -Confirm -ErrorAction SilentlyContinue
-        # }
-    }
-    catch {
-        Write-Host "Run the following command to delete the repo and setup files:`r`nRemove-Item $env:KINDTEK_WIN_DVLW_PATH -Recurse -Confirm -Force`r`n"
-    }
+    powershell -File $("$(get_dvlp_env 'KINDTEK_WIN_DVLP_PATH')/scripts/wsl-remove-distros.ps1")
+    Write-Host "`r`nDeleting $env:USERPROFILE/dvlp.ps1`r`n"
+    Remove-Item "$env:USERPROFILE/dvlp.ps1" -Force -ErrorAction SilentlyContinue
+    # Remove-Item "$env:USERPROFILE/DockerDesktopInstaller.exe" -Force -ErrorAction SilentlyContinue
+    # make extra sure this is not a folder that is not important (ie: system32 - which is a default location)
+    # if ($env:KINDTEK_WIN_DVLW_PATH.Contains('kindtek') -And $env:KINDTEK_WIN_DVLW_PATH.NotContains("System32") ) {
+    uninstall_docker
+    uninstall_windows_features 'skip'
+    write-host "errors are to be expected while a script tries to remove all possible wsl installations from the system"
+    winget uninstall --id kalilinux.kalilinux
+    winget uninstall --name Ubuntu
+    winget uninstall --name "Windows Subsystem For Linux Update"
+    winget uninstall --name "Windows Subsystem For Linux WSLg Preview"
+    Remove-Item "env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)" -Recurse -Confirm -Force -ErrorAction SilentlyContinue
+    Remove-Item "env:USERPROFILE/kache" -Recurse -Confirm -Force -ErrorAction SilentlyContinue
+    Remove-Item "$env:USERPROFILE/.wslconfig" -Confirm -ErrorAction SilentlyContinue
+    # }
+
 }
 
 function get_wsl_distro_list {
