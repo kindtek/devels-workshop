@@ -733,6 +733,7 @@ function require_docker_online {
 }
 
 function remove_installation {
+    $git_owner = $env:KINDTEK_WIN_GIT_OWNER
     # powershell -File $("$(get_dvlp_env 'KINDTEK_WIN_DVLP_PATH')/scripts/wsl-remove-distros.ps1")
     $distro_list = get_wsl_distro_list
     wsl_distro_batch_delete $distro_list
@@ -741,7 +742,8 @@ function remove_installation {
     # Remove-Item "$env:USERPROFILE/DockerDesktopInstaller.exe" -Force -ErrorAction SilentlyContinue
     # make extra sure this is not a folder that is not important (ie: system32 - which is a default location)
     # if ($env:KINDTEK_WIN_DVLW_PATH.Contains('kindtek') -And $env:KINDTEK_WIN_DVLW_PATH.NotContains("System32") ) {
-    write-output "" | uninstall_docker | out-string; write-output "" | uninstall_windows_features 'skip reboot' | out-string
+    write-output "" | uninstall_docker | out-string
+    write-output "" | uninstall_windows_features 'skip reboot' | out-string
     write-host "uninstalling wsl ..`r`nerrors are to be expected while a script tries to remove all possible wsl installations from the system"
     write-host "choose 'ignore' if prompted to close an application" -ForegroundColor Yellow
     Remove-AppxPackage -package 'MicrosoftCorporationII.WindowsSubsystemForLinux' -ErrorAction SilentlyContinue | Out-Null
@@ -751,18 +753,18 @@ function remove_installation {
     winget uninstall --name "Windows Subsystem For Linux Update" | Out-Null
     winget uninstall --name "Windows Subsystem For Linux WSLg Preview" | Out-Null
     Write-Host "`r`n`r`n"
-    Write-Host -nonewline "deleting $env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER) ..."
-    Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)" -Recurse -Confirm:$true -Force -ErrorAction SilentlyContinue
-    Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.dvlp-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
-    Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.docker-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
-    Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.vscode-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
-    Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.winget-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
-    Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.windows-features-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
-    Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.wterminal-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
-    Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.hypervm-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
-    Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.python-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
-    Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.github-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
     unset_dvlp_envs
+    Write-Host -nonewline "deleting $env:USERPROFILE/repos/$($git_owner) ..."
+    Remove-Item "$env:USERPROFILE/repos/$($git_owner)" -Recurse -Confirm:$true -Force -ErrorAction SilentlyContinue
+    Remove-Item "$env:USERPROFILE/repos/$($git_owner)/.dvlp-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
+    Remove-Item "$env:USERPROFILE/repos/$($git_owner)/.docker-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
+    Remove-Item "$env:USERPROFILE/repos/$($git_owner)/.vscode-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
+    Remove-Item "$env:USERPROFILE/repos/$($git_owner)/.winget-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
+    Remove-Item "$env:USERPROFILE/repos/$($git_owner)/.windows-features-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
+    Remove-Item "$env:USERPROFILE/repos/$($git_owner)/.wterminal-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
+    Remove-Item "$env:USERPROFILE/repos/$($git_owner)/.hypervm-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
+    Remove-Item "$env:USERPROFILE/repos/$($git_owner)/.python-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
+    Remove-Item "$env:USERPROFILE/repos/$($git_owner)/.github-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
     Write-Host "`r`n`r`n"
     Write-Host "deleting $env:USERPROFILE/kache ..."
     Remove-Item "$env:USERPROFILE/kache" -Recurse -Confirm:$true -Force -ErrorAction SilentlyContinue
