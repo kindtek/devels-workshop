@@ -790,13 +790,14 @@ function remove_installation {
     uninstall_docker
     uninstall_windows_features 'skip reboot'
     write-host "errors are to be expected while a script tries to remove all possible wsl installations from the system"
-    write-host "choose 'ignore' if prompted to wait for a process to end"
+    write-host "choose 'ignore' if prompted to close an application"
     Remove-AppxPackage -package 'MicrosoftCorporationII.WindowsSubsystemForLinux' -ErrorAction SilentlyContinue | Out-Null
     Remove-AppxPackage -package 'kali-linux' -ErrorAction SilentlyContinue | Out-Null
     winget uninstall --id kalilinux.kalilinux
     winget uninstall --name Ubuntu | Out-Null
     winget uninstall --name "Windows Subsystem For Linux Update" | Out-Null
     winget uninstall --name "Windows Subsystem For Linux WSLg Preview" | Out-Null
+    Write-Host "deleting $env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER) ..."
     Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)" -Recurse -Confirm -Force -ErrorAction SilentlyContinue
     Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.dvlp-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
     Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.docker-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
@@ -807,7 +808,9 @@ function remove_installation {
     Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.hypervm-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
     Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.python-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
     Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.github-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
+    Write-Host "deleting $env:USERPROFILE/kache ..."
     Remove-Item "$env:USERPROFILE/kache" -Recurse -Confirm -Force -ErrorAction SilentlyContinue
+    Write-Host "deleting $env:USERPROFILE/.wslconfig ..."
     Remove-Item "$env:USERPROFILE/.wslconfig" -Confirm -ErrorAction SilentlyContinue
     unset_dvlp_envs
     # }
