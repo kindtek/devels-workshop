@@ -26,6 +26,35 @@ catch {
 function devel_test {
     return
 }
+
+function start_countdown {
+    Write-Host -NoNewline "`r`n`t3"
+            Start-Sleep -Milliseconds 250
+            Write-Host -NoNewline "."
+            Start-Sleep -Milliseconds 250
+            Write-Host -NoNewline "."
+            Start-Sleep -Milliseconds 250
+            Write-Host -NoNewline "."
+            Start-Sleep -Milliseconds 250
+            Write-Host -NoNewline " 2"
+            Start-Sleep -Milliseconds 250
+            Write-Host -NoNewline "."
+            Start-Sleep -Milliseconds 250
+            Write-Host -NoNewline "."
+            Start-Sleep -Milliseconds 250
+            Write-Host -NoNewline "."
+            Start-Sleep -Milliseconds 250
+            Write-Host -NoNewline " 1"
+            Start-Sleep -Milliseconds 250
+            Write-Host -NoNewline "."
+            Start-Sleep -Milliseconds 250
+            Write-Host -NoNewline "."
+            Start-Sleep -Milliseconds 250
+            Write-Host -NoNewline "."
+            Start-Sleep -Milliseconds 250
+            Write-Host -NoNewline " 0"
+            Start-Sleep -Milliseconds 100
+}
 function reboot_prompt {
     param (
         $skip_prompt
@@ -53,32 +82,7 @@ function reboot_prompt {
         elseif ($confirmation -ieq 'reboot continue') {
             Write-Host "`r`n       --- USE CTRL + C TO CANCEL --- `r`n"
             Write-Host "`r`nRestarting computer and continuing after restart... `r`n"
-            Write-Host -NoNewline "`r`n`t3"
-            Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline "."
-            Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline "."
-            Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline "."
-            Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline " 2"
-            Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline "."
-            Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline "."
-            Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline "."
-            Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline " 1"
-            Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline "."
-            Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline "."
-            Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline "."
-            Start-Sleep -Milliseconds 250
-            Write-Host -NoNewline " 0"
-            Start-Sleep -Milliseconds 100
+            start_countdown
             if (!(Test-Path "$env:TEMP\spawnlogs.txt")) {
                 New-Item "$env:TEMP\spawnlogs.txt" -Value ''
             }
