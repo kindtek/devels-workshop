@@ -775,6 +775,15 @@ function remove_installation {
     winget uninstall --name "Windows Subsystem For Linux Update"
     winget uninstall --name "Windows Subsystem For Linux WSLg Preview"
     Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)" -Recurse -Confirm -Force -ErrorAction SilentlyContinue
+    Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.dvlp-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
+    Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.docker-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
+    Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.vscode-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
+    Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.winget-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
+    Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.windows-features-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
+    Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.wterminal-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
+    Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.hypervm-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
+    Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.python-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
+    Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.github-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
     Remove-Item "$env:USERPROFILE/kache" -Recurse -Confirm -Force -ErrorAction SilentlyContinue
     Remove-Item "$env:USERPROFILE/.wslconfig" -Confirm -ErrorAction SilentlyContinue
     # }
