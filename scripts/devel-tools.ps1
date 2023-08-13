@@ -134,10 +134,10 @@ function install_docker {
             Write-Host "Downloading/installing updated version of $software_name ..." -ForegroundColor DarkCyan
             write-host 'you will need to confirm the docker desktop installer actions and close the installer window when finished'
             start_dvlp_process_pop "
-            write-host 'downloading $software_name ...';
-            write-host 'installing $software_name ...';
+            write-host 'downloading/installing $software_name ...';
+            set-psdebug -trace 2
             try {
-                .`$env:USERPROFILE\DockerDesktopInstaller.exe `| Out-Null;
+                .`$env:USERPROFILE\DockerDesktopInstaller.exe | Out-Null;
                 Write-Host '$software_name installed' -ForegroundColor DarkCyan | Out-File -FilePath '$env:KINDTEK_WIN_GIT_PATH/.docker-installed'
             } catch {
                 try {
@@ -145,7 +145,7 @@ function install_docker {
                     .`$env:USERPROFILE\DockerDesktopInstaller.exe | Out-Null;
                     Write-Host '$software_name installed' -ForegroundColor DarkCyan | Out-File -FilePath '$env:KINDTEK_WIN_GIT_PATH/.docker-installed'
                 } catch {}
-            }" 'wait'
+            }" 'wait' 'noexit'
             # & 'C:\Program Files\Docker\Docker\Docker Desktop.exe'
             # "Docker Desktop Installer.exe" install --accept-license --backend=wsl-2 --installation-dir=c:\docker 
             $new_install = $true
