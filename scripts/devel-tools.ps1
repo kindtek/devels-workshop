@@ -123,8 +123,8 @@ function uninstall_windows_features {
         $skipreboot = 'skip'
     }
         $winconfig = "$env:KINDTEK_WIN_DVLADV_PATH/del-windows-features.ps1"
-        &$winconfig = Invoke-Expression -command "$env:KINDTEK_WIN_DVLADV_PATH/del-windows-features.ps1 $skipreboot"
-        Remove-Item "$env:KINDTEK_WIN_GIT_PATH/.windowsfeatures-installed" -Force -ErrorAction SilentlyContinue
+        &$winconfig = Invoke-Expression -command "$env:KINDTEK_WIN_DVLADV_PATH/del-windows-features.ps1"
+        Remove-Item "$env:KINDTEK_WIN_GIT_PATH/.windowsfeatures-installed $skipreboot" -Force -ErrorAction SilentlyContinue
     return
 }
 
@@ -738,7 +738,7 @@ function remove_installation {
     # make extra sure this is not a folder that is not important (ie: system32 - which is a default location)
     # if ($env:KINDTEK_WIN_DVLW_PATH.Contains('kindtek') -And $env:KINDTEK_WIN_DVLW_PATH.NotContains("System32") ) {
     uninstall_docker
-    uninstall_windows_features 'skip'
+    uninstall_windows_features 'skip reboot'
     write-host "errors are to be expected while a script tries to remove all possible wsl installations from the system"
     winget uninstall --id kalilinux.kalilinux
     winget uninstall --name Ubuntu
