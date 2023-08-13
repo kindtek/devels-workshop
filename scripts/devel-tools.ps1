@@ -97,6 +97,7 @@ function reboot_prompt {
 
         # Restart-Computer
         Restart-Computer
+        exit
     } 
     
     # else {
