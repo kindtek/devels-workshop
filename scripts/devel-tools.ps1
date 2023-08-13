@@ -137,12 +137,12 @@ function install_docker {
             write-host 'downloading $software_name ...';
             write-host 'installing $software_name ...';
             try {
-                .`$env:USERPROFILE\DockerDesktopInstaller.exe;
+                .`$env:USERPROFILE\DockerDesktopInstaller.exe `| Out-Null;
                 Write-Host '$software_name installed' -ForegroundColor DarkCyan | Out-File -FilePath '$env:KINDTEK_WIN_GIT_PATH/.docker-installed'
             } catch {
                 try {
-                    Invoke-RestMethod -Uri https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe -OutFile '`$env:USERPROFILE\DockerDesktopInstaller.exe';
-                    .`$env:USERPROFILE\DockerDesktopInstaller.exe;
+                    Invoke-RestMethod -Uri https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe -OutFile '`$env:USERPROFILE\DockerDesktopInstaller.exe' | Out-Null;
+                    .`$env:USERPROFILE\DockerDesktopInstaller.exe | Out-Null;
                     Write-Host '$software_name installed' -ForegroundColor DarkCyan | Out-File -FilePath '$env:KINDTEK_WIN_GIT_PATH/.docker-installed'
                 } catch {}
             }" 'wait'
@@ -169,7 +169,7 @@ function uninstall_docker {
     # docker system prune -af --volumes 
     # wsl.exe --unregister docker-desktop | Out-Null
     # wsl.exe --unregister docker-desktop-data | Out-Null
-    winget uninstall --id=Docker.DockerDesktop
+    winget uninstall --id=Docker.DockerDesktop | Out-Null
     
     if ($?){
         # after running docker uninstaller successfully user must hit enter)
