@@ -763,8 +763,8 @@ function remove_installation {
     winget uninstall --name Ubuntu
     winget uninstall --name "Windows Subsystem For Linux Update"
     winget uninstall --name "Windows Subsystem For Linux WSLg Preview"
-    Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)" -Recurse -Confirm -Force
-    Remove-Item "$env:USERPROFILE/kache" -Recurse -Confirm -Force 
+    Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)" -Recurse -Confirm -Force -ErrorAction SilentlyContinue
+    Remove-Item "$env:USERPROFILE/kache" -Recurse -Confirm -Force -ErrorAction SilentlyContinue
     Remove-Item "$env:USERPROFILE/.wslconfig" -Confirm -ErrorAction SilentlyContinue
     # }
 
