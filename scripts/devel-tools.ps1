@@ -125,8 +125,7 @@ function install_windows_features {
         $skipreboot = 'skip'
     }
     if ((!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.windows-installed" -PathType Leaf)) -Or $install_anyways -eq 'true') {
-        $winconfig = "$env:KINDTEK_WIN_DVLADV_PATH/add-windows-features.ps1"
-        &$winconfig = Invoke-Expression -command "$env:KINDTEK_WIN_DVLADV_PATH/add-windows-features.ps1 $skipreboot" 
+        Start-Process -ArgumentList "-command '$env:KINDTEK_WIN_DVLADV_PATH/add-windows-features.ps1 $skipreboot'"
     }
     return
 }
