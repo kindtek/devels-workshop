@@ -137,14 +137,15 @@ function install_docker {
             write-host 'downloading/installing $software_name ...';
             try {
                 .`$env:USERPROFILE\DockerDesktopInstaller.exe | Out-Null;
-                Write-Host '$software_name installed' -ForegroundColor DarkCyan | Out-File -FilePath '$env:KINDTEK_WIN_GIT_PATH/.docker-installed'
+                Write-Host '$software_name installed' -ForegroundColor DarkCyan | Out-File -FilePath '$env:KINDTEK_WIN_GIT_PATH/.docker-installed';
             } catch {
                 try {
                     Invoke-RestMethod -Uri https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe -OutFile `"`$env:USERPROFILE\DockerDesktopInstaller.exe`" | Out-Null;
                     .`$env:USERPROFILE\DockerDesktopInstaller.exe | Out-Null;
-                    Write-Host '$software_name installed' -ForegroundColor DarkCyan | Out-File -FilePath '$env:KINDTEK_WIN_GIT_PATH/.docker-installed'
+                    Write-Host '$software_name installed' -ForegroundColor DarkCyan | Out-File -FilePath '$env:KINDTEK_WIN_GIT_PATH/.docker-installed';
                 } catch {}
-            }" 'wait'
+            }
+            exit;" 'wait'
             # & 'C:\Program Files\Docker\Docker\Docker Desktop.exe'
             # "Docker Desktop Installer.exe" install --accept-license --backend=wsl-2 --installation-dir=c:\docker 
             $new_install = $true
