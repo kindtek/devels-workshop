@@ -194,6 +194,7 @@ function uninstall_docker {
     # wsl.exe --unregister docker-desktop | Out-Null
     # wsl.exe --unregister docker-desktop-data | Out-Null
     winget uninstall --id=Docker.DockerDesktop
+    
     if ($?){
         # after running docker uninstaller successfully user must hit enter)
         Write-Host "press ENTER to continue"
@@ -770,9 +771,9 @@ function remove_installation {
     Remove-AppxPackage -package 'MicrosoftCorporationII.WindowsSubsystemForLinux' | Out-Null
     Remove-AppxPackage -package 'kali-linux' | Out-Null
     winget uninstall --id kalilinux.kalilinux
-    winget uninstall --name Ubuntu
-    winget uninstall --name "Windows Subsystem For Linux Update"
-    winget uninstall --name "Windows Subsystem For Linux WSLg Preview"
+    winget uninstall --name Ubuntu | Out-Null
+    winget uninstall --name "Windows Subsystem For Linux Update" | Out-Null
+    winget uninstall --name "Windows Subsystem For Linux WSLg Preview" | Out-Null
     Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)" -Recurse -Confirm -Force -ErrorAction SilentlyContinue
     Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.dvlp-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
     Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.docker-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
