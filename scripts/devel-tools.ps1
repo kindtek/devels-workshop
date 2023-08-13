@@ -132,7 +132,7 @@ function install_docker {
             # Write-Host "Downloading/installing basic version of $software_name ..." -ForegroundColor DarkCyan
             # start_dvlp_process_pop "write-host 'Downloading/installing basic version of $software_name ...';winget install --id=Docker.DockerDesktop --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements;winget upgrade --id=Docker.DockerDesktop --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements" '' 'noexit'
             Write-Host "Downloading/installing updated version of $software_name ..." -ForegroundColor DarkCyan
-            write-host 'you will need to confirm the docker desktop installer actions and close the installer window when finished' -ForegroundColor Yellow
+            write-host 'confirm docker desktop installer actions and hit the close button once docker is installed' -ForegroundColor Yellow
             start_dvlp_process_pop "
             write-host 'downloading/installing $software_name ...';
             try {
@@ -587,7 +587,7 @@ function start_docker_desktop {
     catch {}
     try {
         Write-Host "`r`n`r`nstarting docker desktop ..."
-        Start-Process -Filepath "Docker Desktop.exe" -ArgumentList "-Wait" | Out-Null
+        Start-Process -Filepath "Docker Desktop.exe" -Wait | Out-Null
     }
     catch {
         try {
@@ -596,7 +596,7 @@ function start_docker_desktop {
             ([void]( New-Item -path alias:'Docker Desktop.exe' -Value 'C:\Program Files\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
             # env_refresh
              
-            Start-Process "C:\Program Files\docker\docker\Docker Desktop.exe" -ArgumentList "-Wait" | Out-Null
+            Start-Process "C:\Program Files\docker\docker\Docker Desktop.exe" -Wait | Out-Null
         }
         catch {
             try {
@@ -604,7 +604,7 @@ function start_docker_desktop {
                 ([void]( New-Item -path alias:'Docker Desktop' -Value 'c:\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
                 ([void]( New-Item -path alias:'Docker Desktop.exe' -Value 'c:\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
                 # env_refresh 
-                Start-Process "c:\docker\docker\Docker Desktop.exe" -ArgumentList "-Wait" | Out-Null
+                Start-Process "c:\docker\docker\Docker Desktop.exe" -Wait | Out-Null
             }
             catch {
                 try {
@@ -612,7 +612,7 @@ function start_docker_desktop {
                     ([void]( New-Item -path alias:'Docker Desktop' -Value ':\docker\docker desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
                     ([void]( New-Item -path alias:'Docker Desktop.exe' -Value 'c:\docker\docker desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
                     # env_refresh 
-                    Start-Process "c:\docker\docker desktop.exe" -ArgumentList "-Wait" | Out-Null
+                    Start-Process "c:\docker\docker desktop.exe" -Wait | Out-Null
                 }
                 catch {
                     # install_dependencies
