@@ -910,5 +910,6 @@ function wsl_distro_batch_delete {
             wsl.exe --unregister $distro_name
         }
     }
+    wsl.exe --unregister $KINDTEK_FAILSAFE_WSL_DISTRO
 }
 
