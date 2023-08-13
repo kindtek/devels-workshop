@@ -106,12 +106,13 @@ function uninstall_windows_features {
     param (
         $skipreboot
     )
-    if (!([string]::IsNullOrEmpty($skipreboot))){
-        $skipreboot = 'skip'
+    if ([string]::IsNullOrEmpty($skipreboot)){
+        Start-Process powershell.exe -Wait -ArgumentList "-File $env:KINDTEK_WIN_DVLADV_PATH/del-windows-features.ps1"
+    } else {
+        Start-Process powershell.exe -Wait -ArgumentList "-File $env:KINDTEK_WIN_DVLADV_PATH/del-windows-features.ps1", "skip"
     }
-        $winconfig = "$env:KINDTEK_WIN_DVLADV_PATH/del-windows-features.ps1"
-        &$winconfig = "$env:KINDTEK_WIN_DVLADV_PATH/del-windows-features.ps1 $skipreboot"
-        Remove-Item "$env:KINDTEK_WIN_GIT_PATH/.windowsfeatures-installed" -Force -ErrorAction SilentlyContinue
+
+    Remove-Item "$env:KINDTEK_WIN_GIT_PATH/.windowsfeatures-installed" -Force -ErrorAction SilentlyContinue
     return
 }
 
@@ -745,9 +746,7 @@ function remove_installation {
     # Remove-Item "$env:USERPROFILE/DockerDesktopInstaller.exe" -Force -ErrorAction SilentlyContinue
     # make extra sure this is not a folder that is not important (ie: system32 - which is a default location)
     # if ($env:KINDTEK_WIN_DVLW_PATH.Contains('kindtek') -And $env:KINDTEK_WIN_DVLW_PATH.NotContains("System32") ) {
-    uninstall_docker
-    Write-Host 'hit ENTER to continue'
-    uninstall_windows_features 'skip reboot'
+    write-output "" | uninstall_docker | out-string; write-output "" | uninstall_windows_features 'skip reboot' | out-string
     write-host "uninstalling wsl ..`r`nerrors are to be expected while a script tries to remove all possible wsl installations from the system"
     write-host "choose 'ignore' if prompted to close an application" -ForegroundColor Yellow
     Remove-AppxPackage -package 'MicrosoftCorporationII.WindowsSubsystemForLinux' -ErrorAction SilentlyContinue | Out-Null
@@ -907,9 +906,9 @@ function wsl_distro_batch_delete {
             $distro_list_num += 1
             # $distro_name = $distro_name.Split('', [System.StringSplitOptions]::RemoveEmptyEntries) -join ''
             # $distro_name -replace '\s', ''
-            wsl.exe --unregister $distro_name
+            $(wsl.exe --unregister $distro_name)
         }
     }
-    wsl.exe --unregister $KINDTEK_FAILSAFE_WSL_DISTRO
+    $(wsl.exe --unregister $KINDTEK_FAILSAFE_WSL_DISTRO)
 }
 
