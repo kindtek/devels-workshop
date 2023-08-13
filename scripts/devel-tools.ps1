@@ -737,7 +737,7 @@ function require_docker_online {
 
 function remove_installation {
     powershell -File $("$(get_dvlp_env 'KINDTEK_WIN_DVLP_PATH')/scripts/wsl-remove-distros.ps1")
-    Write-Host "`r`nDeleting $env:USERPROFILE/dvlp.ps1`r`n"
+    Write-Host "`r`ndeleting $env:USERPROFILE/dvlp.ps1`r`n"
     Remove-Item "$env:USERPROFILE/dvlp.ps1" -Force -ErrorAction SilentlyContinue
     # Remove-Item "$env:USERPROFILE/DockerDesktopInstaller.exe" -Force -ErrorAction SilentlyContinue
     # make extra sure this is not a folder that is not important (ie: system32 - which is a default location)
@@ -745,16 +745,17 @@ function remove_installation {
     uninstall_docker
     Write-Host 'hit ENTER to continue'
     uninstall_windows_features 'skip reboot'
-    write-host "uninstalling wsl ..errors are to be expected while a script tries to remove all possible wsl installations from the system"
-    write-host "choose 'ignore' if prompted to close an application"
+    write-host "uninstalling wsl ..`r`nerrors are to be expected while a script tries to remove all possible wsl installations from the system"
+    write-host "choose 'ignore' if prompted to close an application" -ForegroundColor Yellow
     Remove-AppxPackage -package 'MicrosoftCorporationII.WindowsSubsystemForLinux' -ErrorAction SilentlyContinue | Out-Null
     Remove-AppxPackage -package 'kali-linux' -ErrorAction SilentlyContinue | Out-Null
     winget uninstall --id kalilinux.kalilinux | Out-Null
     winget uninstall --name Ubuntu | Out-Null
     winget uninstall --name "Windows Subsystem For Linux Update" | Out-Null
     winget uninstall --name "Windows Subsystem For Linux WSLg Preview" | Out-Null
-    Write-Host "deleting $env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER) ..."
-    Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)" -Recurse -Confirm -Force -ErrorAction SilentlyContinue
+    Write-Host "`r`n`r`n"
+    Write-Host -nonewline "deleting $env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER) ..."
+    Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)" -Recurse -Confirm:$true -Force -ErrorAction SilentlyContinue
     Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.dvlp-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
     Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.docker-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
     Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.vscode-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
@@ -764,11 +765,12 @@ function remove_installation {
     Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.hypervm-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
     Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.python-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
     Remove-Item "$env:USERPROFILE/repos/$($env:KINDTEK_WIN_GIT_OWNER)/.github-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
-    Write-Host "deleting $env:USERPROFILE/kache ..."
-    Remove-Item "$env:USERPROFILE/kache" -Recurse -Confirm -Force -ErrorAction SilentlyContinue
-    Write-Host "deleting $env:USERPROFILE/.wslconfig ..."
-    Remove-Item "$env:USERPROFILE/.wslconfig" -Confirm -ErrorAction SilentlyContinue
     unset_dvlp_envs
+    Write-Host "`r`n`r`n"
+    Write-Host "deleting $env:USERPROFILE/kache ..."
+    Remove-Item "$env:USERPROFILE/kache" -Recurse -Confirm:$true -Force -ErrorAction SilentlyContinue
+    Write-Host "deleting $env:USERPROFILE/.wslconfig ..."
+    Remove-Item "$env:USERPROFILE/.wslconfig" -Confirm:$true -ErrorAction SilentlyContinue
     # }
 
 }
