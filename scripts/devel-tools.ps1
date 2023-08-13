@@ -183,7 +183,10 @@ function uninstall_docker {
     # wsl.exe --unregister docker-desktop | Out-Null
     # wsl.exe --unregister docker-desktop-data | Out-Null
     winget uninstall --id=Docker.DockerDesktop
-    Write-Host "press ENTER to continue"
+    if ($?){
+        # after running docker uninstaller successfully user must hit enter)
+        Write-Host "press ENTER to continue"
+    }
     Remove-Item "$env:APPDATA\Docker*" -Recurse -Force -Confirm:$false -ErrorAction SilentlyContinue
     Remove-Item "$env:LOCALAPPDATA\Docker*" -Recurse -Force -Confirm:$false -ErrorAction SilentlyContinue
     Remove-Item "$env:USERPROFILE\.docker" -Recurse -Force -Confirm:$false -ErrorAction SilentlyContinue
