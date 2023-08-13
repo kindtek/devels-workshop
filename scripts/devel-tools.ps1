@@ -160,6 +160,7 @@ function install_docker {
             Write-Host "Downloading/installing basic version of $software_name ..." -ForegroundColor DarkCyan
             start_dvlp_process_pop "write-host 'Downloading/installing basic version of $software_name ...';winget install --id=Docker.DockerDesktop --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements;winget upgrade --id=Docker.DockerDesktop --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements" '' 'noexit'
             Write-Host "Downloading/installing updated version of $software_name ..." -ForegroundColor DarkCyan
+            write-host 'you will need to confirm the docker desktop installer actions and close the installer window when finished'
             start_dvlp_process_pop "
             write-host 'downloading $software_name ...';
             Invoke-RestMethod -Uri https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe -OutFile '`$env:USERPROFILE\DockerDesktopInstaller.exe';
