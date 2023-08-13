@@ -789,11 +789,11 @@ function remove_installation {
     # if ($env:KINDTEK_WIN_DVLW_PATH.Contains('kindtek') -And $env:KINDTEK_WIN_DVLW_PATH.NotContains("System32") ) {
     uninstall_docker
     uninstall_windows_features 'skip reboot'
-    write-host "errors are to be expected while a script tries to remove all possible wsl installations from the system"
+    write-host "uninstalling wsl ..errors are to be expected while a script tries to remove all possible wsl installations from the system"
     write-host "choose 'ignore' if prompted to close an application"
     Remove-AppxPackage -package 'MicrosoftCorporationII.WindowsSubsystemForLinux' -ErrorAction SilentlyContinue | Out-Null
     Remove-AppxPackage -package 'kali-linux' -ErrorAction SilentlyContinue | Out-Null
-    winget uninstall --id kalilinux.kalilinux
+    winget uninstall --id kalilinux.kalilinux | Out-Null
     winget uninstall --name Ubuntu | Out-Null
     winget uninstall --name "Windows Subsystem For Linux Update" | Out-Null
     winget uninstall --name "Windows Subsystem For Linux WSLg Preview" | Out-Null
