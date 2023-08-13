@@ -736,7 +736,9 @@ function require_docker_online {
 }
 
 function remove_installation {
-    powershell -File $("$(get_dvlp_env 'KINDTEK_WIN_DVLP_PATH')/scripts/wsl-remove-distros.ps1")
+    # powershell -File $("$(get_dvlp_env 'KINDTEK_WIN_DVLP_PATH')/scripts/wsl-remove-distros.ps1")
+    $distro_list = get_wsl_distro_list
+    wsl_distro_batch_delete $distro_list
     Write-Host "`r`ndeleting $env:USERPROFILE/dvlp.ps1`r`n"
     Remove-Item "$env:USERPROFILE/dvlp.ps1" -Force -ErrorAction SilentlyContinue
     # Remove-Item "$env:USERPROFILE/DockerDesktopInstaller.exe" -Force -ErrorAction SilentlyContinue
@@ -884,6 +886,27 @@ function wsl_distro_menu_get {
             # $distro_name = $distro_name.Split('', [System.StringSplitOptions]::RemoveEmptyEntries) -join ''
             # $distro_name -replace '\s', ''
             return "$distro_name"
+        }
+    }
+}
+
+function wsl_distro_batch_delete {
+    param (
+        $distro_list,
+        $distro_num
+    )
+    $env:WSL_UTF8 = 1
+    $distro_list_num = 0
+
+    # Loop through each distro and prompt to remove
+    foreach ($distro in $distro_list) {
+    
+        if ($distro.IndexOf("docker-desktop") -lt 0) {
+            $distro_name = $distro_list -replace '^(.*)\s.*$', '$1'
+            $distro_list_num += 1
+            # $distro_name = $distro_name.Split('', [System.StringSplitOptions]::RemoveEmptyEntries) -join ''
+            # $distro_name -replace '\s', ''
+            wsl.exe --unregister $distro_name
         }
     }
 }
