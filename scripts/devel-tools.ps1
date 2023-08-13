@@ -144,7 +144,7 @@ function install_docker {
                     .`$env:USERPROFILE\DockerDesktopInstaller.exe | Out-Null;
                     Write-Host '$software_name installed' -ForegroundColor DarkCyan | Out-File -FilePath '$env:KINDTEK_WIN_GIT_PATH/.docker-installed'
                 } catch {}
-            }" 'wait' 'noexit'
+            }" 'wait'
             # & 'C:\Program Files\Docker\Docker\Docker Desktop.exe'
             # "Docker Desktop Installer.exe" install --accept-license --backend=wsl-2 --installation-dir=c:\docker 
             $new_install = $true
