@@ -55,6 +55,17 @@ function start_countdown {
             Write-Host -NoNewline " 0"
             Start-Sleep -Milliseconds 100
 }
+
+function reboot_prompt_embedded {
+    # use to allow cancelling reboot without cancelling script that called reboot_prompt
+    param (
+        $skip_prompt
+    )
+    if ($skip_prompt -ieq "reboot now" -or $skip_prompt -ieq "reboot continue" -or $skip_prompt -ieq "reboot" ) {
+        $confirmation = $skip_prompt
+    }
+    start_dvlp_process_embed "reboot_prompt $($confirmation)"
+}
 function reboot_prompt {
     param (
         $skip_prompt
@@ -148,7 +159,7 @@ function install_docker {
             # winget upgrade --id=Docker.DockerDesktop --source winget --location="c:\docker" --silent --locale en-US --accept-package-agreements --accept-source-agreements
             # update using rolling stable url
             Write-Host "Downloading/installing basic version of $software_name ..." -ForegroundColor DarkCyan
-            start_dvlp_process_pop "write-host 'Downloading/installing basic version of $software_name ...';winget install --id=Docker.DockerDesktop --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements;winget upgrade --id=Docker.DockerDesktop --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements;exit;" 'wait' 'noexit'
+            start_dvlp_process_pop "write-host 'Downloading/installing basic version of $software_name ...';winget install --id=Docker.DockerDesktop --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements;winget upgrade --id=Docker.DockerDesktop --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements" '' 'noexit'
             Write-Host "Downloading/installing updated version of $software_name ..." -ForegroundColor DarkCyan
             start_dvlp_process_pop "
             write-host 'downloading $software_name ...';
