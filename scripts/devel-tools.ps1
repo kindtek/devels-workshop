@@ -208,6 +208,7 @@ function uninstall_docker {
 
 function reinstall_docker {
     uninstall_docker
+    Write-Host 'hit ENTER to continue'
     install_docker
 }
 
