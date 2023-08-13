@@ -148,7 +148,7 @@ function install_docker {
             # winget upgrade --id=Docker.DockerDesktop --source winget --location="c:\docker" --silent --locale en-US --accept-package-agreements --accept-source-agreements
             # update using rolling stable url
             Write-Host "Downloading/installing basic version of $software_name ..." -ForegroundColor DarkCyan
-            start_dvlp_process_pop "write-host 'Downloading/installing basic version of $software_name ...';winget install --id=Docker.DockerDesktop --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements;winget upgrade --id=Docker.DockerDesktop --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements;exit;"
+            start_dvlp_process_pop "write-host 'Downloading/installing basic version of $software_name ...';winget install --id=Docker.DockerDesktop --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements;winget upgrade --id=Docker.DockerDesktop --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements;exit;" 'wait' 'noexit'
             Write-Host "Downloading/installing updated version of $software_name ..." -ForegroundColor DarkCyan
             start_dvlp_process_pop "
             write-host 'downloading $software_name ...';
