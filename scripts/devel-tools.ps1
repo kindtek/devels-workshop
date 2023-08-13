@@ -110,7 +110,7 @@ function uninstall_windows_features {
         $skipreboot = 'skip'
     }
         $winconfig = "$env:KINDTEK_WIN_DVLADV_PATH/del-windows-features.ps1"
-        &$winconfig = Invoke-Expression -command "$env:KINDTEK_WIN_DVLADV_PATH/del-windows-features.ps1 $skipreboot"
+        &$winconfig = "$env:KINDTEK_WIN_DVLADV_PATH/del-windows-features.ps1 $skipreboot"
         Remove-Item "$env:KINDTEK_WIN_GIT_PATH/.windowsfeatures-installed" -Force -ErrorAction SilentlyContinue
     return
 }
