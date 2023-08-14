@@ -5,7 +5,7 @@ $host.UI.RawUI.BackgroundColor = "Black"
 
 $global:devel_tools = 'sourced'
 try {
-    set_dvlp_envs
+    set_dvlp_envs $env:KINDTEK_DEBUG_MODE
 }
 catch {
     if ((!([string]::IsNullOrEmpty($env:KINDTEK_DEVEL_SPAWN))) -And (Test-Path -Path "$env:KINDTEK_DEVEL_SPAWN" -PathType Leaf)) {
