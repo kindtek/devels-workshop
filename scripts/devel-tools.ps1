@@ -744,8 +744,8 @@ function require_docker_online {
 function remove_installation {
     $git_owner = $env:KINDTEK_WIN_GIT_OWNER
     # powershell -File $("$(get_dvlp_env 'KINDTEK_WIN_DVLP_PATH')/scripts/wsl-remove-distros.ps1")
-    $distro_list = get_wsl_distro_list
-    wsl_distro_batch_delete $distro_list
+    wsl.exe --unregister $env:KINDTEK_FAILSAFE_WSL_DISTRO
+    wsl.exe --unregister kali-linux
     Write-Host "`r`n`r`ndelete file "
     Write-Host -NoNewline "$env:USERPROFILE/dvlp.ps1 ?"
     Remove-Item "$env:USERPROFILE/dvlp.ps1" -Force -ErrorAction SilentlyContinue
