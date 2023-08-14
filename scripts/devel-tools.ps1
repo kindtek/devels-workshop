@@ -629,74 +629,84 @@ function require_docker_online {
     [int]$docker_cycles = 0
     $docker_settings_reset = $true
     [int]$sleep_time = 5
-    # Write-Host "waiting for docker backend to come online ..."  
+
+    # keep trying to start docker and go through four troubleshooting steps
+    # the position in the loop is coded into the output using decimals
     do {   
         try {
             if ($(is_docker_desktop_online) -eq $false) {
-                start_docker_desktop
+                start_docker_desktop | Out-Null
             }
             # Write-Host "${docker_cycles}.${docker_tries}"
             if ($(is_docker_desktop_online) -eq $false) {
-                if ($docker_tries -eq 1 -And $docker_cycles -eq 0 -And $(is_docker_backend_online) -eq $false) {
-                    Write-Host "error messages are expected when first starting docker. please wait ..."
+                if ($docker_tries -eq 0 -And $docker_cycles -eq 0 -And $(is_docker_backend_online) -eq $false) {
+                    Write-Host "error messages and restarts are expected when first starting docker. please wait "
                     # give extra time first time through
                     Start-Sleep -s 15
                 }
                 if ($docker_tries % 2 -eq 0) {
-                    write-host ""
                     $sleep_time += 1
                     Start-Sleep -s $sleep_time
-                    Write-Host ""
+                    Write-Host -NoNewline " .."
                 }
                 elseif ($docker_tries % 3 -eq 0) {
                     # start distro_list_num over
-                    # $docker_attempt1 = $docker_attempt2 = $false
                     # automatically restart docker on try 3 then prompt for restart after that
                     if ($docker_tries -gt 8) {
                         # $restart = Read-Host "Restart docker? ([y]n)"
                         $restart = 'y'
+                        Write-Host -NoNewline " ........"
+
                     }
                     else {
                         $restart = 'n'
                     }
-                    if ( $restart -ine 'n' -And $restart -ine 'no' -And $docker_tries % 9 -eq 0) {
+                    if (($restart -ine 'n') -And ($restart -ine 'no') -And ($docker_tries % 9 -eq 0)) {
+                        Write-Host -NoNewline " ......... restarting wsl "
                         # allowed to restart on cycle 9
-                        wsl_docker_restart
+                        wsl_docker_restart | Out-Null
                     }
                     elseif ($docker_tries % 15 -eq 0) {
                         # next cycle 
+                        Write-Host -NoNewline " ..............."
+                        Write-Host ""
                         $docker_tries = 0
                         $docker_cycles++
                     }
                 }
                 elseif ($docker_tries % 13 -eq 0) {
                     wsl_docker_full_restart_new_win
+                    Write-Host -NoNewline " ............."
                 }
             
                 if ($docker_tries % 7 -eq 0) {
-                    $wsl_docker_restart = $false                 
-                    if ($(is_docker_backend_online) -eq $true -And $(is_docker_desktop_online) -eq $false) {
+                    $wsl_docker_restart = $false    
+                    Write-Host -NoNewline " ............."             
+                    if (($(is_docker_backend_online) -eq $true) -And ($(is_docker_desktop_online) -eq $false)) {
                         # backend is online but desktop isn't
                         if ($docker_cycles -gt 1) {
+                            Write-Host "resetting docker settings "
                             reset_wsl_settings
                         }
                         $wsl_docker_restart = $true
                     }
                     if ( $docker_settings_reset -eq $true -And $docker_cycles -gt 1 ) {
                         # only reset settings once and after going thru 2 cycles with exactly 7 tries
+                        Write-Host "resetting docker settings "
                         reset_docker_settings
                         $docker_settings_reset = $false
                         $wsl_docker_restart = $true
                     }
-                    if ( $docker_cycles -gt 3 ) {
-                        Write-Host "resetting docker engine ....."
+                    if ($docker_cycles -gt 3) {
+                        Write-Host "hard resetting docker engine and settings "
                         try {
                             reset_docker_settings_hard
                         }
                         catch {}
                     }
-                    if ( $wsl_docker_restart -eq $true) {
+                    if ($wsl_docker_restart -eq $true) {
                         wsl_docker_restart
+                        Write-Host "restarting wsl "
                         $wsl_docker_restart = $false
                     }
                 }
@@ -711,8 +721,8 @@ function require_docker_online {
             else {
                 # if service was already up continue right away otherwise sleep a bit
                 if ( $docker_tries -gt 1 ) {
+                    Write-Host "..................................................................."
                     Start-Sleep -s $sleep_time
-                    Write-Host ""
                 }
                 # Write-Host "docker desktop is now online"
                 $check_again = 'n'
@@ -721,8 +731,8 @@ function require_docker_online {
         catch {
             Write-Host "oops ... there was a problem starting docker"
         }
-    } while ( $(is_docker_desktop_online) -eq $false -And $check_again -ine 'n' -And $check_again -ine 'no') 
-    if ( $(is_docker_desktop_online)) {
+    } while ( ($(is_docker_desktop_online) -eq $false) -And ($check_again -ine 'n') -And ($check_again -ine 'no')) 
+    if ($(is_docker_desktop_online)) {
         Write-Host "connected to docker"
     }
     else {
