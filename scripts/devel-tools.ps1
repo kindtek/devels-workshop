@@ -128,7 +128,6 @@ function install_docker {
             # Write-Host "Downloading/installing basic version of $software_name ..." -ForegroundColor DarkCyan
             # start_dvlp_process_pop "write-host 'Downloading/installing basic version of $software_name ...';winget install --id=Docker.DockerDesktop --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements;winget upgrade --id=Docker.DockerDesktop --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements" '' 'noexit'
             Write-Host "Downloading/installing updated version of $software_name ..." -ForegroundColor DarkCyan
-            write-host 'confirm docker desktop installer actions and hit the close button once docker is installed' -ForegroundColor Yellow
             start_dvlp_process_pop "
             write-host 'downloading/installing $software_name ...';
             try {
@@ -142,6 +141,13 @@ function install_docker {
                 } catch {}
             }
             exit;" 'wait'
+            write-host ''
+            write-host -NoNewLine "confirm docker desktop installer actions" -ForegroundColor Yellow
+            write-host -NoNewLine "once docker is installed hit the " -ForegroundColor Yellow
+            write-host -NoNewline "blue" -ForegroundColor Blue
+            write-host -NoNewline " close button to continue" -ForegroundColor Yellow 
+
+
             # & 'C:\Program Files\Docker\Docker\Docker Desktop.exe'
             # "Docker Desktop Installer.exe" install --accept-license --backend=wsl-2 --installation-dir=c:\docker 
             $new_install = $true
