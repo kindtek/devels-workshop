@@ -903,6 +903,7 @@ function wsl_distro_batch_delete {
             $distro_list_num += 1
             # $distro_name = $distro_name.Split('', [System.StringSplitOptions]::RemoveEmptyEntries) -join ''
             # $distro_name -replace '\s', ''
+            write-host "wsl.exe --unregister $distro_name"
             $(wsl.exe --unregister $distro_name)
         }
     }
