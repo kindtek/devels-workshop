@@ -775,7 +775,7 @@ function remove_installation {
     Remove-Item "$env:USERPROFILE/kache" -Recurse -Confirm:$true -Force -ErrorAction SilentlyContinue
     Write-Host "`r`n`r`ndelete file "
     Write-Host "delete $env:USERPROFILE/.wslconfig ?"
-    Remove-Item "$env:USERPROFILE/.wslconfig" -Confirm:$true -ErrorAction SilentlyContinue
+    Remove-Item "$env:USERPROFILE/.wslconfig" -Confirm:$true -Force -ErrorAction SilentlyContinue
     # }
 
 }
