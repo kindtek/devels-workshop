@@ -208,7 +208,7 @@ function install_dependencies {
         $install_anyways
     )
     # if dependencies not makred installed return true only if a dependency was actually newly installed
-    if ($(dependencies_installed $true) -eq $true) {
+    if ($(dependencies_installed) -eq $true) {
         return
     }
     
