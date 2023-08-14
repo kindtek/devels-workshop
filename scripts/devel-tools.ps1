@@ -70,12 +70,7 @@ function reboot_prompt {
                 New-Item "$env:TEMP\spawnlogs.txt" -Value ''
             }
             Invoke-RestMethod 'https://raw.githubusercontent.com/kindtek/powerhell/dvl-works/devel-spawn.ps1' -OutFile "$env:USERPROFILE/dvlp.ps1";
-            New-Item -Path "$env:AppData\Microsoft\Windows\Start Menu\Programs\Startup\dvlp-spawn.cmd" -Value "
-            # PowerShell -Command `"Set-ExecutionPolicy Unrestricted`" >> `"$env:TEMP\spawnlogs.txt`" 2>&1
-            start wt -p windows cmd.exe /c echo 'please confirm administrator access to launch wsl devel' & powershell.exe start-process -filepath powershell.exe -Verb RunAs -ArgumentList '-Command', '$($env:USERPROFILE)\dvlp.ps1 $($global:devel_spawn_args)' >> `"$env:TEMP\spawnlogs.txt`" 2>&1
-            # PowerShell -Command `"Set-ExecutionPolicy RemoteSigned`" >> `"$env:TEMP\spawnlogs.txt`" 2>&1
-            # cmd /k
-            " -Force | Out-Null
+            dvlp_auto_boot $true
         }
 
         # Restart-Computer
