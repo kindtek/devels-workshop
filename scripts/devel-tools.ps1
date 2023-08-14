@@ -746,7 +746,8 @@ function remove_installation {
     # powershell -File $("$(get_dvlp_env 'KINDTEK_WIN_DVLP_PATH')/scripts/wsl-remove-distros.ps1")
     $distro_list = get_wsl_distro_list
     wsl_distro_batch_delete $distro_list
-    Write-Host "`r`ndeleting $env:USERPROFILE/dvlp.ps1`r`n"
+    Write-Host "`r`n`r`ndelete file "
+    Write-Host -NoNewline "$env:USERPROFILE/dvlp.ps1 ?"
     Remove-Item "$env:USERPROFILE/dvlp.ps1" -Force -ErrorAction SilentlyContinue
     # Remove-Item "$env:USERPROFILE/DockerDesktopInstaller.exe" -Force -ErrorAction SilentlyContinue
     # make extra sure this is not a folder that is not important (ie: system32 - which is a default location)
@@ -761,9 +762,9 @@ function remove_installation {
     winget uninstall --name Ubuntu | Out-Null
     winget uninstall --name "Windows Subsystem For Linux Update" | Out-Null
     winget uninstall --name "Windows Subsystem For Linux WSLg Preview" | Out-Null
-    Write-Host "`r`n`r`n"
     unset_dvlp_envs
-    Write-Host -nonewline "deleting $env:USERPROFILE/repos/$($git_owner) ..."
+    Write-Host "`r`n`r`ndelete directory "
+    Write-Host -nonewline "$env:USERPROFILE/repos/$($git_owner) ?"
     Remove-Item "$env:USERPROFILE/repos/$($git_owner)" -Recurse -Confirm:$true -Force -ErrorAction SilentlyContinue
     Remove-Item "$env:USERPROFILE/repos/$($git_owner)/.dvlp-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
     Remove-Item "$env:USERPROFILE/repos/$($git_owner)/.docker-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
@@ -774,10 +775,11 @@ function remove_installation {
     Remove-Item "$env:USERPROFILE/repos/$($git_owner)/.hypervm-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
     Remove-Item "$env:USERPROFILE/repos/$($git_owner)/.python-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
     Remove-Item "$env:USERPROFILE/repos/$($git_owner)/.github-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
-    Write-Host "`r`n`r`n"
-    Write-Host "deleting $env:USERPROFILE/kache ..."
+    Write-Host "`r`n`r`ndelete directory "
+    Write-Host "$env:USERPROFILE/kache ?"
     Remove-Item "$env:USERPROFILE/kache" -Recurse -Confirm:$true -Force -ErrorAction SilentlyContinue
-    Write-Host "deleting $env:USERPROFILE/.wslconfig ..."
+    Write-Host "`r`n`r`ndelete file "
+    Write-Host "delete $env:USERPROFILE/.wslconfig ?"
     Remove-Item "$env:USERPROFILE/.wslconfig" -Confirm:$true -ErrorAction SilentlyContinue
     # }
 
