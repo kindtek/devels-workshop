@@ -50,7 +50,7 @@ function reboot_prompt {
     }
 
     if ($confirmation -ieq 'reboot') {
-        $confirmation = Read-Host "`r`nType 'continue' to automatically continue after next boot`r`n`t ..or hit ENTER to skip" 
+        $confirmation = Read-Host "`r`nType 'continue' to automatically continue after next boot`r`n`t ..or hit ENTER to reboot normally" 
         if ($confirmation -eq 'continue') {
             $confirmation = 'reboot continue'
         }
