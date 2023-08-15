@@ -745,8 +745,8 @@ function require_docker_online {
 function remove_installation {
     $git_owner = $env:KINDTEK_WIN_GIT_OWNER
     # powershell -File $("$(get_dvlp_env 'KINDTEK_WIN_DVLP_PATH')/scripts/wsl-remove-distros.ps1")
-    wsl.exe --unregister $env:KINDTEK_FAILSAFE_WSL_DISTRO
-    wsl.exe --unregister kali-linux
+    wsl.exe --unregister $env:KINDTEK_FAILSAFE_WSL_DISTRO | Out-Null
+    wsl.exe --unregister kali-linux | Out-Null
     Remove-Item "$env:USERPROFILE/dvlp.ps1" -Force -ErrorAction SilentlyContinue
     # Remove-Item "$env:USERPROFILE/DockerDesktopInstaller.exe" -Force -ErrorAction SilentlyContinue
     # make extra sure this is not a folder that is not important (ie: system32 - which is a default location)
