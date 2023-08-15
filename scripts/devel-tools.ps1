@@ -762,8 +762,8 @@ function remove_installation {
     winget uninstall --name "Windows Subsystem For Linux Update" | Out-Null
     winget uninstall --name "Windows Subsystem For Linux WSLg Preview" | Out-Null
     unset_dvlp_envs
-    Write-Host "`r`n`r`ndelete directory "
-    Write-Host -nonewline "$env:USERPROFILE/repos/$($git_owner) ?"
+    Write-Host "`r`n`r`n"
+    Write-Host -nonewline "delete directory $env:USERPROFILE/repos/$($git_owner) ?"
     Remove-Item "$env:USERPROFILE/repos/$($git_owner)" -Recurse -Confirm:$true -Force -ErrorAction SilentlyContinue
     Remove-Item "$env:USERPROFILE/repos/$($git_owner)/.dvlp-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
     Remove-Item "$env:USERPROFILE/repos/$($git_owner)/.docker-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
@@ -774,10 +774,10 @@ function remove_installation {
     Remove-Item "$env:USERPROFILE/repos/$($git_owner)/.hypervm-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
     Remove-Item "$env:USERPROFILE/repos/$($git_owner)/.python-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
     Remove-Item "$env:USERPROFILE/repos/$($git_owner)/.github-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
-    Write-Host "`r`n`r`ndelete directory "
-    Write-Host "$env:USERPROFILE/kache ?"
+    Write-Host "`r`n`r`n"
+    Write-Host "delete directory $env:USERPROFILE/kache ?"
     Remove-Item "$env:USERPROFILE/kache" -Recurse -Confirm:$true -Force -ErrorAction SilentlyContinue
-    Write-Host "`r`n`r`ndelete file "
+    Write-Host "`r`n`r`n"
     Write-Host "delete $env:USERPROFILE/.wslconfig ?"
     Remove-Item "$env:USERPROFILE/.wslconfig" -Confirm:$true -Force -ErrorAction SilentlyContinue
     # }
