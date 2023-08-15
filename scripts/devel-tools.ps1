@@ -143,6 +143,7 @@ function install_docker {
             exit;" 'wait'
             write-host ''
             write-host -NoNewLine "confirm docker desktop installer actions" -ForegroundColor Yellow
+            write-host ''
             write-host -NoNewLine "once docker is installed hit the " -ForegroundColor Yellow
             write-host -NoNewline "blue" -ForegroundColor Blue
             write-host -NoNewline " close button to continue" -ForegroundColor Yellow 
