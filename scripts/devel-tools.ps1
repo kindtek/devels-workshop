@@ -219,6 +219,7 @@ function install_dependencies {
     }
     
     Write-Host "`r`nThe following program will be installed or updated`r`n`t- Docker Desktop`r`n`t" -ForegroundColor Magenta
+    Start-Sleep 3
     if ((!(Test-Path -Path "$env:KINDTEK_WIN_DVLW_PATH")) -or $install_anyways) {
         New-Item -ItemType Directory -Force -Path "$env:KINDTEK_WIN_DVLW_PATH" | Out-Null
     }
