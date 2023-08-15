@@ -578,7 +578,7 @@ function is_docker_desktop_online {
 
 function start_docker_desktop {
     try {
-        env_refresh 
+        env_reload 
     }
     catch {}
     try {
@@ -590,7 +590,7 @@ function start_docker_desktop {
             ([void]( New-Item -path alias:'docker' -Value 'C:\Program Files\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
             ([void]( New-Item -path alias:'Docker Desktop' -Value 'C:\Program Files\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
             ([void]( New-Item -path alias:'Docker Desktop.exe' -Value 'C:\Program Files\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
-            # env_refresh
+            # env_reload
              
             Start-Process "C:\Program Files\docker\docker\Docker Desktop.exe" | Out-Null
         }
@@ -599,7 +599,7 @@ function start_docker_desktop {
                 ([void]( New-Item -path alias:'docker' -Value 'c:\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
                 ([void]( New-Item -path alias:'Docker Desktop' -Value 'c:\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
                 ([void]( New-Item -path alias:'Docker Desktop.exe' -Value 'c:\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
-                # env_refresh 
+                # env_reload 
                 Start-Process "c:\docker\docker\Docker Desktop.exe" | Out-Null
             }
             catch {
@@ -607,7 +607,7 @@ function start_docker_desktop {
                     ([void]( New-Item -path alias:'docker' -Value ':\docker\docker desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
                     ([void]( New-Item -path alias:'Docker Desktop' -Value ':\docker\docker desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
                     ([void]( New-Item -path alias:'Docker Desktop.exe' -Value 'c:\docker\docker desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
-                    # env_refresh 
+                    # env_reload 
                     Start-Process "c:\docker\docker desktop.exe" | Out-Null
                 }
                 catch {
