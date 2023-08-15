@@ -131,11 +131,11 @@ function install_docker {
             write-host -NoNewLine "confirm docker desktop installer actions" -ForegroundColor Yellow
             start_dvlp_process_pop "
             write-host 'downloading/installing $software_name ...';
-            write-host ''
-            write-host ''
-            write-host -NoNewLine 'once docker is installed hit the ' -ForegroundColor Yellow
-            write-host -NoNewline 'blue' -ForegroundColor Blue
-            write-host -NoNewline '' close button to continue' -ForegroundColor Yellow 
+            write-host '';
+            write-host '';
+            write-host -NoNewLine 'once docker is installed hit the ' -ForegroundColor Yellow;
+            write-host -NoNewline 'blue' -ForegroundColor Blue;
+            write-host -NoNewline '' close button to continue' -ForegroundColor Yellow;
             try {
                 .`$env:USERPROFILE\DockerDesktopInstaller.exe | Out-Null;
                 Write-Host '$software_name installed' -ForegroundColor DarkCyan | Out-File -FilePath '$env:KINDTEK_WIN_GIT_PATH/.docker-installed';
