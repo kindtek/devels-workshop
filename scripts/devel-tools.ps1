@@ -326,35 +326,40 @@ function install_recommends {
         $install_anyways
     )
     Write-Host "`r`nThe following recommended (optional) programs will be installed or updated`r`n`t- Windows Terminal`r`n`t- Visual Studio Code`r`n`t- Python 3.10`r`n`t" -ForegroundColor Magenta
-    if ((!(Test-Path -Path "$env:KINDTEK_WIN_DVLW_PATH")) -or $install_anyways) {
+    if ((!(Test-Path -Path "$env:KINDTEK_WIN_DVLW_PATH"))) {
         New-Item -ItemType Directory -Force -Path "$env:KINDTEK_WIN_DVLW_PATH" | Out-Null
     }
     else {
         New-Item -ItemType Directory -Force -Path "$env:USERPROFILE/repos/kindtek" | Out-Null
     }
-    $confirm_install = Read-Host "hit ENTER to install`r`n  ... or enter any character to skip"
-    if ($confirm_install -eq ''){
-        start_dvlp_process_pop "
-            try {
-                write-host 'installing windows terminal ...';
-                install_wterminal $install_anyways;
-            } catch {}" 
-        
-        install_vscode $install_anyways
-        start_dvlp_process_pop "
-        try {
-            write-host 'installing vs code ...';
-            install_vscode $install_anyways;
-        } catch {}" 
-    
-        install_python $install_anyways
-        start_dvlp_process_pop "
-        try {
-            write-host 'installing python ...';
-            install_python $install_anyways;
-        } catch {}" 
+    if ((!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.wterminal-installed" -PathType Leaf)) -or (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.vscode-installed" -PathType Leaf)) -or (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.python-installed" -PathType Leaf))) {
+        $confirm_install = Read-Host "hit ENTER to install`r`n  ... or enter any character to skip"
+        if ($confirm_install -eq ''){
+            if ((!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.wterminal-installed" -PathType Leaf))) {
+                start_dvlp_process_pop "
+                    try {
+                        write-host 'installing windows terminal ...';
+                        install_wterminal $install_anyways;
+                    } catch {}" 
+            }
+            if ((!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.vscode-installed" -PathType Leaf))) {
+                install_vscode $install_anyways
+                start_dvlp_process_pop "
+                try {
+                    write-host 'installing vs code ...';
+                    install_vscode $install_anyways;
+                } catch {}" 
+            }
+            if ((!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.python-installed" -PathType Leaf))) {
+                install_python $install_anyways
+                start_dvlp_process_pop "
+                try {
+                    write-host 'installing python ...';
+                    install_python $install_anyways;
+                } catch {}" 
+            }
+        }
     }
-
 
     return
 
