@@ -782,12 +782,12 @@ function remove_installation {
     Remove-Item "$env:USERPROFILE/repos/$($git_owner)/.github-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
     if (Test-Path "$env:USERPROFILE/kache") {
         Write-Host "`r`n`r`n"
-        Write-Host "delete directory $env:USERPROFILE/kache ?"
+        Write-Host -nonewline "delete directory $env:USERPROFILE/kache ?"
         Remove-Item "$env:USERPROFILE/kache" -Recurse -Confirm:$true -Force -ErrorAction SilentlyContinue
     }
     if (Test-Path "$env:USERPROFILE/.wslconfig" -PathType Leaf){
         Write-Host "`r`n`r`n"
-        Write-Host "delete $env:USERPROFILE/.wslconfig ?"
+        Write-Host -nonewline "delete $env:USERPROFILE/.wslconfig ?"
         Remove-Item "$env:USERPROFILE/.wslconfig" -Confirm:$true -Force -ErrorAction SilentlyContinue
     }
 
