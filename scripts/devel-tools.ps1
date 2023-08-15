@@ -128,8 +128,14 @@ function install_docker {
             # Write-Host "Downloading/installing basic version of $software_name ..." -ForegroundColor DarkCyan
             # start_dvlp_process_pop "write-host 'Downloading/installing basic version of $software_name ...';winget install --id=Docker.DockerDesktop --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements;winget upgrade --id=Docker.DockerDesktop --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements" '' 'noexit'
             Write-Host "Downloading/installing updated version of $software_name ..." -ForegroundColor DarkCyan
+            write-host -NoNewLine "confirm docker desktop installer actions" -ForegroundColor Yellow
             start_dvlp_process_pop "
             write-host 'downloading/installing $software_name ...';
+            write-host ''
+            write-host ''
+            write-host -NoNewLine 'once docker is installed hit the ' -ForegroundColor Yellow
+            write-host -NoNewline 'blue' -ForegroundColor Blue
+            write-host -NoNewline '' close button to continue' -ForegroundColor Yellow 
             try {
                 .`$env:USERPROFILE\DockerDesktopInstaller.exe | Out-Null;
                 Write-Host '$software_name installed' -ForegroundColor DarkCyan | Out-File -FilePath '$env:KINDTEK_WIN_GIT_PATH/.docker-installed';
@@ -141,13 +147,6 @@ function install_docker {
                 } catch {}
             }
             exit;" 'wait'
-            write-host ''
-            write-host -NoNewLine "confirm docker desktop installer actions" -ForegroundColor Yellow
-            write-host ''
-            write-host -NoNewLine "once docker is installed hit the " -ForegroundColor Yellow
-            write-host -NoNewline "blue" -ForegroundColor Blue
-            write-host -NoNewline " close button to continue" -ForegroundColor Yellow 
-
 
             # & 'C:\Program Files\Docker\Docker\Docker Desktop.exe'
             # "Docker Desktop Installer.exe" install --accept-license --backend=wsl-2 --installation-dir=c:\docker 
@@ -170,7 +169,7 @@ function uninstall_docker {
     start-sleep 5
     # docker builder prune -af 
     # docker system prune -af --volumes 
-    Start-Process powershell.exe -Wait -Argumentlist '-Command', 'write-host "uninstalling docker... ";winget uninstall --id=Docker.DockerDesktop;'    
+    Start-Process powershell.exe -Wait -Argumentlist '-Command', 'write-host "uninstalling docker... ";winget uninstall --id=Docker.DockerDesktop;' | Out-Null 
     Remove-Item "$env:APPDATA\Docker*" -Recurse -Force -Confirm:$false -ErrorAction SilentlyContinue
     Remove-Item "$env:LOCALAPPDATA\Docker*" -Recurse -Force -Confirm:$false -ErrorAction SilentlyContinue
     Remove-Item "$env:USERPROFILE\.docker" -Recurse -Force -Confirm:$false -ErrorAction SilentlyContinue
