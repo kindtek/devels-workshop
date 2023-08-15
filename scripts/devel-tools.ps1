@@ -170,15 +170,14 @@ function uninstall_docker {
     start-sleep 5
     # docker builder prune -af 
     # docker system prune -af --volumes 
-    # wsl.exe --unregister docker-desktop | Out-Null
-    # wsl.exe --unregister docker-desktop-data | Out-Null
-    Start-Process powershell.exe -Wait -Argumentlist '-Command', 'write-host "uninstalling docker... ";winget uninstall --id=Docker.DockerDesktop;'    Remove-Item "$env:APPDATA\Docker*" -Recurse -Force -Confirm:$false -ErrorAction SilentlyContinue
+    Start-Process powershell.exe -Wait -Argumentlist '-Command', 'write-host "uninstalling docker... ";winget uninstall --id=Docker.DockerDesktop;'    
+    Remove-Item "$env:APPDATA\Docker*" -Recurse -Force -Confirm:$false -ErrorAction SilentlyContinue
     Remove-Item "$env:LOCALAPPDATA\Docker*" -Recurse -Force -Confirm:$false -ErrorAction SilentlyContinue
     Remove-Item "$env:USERPROFILE\.docker" -Recurse -Force -Confirm:$false -ErrorAction SilentlyContinue
     Remove-Item "$env:PROGRAMDATA\Docker*" -Recurse -Force -Confirm:$false -ErrorAction SilentlyContinue
     Remove-Item "$env:USERPROFILE/repos/kindtek/.docker-installed" -Confirm:$false -Force -ErrorAction SilentlyContinue
-    wsl.exe --unregister docker-desktop
-    wsl.exe --unregister docker-desktop-data
+    wsl.exe --unregister docker-desktop | Out-Null
+    wsl.exe --unregister docker-desktop-data | Out-Null
 }
 
 function reinstall_docker {
