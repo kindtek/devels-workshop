@@ -60,7 +60,7 @@ function reboot_prompt {
     } 
     if ($confirmation -ieq 'reboot now' -or $confirmation -ieq 'reboot continue') {
         if ($confirmation -ieq 'reboot now') {
-            Write-Host "`r`nRestarting computer ... r`n"
+            Write-Host "`r`nRestarting computer ... `r`n"
         }
         elseif ($confirmation -ieq 'reboot continue') {
             Write-Host "`r`n       --- USE CTRL + C TO CANCEL --- `r`n"
