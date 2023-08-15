@@ -172,7 +172,7 @@ function install_docker {
 
 function uninstall_docker {
     Write-Host "please wait while docker is uninstalled"
-    start-sleep 5
+    start-sleep 2
     # docker builder prune -af 
     # docker system prune -af --volumes 
     Start-Process powershell.exe -Wait -Argumentlist '-Command', 'write-host "uninstalling docker... ";winget uninstall --id=Docker.DockerDesktop;' | Out-Null 
@@ -773,7 +773,14 @@ function remove_installation {
     # Remove-Item "$env:USERPROFILE/DockerDesktopInstaller.exe" -Force -ErrorAction SilentlyContinue
     # make extra sure this is not a folder that is not important (ie: system32 - which is a default location)
     # if ($env:KINDTEK_WIN_DVLW_PATH.Contains('kindtek') -And $env:KINDTEK_WIN_DVLW_PATH.NotContains("System32") ) {
-    write-output "" | uninstall_docker | out-string
+    $uninstall_docker = read-host "uninstall docker? (Y/n)"
+    if ($uninstall_docker -eq "" -or $uninstall_docker -ieq "y" -or $uninstall_docker -ieq "yes" ){
+        write-output "" | uninstall_docker | out-string
+    }
+    $uninstall_git = read-host "uninstall git? (Y/n)"
+    if ($uninstall_git -eq "" -or $uninstall_git -ieq "y" -or $uninstall_git -ieq "yes" ){
+        uninstall_git | out-string
+    }
     write-output "" | uninstall_windows_features 'skip reboot' | out-string
     write-host "choose 'ignore' if prompted to close an application" -ForegroundColor Yellow
     Start-Process powershell.exe -LoadUserProfile -WindowStyle Hidden -Wait -ArgumentList  "-command", "Remove-AppxPackage -package 'MicrosoftCorporationII.WindowsSubsystemForLinux' | Out-Null" -ErrorAction SilentlyContinue
