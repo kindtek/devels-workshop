@@ -762,14 +762,13 @@ function remove_installation {
     # if ($env:KINDTEK_WIN_DVLW_PATH.Contains('kindtek') -And $env:KINDTEK_WIN_DVLW_PATH.NotContains("System32") ) {
     write-output "" | uninstall_docker | out-string
     write-output "" | uninstall_windows_features 'skip reboot' | out-string
-    write-host "uninstalling wsl ..`r`nerrors are to be expected while a script tries to remove all possible wsl installations from the system"
     write-host "choose 'ignore' if prompted to close an application" -ForegroundColor Yellow
-    Remove-AppxPackage -package 'MicrosoftCorporationII.WindowsSubsystemForLinux' -ErrorAction SilentlyContinue | Out-Null
-    Remove-AppxPackage -package 'kali-linux' -ErrorAction SilentlyContinue | Out-Null
-    winget uninstall --id kalilinux.kalilinux | Out-Null
-    winget uninstall --name Ubuntu | Out-Null
-    winget uninstall --name "Windows Subsystem For Linux Update" | Out-Null
-    winget uninstall --name "Windows Subsystem For Linux WSLg Preview" | Out-Null
+    Start-Process powershell.exe -LoadUserProfile -WindowStyle Hidden -Wait -ArgumentList  "-command", "Remove-AppxPackage -package 'MicrosoftCorporationII.WindowsSubsystemForLinux' | Out-Null" -ErrorAction SilentlyContinue
+    Start-Process powershell.exe -LoadUserProfile -WindowStyle Hidden -Wait -ArgumentList  "-command", "Remove-AppxPackage -package 'kali-linux' | Out-Null" -ErrorAction SilentlyContinue
+    Start-Process powershell.exe -LoadUserProfile -WindowStyle Hidden -Wait -ArgumentList  "-command", "winget uninstall --id kalilinux.kalilinux | Out-Null" -ErrorAction SilentlyContinue
+    Start-Process powershell.exe -LoadUserProfile -WindowStyle Hidden -Wait -ArgumentList  "-command", "winget uninstall --name Ubuntu | Out-Null" -ErrorAction SilentlyContinue
+    Start-Process powershell.exe -LoadUserProfile -WindowStyle Hidden -Wait -ArgumentList  "-command", "winget uninstall --name 'Windows Subsystem For Linux Update' | Out-Null" -ErrorAction SilentlyContinue
+    Start-Process powershell.exe -LoadUserProfile -WindowStyle Hidden -Wait -ArgumentList  "-command", "winget uninstall --name 'Windows Subsystem For Linux WSLg Preview' | Out-Null" -ErrorAction SilentlyContinue
     unset_dvlp_envs
     if (Test-Path "$env:USERPROFILE/repos/$($git_owner)") {
         Write-Host "`r`n`r`n"
