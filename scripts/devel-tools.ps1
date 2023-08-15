@@ -329,7 +329,7 @@ function install_recommends {
     else {
         New-Item -ItemType Directory -Force -Path "$env:USERPROFILE/repos/kindtek" | Out-Null
     }
-    $confirm_install = 'Read-Host "hit ENTER to install`r`n  ... or enter any character to skip"'
+    $confirm_install = Read-Host "hit ENTER to install`r`n  ... or enter any character to skip"
     if ($confirm_install -eq ''){
         start_dvlp_process_pop "
             try {
