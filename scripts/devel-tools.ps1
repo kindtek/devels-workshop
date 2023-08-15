@@ -133,6 +133,10 @@ function install_docker {
             write-host 'downloading/installing $software_name ...';
             write-host '';
             write-host '';
+            write-host '';
+            write-host '';
+            write-host '';
+            write-host '';
             write-host -NoNewLine 'confirm docker desktop installer actions';
             write-host '';
             write-host -NoNewLine 'once docker is installed hit the ' -ForegroundColor Yellow;
