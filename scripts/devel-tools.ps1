@@ -638,12 +638,13 @@ function require_docker_online {
     # the position in the loop is coded into the output using decimals
     do {   
         try {
+            $docker_tries += 1
             if ($(is_docker_desktop_online) -eq $false) {
                 start_docker_desktop | Out-Null
             }
             # Write-Host "${docker_cycles}.${docker_tries}"
             if ($(is_docker_desktop_online) -eq $false) {
-                if ($docker_tries -eq 0 -And $docker_cycles -eq 0 -And $(is_docker_backend_online) -eq $false) {
+                if ($docker_tries -eq 1 -And $docker_cycles -eq 0 -And $(is_docker_backend_online) -eq $false) {
                     Write-Host "error messages and restarts are expected when first starting docker. please wait "
                     # give extra time first time through
                     Start-Sleep -s 15
