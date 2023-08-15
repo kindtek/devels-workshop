@@ -669,11 +669,13 @@ function require_docker_online {
                     if ($docker_tries -gt 8) {
                         # $restart = Read-Host "Restart docker? ([y]n)"
                         $restart = 'y'
-                        Write-Host -NoNewline " ........"
+                        Write-Host -NoNewline " ........   "
 
                     }
                     else {
                         $restart = 'n'
+                        Write-Host -NoNewline " ........"
+
                     }
                     if (($restart -ine 'n') -And ($restart -ine 'no') -And ($docker_tries % 9 -eq 0)) {
                         Write-Host -NoNewline " ......... restarting wsl "
@@ -710,8 +712,13 @@ function require_docker_online {
                         reset_docker_settings
                         $docker_settings_reset = $false
                         $wsl_docker_restart = $true
+                        Write-Host -NoNewline " .......................................
+                        "          
                     }
                     if ($docker_cycles -gt 3) {
+                        Write-Host -NoNewline " ......................................."       
+                        Write-Host -NoNewline " ......................................."             
+                        Write-Host -NoNewline " ......................................."    
                         Write-Host "hard resetting docker engine and settings "
                         try {
                             reset_docker_settings_hard
@@ -726,6 +733,8 @@ function require_docker_online {
                 }
                 elseif ($docker_cycles -eq 4 ) {
                     # give up
+                             
+                    Write-Host -NoNewline " ......................................."                   
                     $check_again = 'n'
                 }
                 Write-Host ""
