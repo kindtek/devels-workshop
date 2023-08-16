@@ -790,6 +790,7 @@ function remove_installation {
     Start-Process powershell.exe -LoadUserProfile -WindowStyle Hidden -Wait -ArgumentList  "-command", "winget uninstall --name 'Windows Subsystem For Linux Update' | Out-Null" -ErrorAction SilentlyContinue
     Start-Process powershell.exe -LoadUserProfile -WindowStyle Hidden -Wait -ArgumentList  "-command", "winget uninstall --name 'Windows Subsystem For Linux WSLg Preview' | Out-Null" -ErrorAction SilentlyContinue
     unset_dvlp_envs
+    unset_dvlp_envs 'machine'
     if (Test-Path "$env:USERPROFILE/repos/$($git_owner)") {
         Write-Host "`r`n`r`n"
         Write-Host -nonewline "delete directory $env:USERPROFILE/repos/$($git_owner) ?"
