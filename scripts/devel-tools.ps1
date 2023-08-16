@@ -781,7 +781,7 @@ function remove_installation {
     if ($uninstall_git -eq "" -or $uninstall_git -ieq "y" -or $uninstall_git -ieq "yes" ){
         uninstall_git | out-string
     }
-    if (Test-Path "$env:USERPROFILE/DockerDesktopInstaller.exe" -or Test-Path "$env:USERPROFILE/kali-linux.AppxBundle"){
+    if ((Test-Path "$env:USERPROFILE/DockerDesktopInstaller.exe" -PathType Leaf) -or (Test-Path "$env:USERPROFILE/kali-linux.AppxBundle" -PathType Leaf)){
         try {
             if (Test-Path "$env:USERPROFILE/DockerDesktopInstaller.exe"){
                 read-host "remove DockerDesktopInstaller.exe? (Y/n)"
