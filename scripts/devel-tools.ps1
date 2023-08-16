@@ -783,15 +783,15 @@ function remove_installation {
     }
     if (Test-Path "$env:USERPROFILE/DockerDesktopInstaller.exe" -or Test-Path "$env:USERPROFILE/kali-linux.AppxBundle"){
         try {
-            $uninstall_git = read-host "remove DockerDesktopInstaller.exe? (Y/n)"
             if (Test-Path "$env:USERPROFILE/DockerDesktopInstaller.exe"){
+                read-host "remove DockerDesktopInstaller.exe? (Y/n)"
                 Remove-Item -Path "$env:USERPROFILE/DockerDesktopInstaller.exe" -Confirm:$true -ErrorAction SilentlyContinue
             }
 
         } catch {}
         try {
             if (Test-Path "$env:USERPROFILE/kali-linux.AppxBundle"){
-                $uninstall_git = read-host "remove kali-linux.AppxBundle? (Y/n)"
+                read-host "remove kali-linux.AppxBundle? (Y/n)"
                 Remove-Item -Path "$env:USERPROFILE/kali-linux.AppxBundle" -Confirm:$true -ErrorAction SilentlyContinue
             }
         } catch {}
