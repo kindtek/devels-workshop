@@ -781,6 +781,22 @@ function remove_installation {
     if ($uninstall_git -eq "" -or $uninstall_git -ieq "y" -or $uninstall_git -ieq "yes" ){
         uninstall_git | out-string
     }
+    if (Test-Path "$env:USERPROFILE/DockerDesktopInstaller.exe" -or Test-Path "$env:USERPROFILE/kali-linux.AppxBundle"){
+        Write-Host 'optional: cleaning up downloaded installation files'
+        try {
+            $uninstall_git = read-host "remove DockerDesktopInstaller.exe? (Y/n)"
+            if (Test-Path "$env:USERPROFILE/DockerDesktopInstaller.exe"){
+                Remove-Item -Path "$env:USERPROFILE/DockerDesktopInstaller.exe" -Confirm:$true
+            }
+
+        } catch {}
+        try {
+            if (Test-Path "$env:USERPROFILE/kali-linux.AppxBundle"){
+                $uninstall_git = read-host "remove kali-linux.AppxBundle? (Y/n)"
+                Remove-Item -Path "$env:USERPROFILE/kali-linux.AppxBundle" -Confirm:$true
+            }
+        } catch {}
+    }
     write-output "" | uninstall_windows_features 'skip reboot' | out-string
     write-host "choose 'ignore' if prompted to close an application" -ForegroundColor Yellow
     Start-Process powershell.exe -LoadUserProfile -WindowStyle Hidden -Wait -ArgumentList  "-command", "Remove-AppxPackage -package 'MicrosoftCorporationII.WindowsSubsystemForLinux' | Out-Null" -ErrorAction SilentlyContinue
