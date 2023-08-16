@@ -782,7 +782,6 @@ function remove_installation {
         uninstall_git | out-string
     }
     if (Test-Path "$env:USERPROFILE/DockerDesktopInstaller.exe" -or Test-Path "$env:USERPROFILE/kali-linux.AppxBundle"){
-        Write-Host 'optional: cleaning up downloaded installation files'
         try {
             $uninstall_git = read-host "remove DockerDesktopInstaller.exe? (Y/n)"
             if (Test-Path "$env:USERPROFILE/DockerDesktopInstaller.exe"){
