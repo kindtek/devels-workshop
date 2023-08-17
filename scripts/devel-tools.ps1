@@ -860,31 +860,29 @@ function wsl_distro_list_display {
     $default_wsl_distro = get_default_wsl_distro
     Write-Output $distro_array
     if ($distro_array.length -gt 0) {    
-        Write-Host "length: $($distro_array.length) "
+        $distro_name_single = ''
         for ($i = 0; $i -le $distro_array.length - 1; $i++) {
             $distro_name = "$($distro_array[$i])"
-            if ($distro_name -eq "$default_wsl_distro") {
-                $default_tag = '(default)'
+            if ($distro_array[$i].length -eq 1 ) {
+                $distro_name_single += "$($distro_array[$i])"
+                if ($i -eq $distro_array.length -1) {
+                    if ($distro_name_single -eq "$default_wsl_distro") {
+                        $default_tag = '(default)'
+                    }
+                    else {
+                        $default_tag = ''
+                    }
+                    write-host "`t1)`t$("$($distro_name_single)".trim()) $default_tag"
+                }
             }
             else {
-                $default_tag = ''
-            }
-            if ($distro_array[$i].length -gt 0) {
-                Write-Host "1+distro name: $($distro_name) "
-                write-host "1+distro array: $($distro_array[$i])"
-                Write-Host "1+distro array length: $($distro_array.length) "
-                write-host "1+distro array[0] length: $($distro_array[$i].length)"
-
+                if ($distro_name -eq "$default_wsl_distro") {
+                    $default_tag = '(default)'
+                }
+                else {
+                    $default_tag = ''
+                }
                 write-host "`t$($i+1))`t$("$($distro_name)".trim()) $default_tag"
-            }
-            else {
-                Write-Host "0distro name: $($distro_name) "
-                write-host "0distro array: $($distro_array[$i])"
-                Write-Host "0distro array length: $($distro_array.length) "
-                write-host "0distro array[0] length: $($distro_array[$i].length)"
-                $distro_name = $distro_array
-                write-host "`t$($i+1))`t$("$($distro_name)".trim()) $default_tag"
-                break
             }
         }
     }
