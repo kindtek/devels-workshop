@@ -60,11 +60,15 @@ function reboot_prompt {
     } 
     if ($confirmation -ieq 'reboot now' -or $confirmation -ieq 'reboot continue') {
         if ($confirmation -ieq 'reboot now') {
-            Write-Host "`r`nRestarting computer ... `r`n"
+            Write-Host "`r`nrestarting computer ... `r`n"
         }
         elseif ($confirmation -ieq 'reboot continue') {
-            Write-Host "`r`n       --- USE CTRL + C TO CANCEL --- `r`n"
-            Write-Host "`r`nRestarting computer and continuing after restart... `r`n"
+            Write-Host "please log in and confirm admin access when prompted following restart" -ForegroundColor Magenta -BackgroundColor Yellow
+            Start-Sleep 2
+            Write-Host "`t... otherwise run this script again with admin access"
+            Start-Sleep 5
+            Write-Host "`r`n`r`n       --- USE CTRL + C TO CANCEL --- `r`n`r`n" -ForegroundColor Magenta -BackgroundColor Yellow
+            Write-Host "`r`nrestarting computer and continuing after restart... `r`n`r`n" -ForegroundColor Magenta -BackgroundColor Yellow
             start_countdown
             if (!(Test-Path "$env:TEMP\spawnlogs.txt")) {
                 New-Item "$env:TEMP\spawnlogs.txt" -Value ''
