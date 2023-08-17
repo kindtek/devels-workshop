@@ -844,7 +844,7 @@ function get_wsl_distro_list {
         $distro_array = (wsl.exe --list | Out-String).split("`r`n").trim() | Where-Object { (!([string]::isNullOrEmpty($_))) -And ($_ -ne 'Windows Subsystem for Linux Distributions:') -and ($_ -ne "docker-desktop") -and ($_ -ne "docker-desktop-data") -and ($_ -ne "$env:KINDTEK_FAILSAFE_WSL_DISTRO")}
         $distro_array = $distro_array -replace '^(.*)\s.*$', '$1'
         $distro_array = $distro_array -replace "[^a-zA-Z0-9_-]", ''
-        return $distro_array
+        return "$distro_array".trim()
     } else {
         return @()
     }
