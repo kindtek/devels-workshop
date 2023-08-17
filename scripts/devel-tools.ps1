@@ -841,7 +841,7 @@ function get_wsl_distro_list {
     $env:WSL_UTF8 = 1
     wsl.exe --list | Out-Null
     if (($?)){
-        $distro_array = (wsl.exe --list | Out-String).split("`n").trim() | Where-Object { $_ -And $_ -ne 'Windows Subsystem for Linux Distributions:' }
+        $distro_array = (wsl.exe --list | Out-String).split("`r`n").trim() | Where-Object { $_ -And $_ -ne 'Windows Subsystem for Linux Distributions:' }
         $distro_array = $distro_array -replace '^(.*)\s.*$', '$1'
         $distro_array_final = @()
         if ($distro_array.length -gt 1) {    
