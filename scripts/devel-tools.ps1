@@ -847,8 +847,7 @@ function get_wsl_distro_list {
         if ($distro_array.length -gt 1) {    
             for ($i = 0; $i -le $distro_array.length - 1; $i++) {
                 if ($($distro_array[$i]) -ne "docker-desktop" -And $($distro_array[$i]) -ine "docker-desktop-data" -And $($distro_array[$i]) -ine "$env:KINDTEK_FAILSAFE_WSL_DISTRO" -and !([string]::IsNullOrWhiteSpace($($distro_array[$i]))) -and !([string]::IsNullOrEmpty($($distro_array[$i]))) -and $($distro_array[$i]) -ine '' ) {
-                    $replacements = "[^a-zA-Z0-9_-]" 
-                    $distro_array_final += "$($distro_array[$i] -replace $replacements, '')".trim()
+                    $distro_array_final += "$($distro_array[$i] -replace "[^a-zA-Z0-9_-]", '')".trim()
                 }
             } 
         }
