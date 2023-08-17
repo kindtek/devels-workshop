@@ -858,7 +858,6 @@ function wsl_distro_list_display {
         $distro_array = get_wsl_distro_list
     }
     $default_wsl_distro = get_default_wsl_distro
-    Write-Output $distro_array
     if ($distro_array.length -gt 0) {    
         $distro_name_single = ''
         for ($i = 0; $i -le $distro_array.length - 1; $i++) {
