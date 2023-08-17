@@ -854,7 +854,7 @@ function get_wsl_distro_list {
     }
 }
 
-function wsl_distro_list_display {
+function display_wsl_distro_list {
     param (
         $wsl_distro_list
     )
@@ -906,7 +906,7 @@ function wsl_distro_list_display {
     }
 }
 
-function selec_wsl_distro_list_name {
+function select_wsl_distro_list_name {
     param (
         [array]$wsl_distro_list,
         [string]$wsl_distro_name
@@ -924,7 +924,7 @@ function selec_wsl_distro_list_name {
         return $false
       }
 }
-function wsl_distro_list_select_num {
+function select_wsl_distro_list_num {
     param (
         [array]$wsl_distro_list,
         [int]$wsl_distro_num
