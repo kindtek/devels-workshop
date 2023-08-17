@@ -65,7 +65,7 @@ function reboot_prompt {
         elseif ($confirmation -ieq 'reboot continue') {
             Write-Host "please log in and confirm admin access when prompted following restart" -ForegroundColor Magenta -BackgroundColor Yellow
             Start-Sleep 2
-            Write-Host "`t... otherwise run this script again with admin access"
+            Write-Host "`t... otherwise run this script again and confirm admin access"
             Start-Sleep 5
             Write-Host "`r`n`r`n       --- USE CTRL + C TO CANCEL --- `r`n`r`n" -ForegroundColor Magenta -BackgroundColor Yellow
             Write-Host "`r`nrestarting computer and continuing after restart... `r`n`r`n" -ForegroundColor Magenta -BackgroundColor Yellow
@@ -845,10 +845,10 @@ function get_wsl_distro_list {
     $env:WSL_UTF8 = 1
     wsl.exe --list | Out-Null
     if (($?)){
-        $distro_array = wsl.exe --list | Where-Object { (!([string]::isNullOrEmpty($_))) -And ($_ -ne 'Windows Subsystem for Linux Distributions:') -and ($_ -ne "docker-desktop") -and ($_ -ne "docker-desktop-data") -and ($_ -ne "$env:KINDTEK_FAILSAFE_WSL_DISTRO") -and ($_ -ne "$env:KINDTEK_FAILSAFE_WSL_DISTRO (Default)") -and ($_ -ne '')}
-        $distro_array = $distro_array -replace '^(.*)\s.*$', '$1'
-        $distro_array = $distro_array -replace "[^a-zA-Z0-9_-]", ''
-        return $distro_array
+        $wsl_distro_list = wsl.exe --list | Where-Object { (!([string]::isNullOrEmpty($_))) -And ($_ -ne 'Windows Subsystem for Linux Distributions:') -and ($_ -ne "docker-desktop") -and ($_ -ne "docker-desktop-data") -and ($_ -ne "$env:KINDTEK_FAILSAFE_WSL_DISTRO") -and ($_ -ne "$env:KINDTEK_FAILSAFE_WSL_DISTRO (Default)") -and ($_ -ne '')}
+        $wsl_distro_list = $wsl_distro_list -replace '^(.*)\s.*$', '$1'
+        $wsl_distro_list = $wsl_distro_list -replace "[^a-zA-Z0-9_-]", ''
+        return $wsl_distro_list
     } else {
         return @()
     }
@@ -856,74 +856,92 @@ function get_wsl_distro_list {
 
 function wsl_distro_list_display {
     param (
-        $distro_array
+        $wsl_distro_list
     )
-    if ($distro_array.length -eq 0) {
-        $distro_array = get_wsl_distro_list
+    if ($wsl_distro_list.length -eq 0) {
+        $wsl_distro_list = get_wsl_distro_list
     }
     $default_wsl_distro = get_default_wsl_distro
-    if ($distro_array.length -gt 0) {    
-        $distro_name_single = ''
-        for ($i = 0; $i -le $distro_array.length - 1; $i++) {
-            $distro_name = "$($distro_array[$i])"
-            if ($distro_array[$i].length -eq 1 ) {
-                $distro_name_single += "$($distro_array[$i])"
-                if ($i -eq $distro_array.length -1) {
-                    if ($distro_name_single -eq "$default_wsl_distro") {
+    if ($wsl_distro_list.length -gt 0) {    
+        $wsl_distro_name_single = ''
+        for ($i = 0; $i -le $wsl_distro_list.length - 1; $i++) {
+            $wsl_distro_name = "$($wsl_distro_list[$i])"
+            if ($wsl_distro_list[$i].length -eq 1 ) {
+                $wsl_distro_name_single += "$($wsl_distro_list[$i])"
+                if ($i -eq $wsl_distro_list.length -1) {
+                    if ($wsl_distro_name_single -eq "$default_wsl_distro") {
                         $default_tag = '(default)'
                     }
                     else {
                         $default_tag = ''
                     }
-                    write-host "`t1)`t$("$($distro_name_single)".trim()) $default_tag"
+                    write-host "`t1)`t$("$($wsl_distro_name_single)".trim()) $default_tag"
                 }
             }
             else {
-                if ($distro_name -eq "$default_wsl_distro") {
+                if ($wsl_distro_name -eq "$default_wsl_distro") {
                     $default_tag = '(default)'
                 }
                 else {
                     $default_tag = ''
                 }
-                write-host "`t$($i+1))`t$("$($distro_name)".trim()) $default_tag"
+                write-host "`t$($i+1))`t$("$($wsl_distro_name)".trim()) $default_tag"
             }
         }
     }
     else {
         # try {
-        $distro_name = $distro_array[0]
-        if ($distro_name -eq $default_wsl_distro) {
+        $wsl_distro_name = $wsl_distro_list[0]
+        if ($wsl_distro_name -eq $default_wsl_distro) {
             $default_tag = '(default)'
 
         }
         else {
             $default_tag = ''
         }
-        write-host "`t$($i+1))`t$distro_name $default_tag"
+        write-host "`t$($i+1))`t$wsl_distro_name $default_tag"
         # } catch {
         #     # empty
         # }
     }
 }
 
-function wsl_distro_list_select {
+function selec_wsl_distro_list_name {
     param (
-        [array]$distro_array,
-        [int]$distro_num
+        [array]$wsl_distro_list,
+        [string]$wsl_distro_name
     )
-    if (($distro_array.length -eq 0)) {
-        $distro_array = get_wsl_distro_list
+    try {    
+        if ($wsl_distro_list.contains($wsl_distro_name)){
+            for ($i = 0; $i -le $wsl_distro_list.length - 1; $i++) {
+                if ($wsl_distro_name -eq $wsl_distro_list[$i]){
+                    return "$($i + 1)"
+                }
+            }
+            return $false
+        }
+      } catch {
+        return $false
+      }
+}
+function wsl_distro_list_select_num {
+    param (
+        [array]$wsl_distro_list,
+        [int]$wsl_distro_num
+    )
+    if (($wsl_distro_list.length -eq 0)) {
+        $wsl_distro_list = get_wsl_distro_list
     }
-    if ([string]::IsNullOrEmpty($distro_num)) {
+    if ([string]::IsNullOrEmpty($wsl_distro_num)) {
         return $null
     }  
-    for ($i = 0; $i -le $distro_array.length - 1; $i++) {
-        if ($i -eq $($distro_num - 1)) {
-            if ($distro_array[$i].length -gt 1) {
-                return "$("$($distro_array[$i])".trim())"
+    for ($i = 0; $i -le $wsl_distro_list.length - 1; $i++) {
+        if ($i -eq $($wsl_distro_num - 1)) {
+            if ($wsl_distro_list[$i].length -gt 1) {
+                return "$("$($wsl_distro_list[$i])".trim())"
             }
             else {
-                return "$("$($distro_array)".trim())"
+                return "$("$($wsl_distro_list)".trim())"
             }
         }
     }
@@ -932,43 +950,43 @@ function wsl_distro_list_select {
 
 function wsl_distro_menu_get {
     param (
-        $distro_list,
-        $distro_num
+        $wsl_distro_list,
+        $wsl_distro_num
     )
     $env:WSL_UTF8 = 1
-    $distro_list_num = 0
+    $wsl_distro_list_num = 0
 
     # Loop through each distro and prompt to remove
-    foreach ($distro in $distro_list) {
+    foreach ($distro in $wsl_distro_list) {
     
         if ($distro.IndexOf("docker-desktop") -lt 0) {
-            $distro_name = $distro_list -replace '^(.*)\s.*$', '$1'
-            $distro_list_num += 1
-            # $distro_name = $distro_name.Split('', [System.StringSplitOptions]::RemoveEmptyEntries) -join ''
-            # $distro_name -replace '\s', ''
-            return "$distro_name"
+            $wsl_distro_name = $wsl_distro_list -replace '^(.*)\s.*$', '$1'
+            $wsl_distro_list_num += 1
+            # $wsl_distro_name = $wsl_distro_name.Split('', [System.StringSplitOptions]::RemoveEmptyEntries) -join ''
+            # $wsl_distro_name -replace '\s', ''
+            return "$wsl_distro_name"
         }
     }
 }
 
 function wsl_distro_batch_delete {
     param (
-        $distro_list,
-        $distro_num
+        $wsl_distro_list,
+        $wsl_distro_num
     )
     $env:WSL_UTF8 = 1
-    $distro_list_num = 0
+    $wsl_distro_list_num = 0
 
     # Loop through each distro and prompt to remove
-    foreach ($distro in $distro_list) {
+    foreach ($distro in $wsl_distro_list) {
     
         if ($distro.IndexOf("docker-desktop") -lt 0) {
-            $distro_name = $distro_list -replace '^(.*)\s.*$', '$1'
-            $distro_list_num += 1
-            # $distro_name = $distro_name.Split('', [System.StringSplitOptions]::RemoveEmptyEntries) -join ''
-            # $distro_name -replace '\s', ''
-            write-host "wsl.exe --unregister $distro_name"
-            $(wsl.exe --unregister $distro_name)
+            $wsl_distro_name = $wsl_distro_list -replace '^(.*)\s.*$', '$1'
+            $wsl_distro_list_num += 1
+            # $wsl_distro_name = $wsl_distro_name.Split('', [System.StringSplitOptions]::RemoveEmptyEntries) -join ''
+            # $wsl_distro_name -replace '\s', ''
+            write-host "wsl.exe --unregister $wsl_distro_name"
+            $(wsl.exe --unregister $wsl_distro_name)
         }
     }
     $(wsl.exe --unregister $KINDTEK_FAILSAFE_WSL_DISTRO)
