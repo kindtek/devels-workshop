@@ -863,7 +863,6 @@ function wsl_distro_list_display {
             $distro_name = "$($distro_array[$i])"
             if ($distro_name -eq "$default_wsl_distro") {
                 $default_tag = '(default)'
-
             }
             else {
                 $default_tag = ''
