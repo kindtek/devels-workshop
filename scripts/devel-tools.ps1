@@ -858,7 +858,9 @@ function wsl_distro_list_display {
         $distro_array = get_wsl_distro_list
     }
     $default_wsl_distro = get_default_wsl_distro
+    Write-Output $distro_array
     if ($distro_array.length -gt 0) {    
+        Write-Host "length: $($distro_array.length) "
         for ($i = 0; $i -le $distro_array.length - 1; $i++) {
             $distro_name = "$($distro_array[$i])"
             if ($distro_name -eq "$default_wsl_distro") {
@@ -868,9 +870,14 @@ function wsl_distro_list_display {
                 $default_tag = ''
             }
             if ($distro_array[$i].length -gt 0) {
+                Write-Host "distro name: $($distro_name) "
+                write-host "distro array: $($distro_array[$i])"
+
                 write-host "`t$($i+1))`t$("$($distro_name)".trim()) $default_tag"
             }
             else {
+                Write-Host "distro name: $($distro_name) "
+                write-host "distro array: $($distro_array[$i])"
                 $distro_name = $distro_array
                 write-host "`t$($i+1))`t$("$($distro_name)".trim()) $default_tag"
                 break
