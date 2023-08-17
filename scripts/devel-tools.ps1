@@ -844,7 +844,7 @@ function get_wsl_distro_list {
         $distro_array = (wsl.exe --list | Out-String).split("`r`n").trim() | Where-Object { (!([string]::isNullOrEmpty($_))) -And ($_ -ne 'Windows Subsystem for Linux Distributions:') -and ($_ -ne "docker-desktop") -and ($_ -ne "docker-desktop-data") -and ($_ -ne "$env:KINDTEK_FAILSAFE_WSL_DISTRO")}
         $distro_array = $distro_array -replace '^(.*)\s.*$', '$1'
         $distro_array = $distro_array -replace "[^a-zA-Z0-9_-]", ''
-        return "$("$distro_array".trim())"
+        return $distro_array
     } else {
         return @()
     }
@@ -869,11 +869,11 @@ function wsl_distro_list_display {
                 $default_tag = ''
             }
             if ($distro_array[$i].length -gt 0) {
-                write-host "`t$($i+1))`t$distro_name $default_tag"
+                write-host "`t$($i+1))`t$("$($distro_name)".trim()) $default_tag"
             }
             else {
                 $distro_name = $distro_array
-                write-host "`t$($i+1))`t$distro_name $default_tag"
+                write-host "`t$($i+1))`t$("$($distro_name)".trim()) $default_tag"
                 break
             }
         }
