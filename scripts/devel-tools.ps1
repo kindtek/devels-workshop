@@ -852,7 +852,7 @@ function get_wsl_distro_list {
             } 
         }
         else {
-            $distro_array_final = $distro_array
+            $distro_array_final = "$($distro_array[0] -replace "[^a-zA-Z0-9_-]", '')".trim()
         }
         return $distro_array_final
     } else {
