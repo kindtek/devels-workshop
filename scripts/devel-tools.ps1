@@ -845,19 +845,12 @@ function get_wsl_distro_list {
         $distro_array = $distro_array -replace '^(.*)\s.*$', '$1'
         $distro_array = $distro_array -replace "[^a-zA-Z0-9_-]", ''
         $distro_array_final = @()
-        $distro_single_final = ''
         if ($distro_array.length -gt 1) {    
             for ($i = 0; $i -le $distro_array.length - 1; $i++) {
-                if ($($distro_array[$i].Length) -eq 1) {
-                    $distro_single_final += "$($distro_array[$i])"
-                } elseif ($($distro_array[$i]) -ne "docker-desktop" -And $($distro_array[$i]) -ine "docker-desktop-data" -And $($distro_array[$i]) -ine "$env:KINDTEK_FAILSAFE_WSL_DISTRO" -and !([string]::IsNullOrWhiteSpace($($distro_array[$i]))) -and !([string]::IsNullOrEmpty($($distro_array[$i]))) -and $($distro_array[$i]) -ine '' ) {
+                if ($($distro_array[$i]) -ne "docker-desktop" -And $($distro_array[$i]) -ine "docker-desktop-data" -And $($distro_array[$i]) -ine "$env:KINDTEK_FAILSAFE_WSL_DISTRO" -and !([string]::IsNullOrWhiteSpace($($distro_array[$i]))) -and !([string]::IsNullOrEmpty($($distro_array[$i]))) -and $($distro_array[$i]) -ine '' ) {
                         $distro_array_final += "$($distro_array[$i])".trim()
                 }
-                
             }
-            if ($distro_single_final.Length -gt 1){
-                return @($distro_single_final)
-            } 
         }
         return $distro_array_final
     } else {
