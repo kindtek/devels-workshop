@@ -593,6 +593,10 @@ function is_docker_desktop_online {
     }
 }
 
+function start_docker_dektop_new_win {
+    start_dvlp_process_popmin 'start_docker_desktop;exit;'
+    # require_docker_online
+}
 
 function start_docker_desktop {
     try {
