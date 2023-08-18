@@ -68,8 +68,9 @@ function reboot_prompt {
             Write-Host "`t... otherwise run this script again and confirm admin access"
             Start-Sleep 5
             Write-Host "`r`n`r`n       --- USE CTRL + C TO CANCEL --- `r`n`r`n" -ForegroundColor Magenta -BackgroundColor Yellow
+            start-sleep 1
             Write-Host "`r`nrestarting computer and continuing after restart... `r`n`r`n" -ForegroundColor Magenta -BackgroundColor Yellow
-            start_countdown
+            start_countdown "restarting " "in 3" "in 2" "in 1" "now"
             if (!(Test-Path "$env:TEMP\spawnlogs.txt")) {
                 New-Item "$env:TEMP\spawnlogs.txt" -Value ''
             }
