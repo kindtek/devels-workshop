@@ -471,11 +471,11 @@ function reset_wsl_settings {
     cmd.exe /c net start LxssManager
 }
 
-function wsl_docker_full_restart_new_win {
-    start_dvlp_process_popmin "wsl_docker_full_restart"
+function hard_restart_wsl_docker_new_win {
+    start_dvlp_process_popmin "hard_restart_wsl_docker"
 }
 
-function wsl_docker_full_restart {
+function hard_restart_wsl_docker {
     
     Write-Host "resetting Docker engine and data ..."
     try {
@@ -519,11 +519,11 @@ function wsl_docker_full_restart {
     require_docker_online
 }
 
-function wsl_docker_restart_new_win {
-    start_dvlp_process_popmin "wsl_docker_restart"
+function restart_wsl_docker_new_win {
+    start_dvlp_process_popmin "restart_wsl_docker"
 }
 
-function wsl_docker_restart {
+function restart_wsl_docker {
     
     Write-Output "stopping docker ..."
     try {
@@ -690,7 +690,7 @@ function require_docker_online {
                     if (($restart -ine 'n') -And ($restart -ine 'no') -And ($docker_tries % 9 -eq 0)) {
                         Write-Host -NoNewline " ......... restarting wsl "
                         # allowed to restart on cycle 9
-                        wsl_docker_restart | Out-Null
+                        restart_wsl_docker | Out-Null
                     }
                     elseif ($docker_tries % 15 -eq 0) {
                         # next cycle 
@@ -701,12 +701,12 @@ function require_docker_online {
                     }
                 }
                 elseif ($docker_tries % 13 -eq 0) {
-                    wsl_docker_full_restart_new_win
+                    hard_restart_wsl_docker_new_win
                     Write-Host -NoNewline " ............."
                 }
             
                 if ($docker_tries % 7 -eq 0) {
-                    $wsl_docker_restart = $false    
+                    $restart_wsl_docker = $false    
                     Write-Host -NoNewline " ............."             
                     if (($(is_docker_backend_online) -eq $true) -And ($(is_docker_desktop_online) -eq $false)) {
                         # backend is online but desktop isn't
@@ -714,14 +714,14 @@ function require_docker_online {
                             Write-Host "resetting docker settings "
                             reset_wsl_settings
                         }
-                        $wsl_docker_restart = $true
+                        $restart_wsl_docker = $true
                     }
                     if ( $docker_settings_reset -eq $true -And $docker_cycles -gt 1 ) {
                         # only reset settings once and after going thru 2 cycles with exactly 7 tries
                         Write-Host "resetting docker settings "
                         reset_docker_settings
                         $docker_settings_reset = $false
-                        $wsl_docker_restart = $true
+                        $restart_wsl_docker = $true
                         Write-Host -NoNewline " .......................................
                         "          
                     }
@@ -735,10 +735,10 @@ function require_docker_online {
                         }
                         catch {}
                     }
-                    if ($wsl_docker_restart -eq $true) {
-                        wsl_docker_restart
+                    if ($restart_wsl_docker -eq $true) {
+                        restart_wsl_docker
                         Write-Host "restarting wsl "
-                        $wsl_docker_restart = $false
+                        $restart_wsl_docker = $false
                     }
                 }
                 elseif ($docker_cycles -eq 4 ) {
@@ -954,7 +954,7 @@ function select_wsl_distro_list_num {
     return $null
 }
 
-function wsl_distro_menu_get {
+function get_wsl_distro_menu {
     param (
         $wsl_distro_list,
         $wsl_distro_num
@@ -977,8 +977,7 @@ function wsl_distro_menu_get {
 
 function wsl_distro_batch_delete {
     param (
-        $wsl_distro_list,
-        $wsl_distro_num
+        $wsl_distro_list
     )
     $env:WSL_UTF8 = 1
     $wsl_distro_list_num = 0
