@@ -23,7 +23,7 @@ catch {
 }
 # echo 'devel_tools sourced'
 
-function devel_test {
+function test_devel {
     return
 }
 
