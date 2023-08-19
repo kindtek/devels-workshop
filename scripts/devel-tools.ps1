@@ -6,6 +6,9 @@ $host.UI.RawUI.BackgroundColor = "Black"
 $global:devel_tools = 'sourced'
 try {
     set_dvlp_envs $env:KINDTEK_DEBUG_MODE
+    if ($global:devel_spawn -ne 'sourced'){
+        throw
+    }
 }
 catch {
     if ((!([string]::IsNullOrEmpty($env:KINDTEK_DEVEL_SPAWN))) -And (Test-Path -Path "$env:KINDTEK_DEVEL_SPAWN" -PathType Leaf)) {
@@ -21,6 +24,7 @@ catch {
         # echo 'devel_spawn sourced'
     }    
 }
+
 # echo 'devel_tools sourced'
 
 function test_devel {
