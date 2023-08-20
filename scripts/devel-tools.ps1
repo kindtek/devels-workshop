@@ -518,7 +518,7 @@ function hard_restart_wsl_docker {
         
     }
     catch {}
-    require_docker_online
+    require_docker_desktop_online
 }
 
 function restart_wsl_docker_new_win {
@@ -552,7 +552,7 @@ function restart_wsl_docker {
     }
     catch {}
     try {
-        require_docker_online
+        require_docker_desktop_online
         powershell.exe -Command wsl.exe --exec echo 'docker restarted';
     }
     catch {}
@@ -597,7 +597,7 @@ function is_docker_desktop_online {
 
 function start_docker_desktop_new_win {
     start_dvlp_process_popmin 'start_docker_desktop;exit;'
-    # require_docker_online
+    # require_docker_desktop_online
 }
 
 function start_docker_desktop {
@@ -642,12 +642,12 @@ function start_docker_desktop {
     }
 }
 
-function require_docker_online_new_win {
-    start_dvlp_process_popmin 'require_docker_online;exit;' 'wait' '' 
-    # require_docker_online
+function require_docker_desktop_online_new_win {
+    start_dvlp_process_popmin 'require_docker_desktop_online;exit;' 'wait' '' 
+    # require_docker_desktop_online
 }
 
-function require_docker_online {
+function require_docker_desktop_online {
     # Set-PSDebug -Trace 2
 
     [int]$docker_tries = 0
