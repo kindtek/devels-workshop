@@ -12,18 +12,17 @@ function include_devel_spawn {
         }
     }
     catch {
-        if ((!([string]::IsNullOrEmpty($env:KINDTEK_DEVEL_SPAWN))) -And (Test-Path -Path "$env:KINDTEK_DEVEL_SPAWN" -PathType Leaf)) {
-            # write-output "dvltls 8: dot sourcing devel-spawn"
-            . $env:KINDTEK_DEVEL_SPAWN
-            $global:devel_spawn = 'sourced'
-            # echo 'devel_spawn sourced'
-        }
-        elseif ((Test-Path -Path "${USERPROFILE}/dvlp.ps1" -PathType Leaf)) {
+        if ((Test-Path -Path "${USERPROFILE}/dvlp.ps1" -PathType Leaf)) {
             # write-output "dvltls 11: dot sourcing dvlp"
             . ${USERPROFILE}/dvlp.ps1
             $global:devel_spawn = 'sourced'
             # echo 'devel_spawn sourced'
-        }    
+        }  elseif ((!([string]::IsNullOrEmpty($env:KINDTEK_DEVEL_SPAWN))) -And (Test-Path -Path "$env:KINDTEK_DEVEL_SPAWN" -PathType Leaf)) {
+            # write-output "dvltls 8: dot sourcing devel-spawn"
+            . $env:KINDTEK_DEVEL_SPAWN
+            $global:devel_spawn = 'sourced'
+            # echo 'devel_spawn sourced'
+        }  
     }
 }
 
