@@ -4,33 +4,30 @@ $host.UI.RawUI.BackgroundColor = "Black"
 # WSLENV="$WSLENV":WSL_UTF8
 
 $global:devel_tools = 'sourced'
-try {
-    set_dvlp_envs $env:KINDTEK_DEBUG_MODE
-    if ($global:devel_spawn -ne 'sourced'){
-        throw
+function include_devel_spawn {
+    try {
+        set_dvlp_envs $env:KINDTEK_DEBUG_MODE
+        if ($global:devel_spawn -ne 'sourced'){
+            throw
+        }
+    }
+    catch {
+        if ((!([string]::IsNullOrEmpty($env:KINDTEK_DEVEL_SPAWN))) -And (Test-Path -Path "$env:KINDTEK_DEVEL_SPAWN" -PathType Leaf)) {
+            # write-output "dvltls 8: dot sourcing devel-spawn"
+            . $env:KINDTEK_DEVEL_SPAWN
+            $global:devel_spawn = 'sourced'
+            # echo 'devel_spawn sourced'
+        }
+        elseif ((Test-Path -Path "${USERPROFILE}/dvlp.ps1" -PathType Leaf)) {
+            # write-output "dvltls 11: dot sourcing dvlp"
+            . ${USERPROFILE}/dvlp.ps1
+            $global:devel_spawn = 'sourced'
+            # echo 'devel_spawn sourced'
+        }    
     }
 }
-catch {
-    if ((!([string]::IsNullOrEmpty($env:KINDTEK_DEVEL_SPAWN))) -And (Test-Path -Path "$env:KINDTEK_DEVEL_SPAWN" -PathType Leaf)) {
-        # write-output "dvltls 8: dot sourcing devel-spawn"
-        . $env:KINDTEK_DEVEL_SPAWN
-        $global:devel_spawn = 'sourced'
-        # echo 'devel_spawn sourced'
-    }
-    elseif ((Test-Path -Path "${USERPROFILE}/dvlp.ps1" -PathType Leaf)) {
-        # write-output "dvltls 11: dot sourcing dvlp"
-        . ${USERPROFILE}/dvlp.ps1
-        $global:devel_spawn = 'sourced'
-        # echo 'devel_spawn sourced'
-    }    
-}
 
-# echo 'devel_tools sourced'
-
-function test_devel {
-    return
-}
-
+. include_devel_spawn
 
 function reboot_prompt_embedded {
     # use to allow cancelling reboot without cancelling script that called reboot_prompt
