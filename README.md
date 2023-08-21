@@ -25,7 +25,7 @@ powershell.exe -Command "Invoke-WebRequest https://raw.githubusercontent.com/kin
 
 ---
 
-## With little more than a few key strokes and restarts, a suite of tightly connected developer productivity software will be pushed to your Windows 10+ machine. Easily rename/backup/restore your WSL distributions, hit the ground coding with VSCode, become a cybersecurity expert with Kali without debugging obscure error codes
+## With little more than a few key strokes and restarts, a suite of tightly connected developer productivity software will be pushed to your Windows 10+ machine. Easily rename/backup/restore your WSL distributions, hit the ground coding with VSCode, become a cybersecurity expert with Kali without debugging obscure error codes, and much more
 
 ![wsl_docker_devel](doc/devel_ui.png)
 
@@ -37,7 +37,7 @@ powershell.exe -Command "Invoke-WebRequest https://raw.githubusercontent.com/kin
 
 ---
 
-### All of the menial technical labor is eliminated so you can get straight to the good stuff. Fork this repository and see how easy it is to set up your use the code as a template for setting up software that revolves around a Github repo like this one
+### All of the menial technical labor is eliminated so you can get straight to the good stuff. [Fork this repository](https://github.com/kindtek/devels-workshop/fork) and see how easy it is to use the code as a template for setting up software that revolves around a Github repo like this one
 
 ### The Docker Linux images [created by Kindtek](https://github.com/kindtek/devels-playground#image-tags) and hosted by [Docker](https://hub.docker.com/repository/docker/kindtek/dvlp) on the [Docker Hub](https://hub.docker.com/search?q=&image_filter=official) are available for free.
 
