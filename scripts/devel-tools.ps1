@@ -378,7 +378,7 @@ function install_recommends {
 function ini_docker_config {
     param ( $new_integrated_distro )
     $config_file = "$env:APPDATA\Docker\settings.json"
-    $config_json = (Get-Content -Raw "$config_file") | ConvertFrom-JSON 
+    $config_json = (Get-Content -Raw "$config_file") -join "`n" | ConvertFrom-JSON 
     # $config_json = ConvertFrom-JSON (Get-Content "$config_file")
     $config_json.disableTips = $true
     $config_json.disableUpdate = $false
@@ -402,7 +402,7 @@ function ini_docker_config {
     }
 ]
 "@
-        $jnew = ConvertFrom-Json -InputObject $new_distro
+        $jnew = $new_distro -join "`n" |  ConvertFrom-Json 
         $config_json.integratedWsldistro_list = $jcurrent + $jnew
     }
     ConvertTo-JSON $config_json -Depth 2 -Compress | Out-File $config_file -Encoding utf8 -Force
@@ -412,7 +412,7 @@ function ini_docker_config {
 function set_docker_config {
     param ( $new_integrated_distro )
     $config_file = "$env:APPDATA\Docker\settings.json"
-    $config_json = (Get-Content -Raw "$config_file") | ConvertFrom-JSON
+    $config_json = (Get-Content -Raw "$config_file") -join "`n" | ConvertFrom-JSON
     # $config_json = ConvertFrom-JSON (Get-Content "$config_file")
     $config_json.enableIntegrationWithDefaultWslDistro = $true
     # $config_json.kubernetesEnabled = $true
@@ -432,7 +432,7 @@ function set_docker_config {
     }
 ]
 "@
-        $jnew = ConvertFrom-Json -InputObject $new_distro
+        $jnew = $new_distro -join "`n" | ConvertFrom-Json 
         $config_json.integratedWsldistro_list = $jcurrent + $jnew
     }
 
