@@ -21,7 +21,7 @@ function include_devel_spawn {
             # write-output "dvltls 8: dot sourcing devel-spawn"
             . $env:KINDTEK_DEVEL_SPAWN
             $global:devel_spawn = 'sourced'
-            echo 'devel_spawn sourced'
+            # echo 'devel_spawn sourced'
         }  
     }
 }
