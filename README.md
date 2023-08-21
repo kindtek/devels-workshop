@@ -10,28 +10,30 @@
 
 ### Easy as 1, 2, .., 4
 
-1. copy/pasta a line of code below into a terminal ([CMD or Powershell](https://www.wikihow.com/Open-Terminal-in-Windows))
-2. confirm installation actions, log in to your windows profile between restarts, and repeat as needed
-3. ??
-4. profit
-
 ```bat
 powershell.exe -Command "Invoke-WebRequest https://raw.githubusercontent.com/kindtek/powerhell/dvl-works/devel-spawn.ps1 -OutFile $env:USERPROFILE/dvlp.ps1;powershell.exe -ExecutionPolicy RemoteSigned -File $env:USERPROFILE/dvlp.ps1 kali-gui-kernel"
 
 
 ```
 
+1. copy/pasta the above line of code into a terminal ([CMD or Powershell](https://www.wikihow.com/Open-Terminal-in-Windows))
+2. press the ENTER, 'y', or 'n' key a few times and log in to your machine between restarts
+3. ??
+4. profit
+
+
+
 ---
 
-## With little more than a few key strokes and restarts, a suite of essential developer productivity software will be pushed to your Windows 10+ machine. Easily rename, backup, or restore your WSL distributions and become a cybersecurity expert with Kali without spending time digging through tutorials and debugging obscure error codes
+## With little more than a few key strokes and restarts, a suite of tightly connected developer productivity software will be pushed to your Windows 10+ machine. Easily rename/backup/restore your WSL distributions, hit the ground coding with VSCode, become a cybersecurity expert with Kali without debugging obscure error codes
 
-### Set up occurs so smoothly that you will likely feel like you skipped step 3 -- especially if you've been tripped up by any of these tricky procedures _(ie : installing WSL, Github, Docker, seting up SSH logins with Github and Docker, manually adding new app registries, building a kernel, installing a GUI on Linux)_ in the past. But don't worry, as long as you keep repeating step 1, have a reliable internet connection, and a handful of gigabytes to spare of hard drive space there is no technical expertise required. You can use some of the time you're saving during the installation process to make an informed choice between the two options you will have once installation is complete. You can either try out your fresh WSL install and use Kali Linux to go straight to `/hel` in a [sandboxed user environment](https://github.com/kindtek/devels-playground#line-dance-with-the-devel) or use the devel's playground to try out any of the thousands of Docker Linux images on the [Docker Hub](https://hub.docker.com/search?q=&image_filter=official) into your fresh WSL install. There's no wrong choice. Check out this summary of user environments [images offered by Kindtek](https://github.com/kindtek/devels-playground#image-tags) that you can set as your main WSL environment with the devels-playground
+### Set up occurs so smoothly that you will likely feel like you skipped step 3 -- especially if you've been tripped up by any of these tricky procedures _(ie : installing WSL, Github, Docker, seting up SSH logins with Github and Docker, manually adding new app registries, building a kernel, installing a GUI on Linux)_ in the past. But don't worry, as long as you keep repeating step 1, have a reliable internet connection, and a handful of spare gigabytes, you are good to go - there is no technical expertise required. You can use some of the time you're saving during the installation process to make an informed choice on what shiny new toy you want to play with first. You can either try out your freshly installed WSL distribution and use Kali Linux to go straight to `/hel` in a ~~hand..~~ [sandboxed user environment](https://github.com/kindtek/devels-playground#line-dance-with-the-devel) or use the devel's playground to try out any of the thousands of Docker Linux images on the [Docker Hub](https://hub.docker.com/search?q=&image_filter=official) integrated seamlessly with ur machine. Check out this summary of user environments [images offered by Kindtek](https://github.com/kindtek/devels-playground#image-tags) that you can set as your main WSL environment with the devels-playground
 
-## At the end of the installation sequence, your WSL environment will be pushed a ~250MB [image](https://github.com/kindtek/devels-playground#ubuntu-dind) and the capability to contribute to this repository using either Github or Docker immediately
+## At the end of the installation sequence, your WSL environment will be pushed a ~250MB [image](https://github.com/kindtek/devels-playground#kali-dind) and the capability to contribute to this repository using either Github or Docker immediately
 
 ---
 
-### All of the menial technical labor is eliminated so you can get straight to the good stuff. Fork this repo and see how easy it is to set up your own github repository that revolves around a github repository like this one
+### All of the menial technical labor is eliminated so you can get straight to the good stuff. Fork this repository and see how easy it is to set up your use the code as a template for setting up software that revolves around a Github repo like this one
 
 ### The Docker Linux images [created by Kindtek](https://github.com/kindtek/devels-playground#image-tags) and hosted by [Docker](https://hub.docker.com/repository/docker/kindtek/dvlp) on the [Docker Hub](https://hub.docker.com/search?q=&image_filter=official) are available for free.
 
