@@ -70,7 +70,7 @@ function reboot_prompt {
             Write-Host "`r`n`r`n       --- USE CTRL + C TO CANCEL --- `r`n`r`n" -ForegroundColor Magenta -BackgroundColor Yellow
             start-sleep 1
             Write-Host "`r`nrestarting computer and continuing after restart... `r`n`r`n" -ForegroundColor Magenta -BackgroundColor Yellow
-            start_countdown "restarting " "in 3" "in 2" "in 1" "now"
+            start_countdown_3210 "restarting " "in 3" "in 2" "in 1" "now"
             if (!(Test-Path "$env:TEMP\spawnlogs.txt")) {
                 New-Item "$env:TEMP\spawnlogs.txt" -Value ''
             }
@@ -616,7 +616,7 @@ function start_docker_desktop {
             ([void]( New-Item -path alias:'Docker Desktop.exe' -Value 'C:\Program Files\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
             # reload_envs
              
-            Start-Process "C:\Program Files\docker\docker\Docker Desktop.exe" | Out-Null
+            Start-Process "C:\Program Files\docker\docker\Docker Desktop.exe" | Out-Null 2> $null
         }
         catch {
             try {
@@ -624,7 +624,7 @@ function start_docker_desktop {
                 ([void]( New-Item -path alias:'Docker Desktop' -Value 'c:\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
                 ([void]( New-Item -path alias:'Docker Desktop.exe' -Value 'c:\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
                 # reload_envs 
-                Start-Process "c:\docker\docker\Docker Desktop.exe" | Out-Null
+                Start-Process "c:\docker\docker\Docker Desktop.exe" | Out-Null 2> $null
             }
             catch {
                 try {
@@ -632,10 +632,10 @@ function start_docker_desktop {
                     ([void]( New-Item -path alias:'Docker Desktop' -Value ':\docker\docker desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
                     ([void]( New-Item -path alias:'Docker Desktop.exe' -Value 'c:\docker\docker desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
                     # reload_envs 
-                    Start-Process "c:\docker\docker desktop.exe" | Out-Null
+                    Start-Process "c:\docker\docker desktop.exe" | Out-Null 2> $null
                 }
                 catch {
-                    # install_dependencies
+                    # eventually add call to install_dependencies here
                 } 
             }
         }
@@ -661,7 +661,7 @@ function require_docker_desktop_online {
         try {
             $docker_tries += 1
             if ($(is_docker_desktop_online) -eq $false) {
-                start_docker_desktop | Out-Null
+                start_docker_desktop | Out-Null 2> $null
             }
             # Write-Host "${docker_cycles}.${docker_tries}"
             if ($(is_docker_desktop_online) -eq $false) {
