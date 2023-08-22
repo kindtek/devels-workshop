@@ -71,7 +71,7 @@ function reboot_prompt {
             start-sleep 1
             Write-Host "`r`nrestarting computer and continuing after restart... `r`n`r`n" -ForegroundColor Magenta -BackgroundColor Yellow
             start_countdown_3210 "restarting " "in 3" "in 2" "in 1" "now"
-            if (!(Test-Path "$env:TEMP\spawnlogs.txt")) {
+            if (!(Test-Path "$env:TEMP\spawnlogs.txt" -PathType Leaf)) {
                 New-Item "$env:TEMP\spawnlogs.txt" -Value ''
             }
             Invoke-RestMethod 'https://raw.githubusercontent.com/kindtek/powerhell/dvl-works/devel-spawn.ps1' -OutFile "$env:USERPROFILE/dvlp.ps1";
