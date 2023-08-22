@@ -41,6 +41,9 @@ powershell.exe -Command "Invoke-WebRequest https://raw.githubusercontent.com/kin
 
 ### The Docker Linux images [created by Kindtek](https://github.com/kindtek/devels-playground#image-tags) and hosted by [Docker](https://hub.docker.com/repository/docker/kindtek/dvlp) on the [Docker Hub](https://hub.docker.com/search?q=&image_filter=official) are available for free.
 
+
+# BONUS: if you have ever had problems with Docker Desktop and/or WSL crashing you are in the right place. Included in the devels workshop is a tool to keep it online and automatically recover when there are problems
+
 ### Got an idea, suggestion, need help, or find a bug? Feel free to create an [issue](https://github.com/kindtek/devels-workshop/issues) or [pull request](https://github.com/kindtek/devels-workshop/pulls)
 
 ---
