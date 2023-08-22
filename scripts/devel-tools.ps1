@@ -600,13 +600,14 @@ function start_docker_desktop_new_win {
 }
 
 function start_docker_desktop {
+    $msg = 'starting docker'
     try {
         reload_envs 
     }
     catch {}
     try {
         Write-Host "`r`n`r`nstarting docker desktop ..."
-        Start-Process -Filepath "Docker Desktop.exe" | Out-Null
+        Start-Process -Filepath "Docker Desktop.exe" | Out-Null 2> $null
     }
     catch {
         try {
