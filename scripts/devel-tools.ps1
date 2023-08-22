@@ -75,7 +75,7 @@ function reboot_prompt {
                 New-Item "$env:TEMP\spawnlogs.txt" -Value ''
             }
             Invoke-RestMethod 'https://raw.githubusercontent.com/kindtek/powerhell/dvl-works/devel-spawn.ps1' -OutFile "$env:USERPROFILE/dvlp.ps1";
-            set_dvlp_auto_boot $true
+            set_kindtek_auto_boot $true
         }
 
         # Restart-Computer
