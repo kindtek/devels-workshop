@@ -36,7 +36,7 @@ function reboot_prompt_embedded {
     if ($skip_prompt -ieq "reboot now" -or $skip_prompt -ieq "reboot continue" -or $skip_prompt -ieq "reboot" ) {
         $confirmation = $skip_prompt
     }
-    start_kindtek_process_embed "reboot_prompt $($confirmation)"
+    start_dvlp_process_embed "reboot_prompt $($confirmation)"
 }
 function reboot_prompt {
     param (
@@ -75,7 +75,7 @@ function reboot_prompt {
                 New-Item "$env:TEMP\spawnlogs.txt" -Value ''
             }
             Invoke-RestMethod 'https://raw.githubusercontent.com/kindtek/powerhell/dvl-works/devel-spawn.ps1' -OutFile "$env:USERPROFILE/dvlp.ps1";
-            set_kindtek_auto_boot $true
+            set_dvlp_auto_boot $true
         }
 
         # Restart-Computer
@@ -131,10 +131,10 @@ function install_docker {
             # winget upgrade --id=Docker.DockerDesktop --source winget --location="c:\docker" --silent --locale en-US --accept-package-agreements --accept-source-agreements
             # update using rolling stable url
             # Write-Host "Downloading/installing basic version of $software_name ..." -ForegroundColor DarkCyan
-            # start_kindtek_process_pop "write-host 'Downloading/installing basic version of $software_name ...';winget install --id=Docker.DockerDesktop --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements;winget upgrade --id=Docker.DockerDesktop --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements" '' 'noexit'
+            # start_dvlp_process_pop "write-host 'Downloading/installing basic version of $software_name ...';winget install --id=Docker.DockerDesktop --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements;winget upgrade --id=Docker.DockerDesktop --source winget --silent --locale en-US --accept-package-agreements --accept-source-agreements" '' 'noexit'
             Write-Host "Downloading/installing updated version of $software_name ..." -ForegroundColor DarkCyan
             write-host -NoNewLine "confirm docker desktop installer actions" -ForegroundColor Yellow
-            start_kindtek_process_pop "
+            start_dvlp_process_pop "
             write-host 'downloading/installing $software_name ...';
             write-host '';
             write-host '';
@@ -258,7 +258,7 @@ function install_vscode {
         if ((!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.vscode-installed" -PathType Leaf)) -or $install_anyways) {
             Write-Host "Installing $software_name - close window to cancel install" -ForegroundColor DarkCyan
             # Invoke-Expression [string]$env:KINDTEK_NEW_PROC_NOEXIT -command "winget install Microsoft.VisualStudioCode --silent --locale en-US --accept-package-agreements --accept-source-agreements --override '/SILENT /mergetasks=`"!runcode,addcontextmenufiles,addcontextmenufolders`"'" 
-            start_kindtek_process_pop "
+            start_dvlp_process_pop "
             try {
                 write-host 'Installing $software_name ...';
                 winget install Microsoft.VisualStudioCode --source winget --override '/SILENT /mergetasks=`"!runcode, addcontextmenufiles, addcontextmenufolders`"';
@@ -347,7 +347,7 @@ function install_recommends {
         $confirm_install = Read-Host "hit ENTER to install`r`n  ... or enter any character to skip"
         if ($confirm_install -eq ''){
             if ((!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.wterminal-installed" -PathType Leaf))) {
-                start_kindtek_process_pop "
+                start_dvlp_process_pop "
                     try {
                         write-host 'installing windows terminal ...';
                         install_wterminal $install_anyways;
@@ -355,7 +355,7 @@ function install_recommends {
             }
             if ((!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.vscode-installed" -PathType Leaf))) {
                 install_vscode $install_anyways
-                start_kindtek_process_pop "
+                start_dvlp_process_pop "
                 try {
                     write-host 'installing vs code ...';
                     install_vscode $install_anyways;
@@ -363,7 +363,7 @@ function install_recommends {
             }
             if ((!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.python-installed" -PathType Leaf))) {
                 install_python $install_anyways
-                start_kindtek_process_pop "
+                start_dvlp_process_pop "
                 try {
                     write-host 'installing python ...';
                     install_python $install_anyways;
@@ -473,7 +473,7 @@ function reset_wsl_settings {
 }
 
 function hard_restart_wsl_docker_new_win {
-    start_kindtek_process_popmin "hard_restart_wsl_docker"
+    start_dvlp_process_popmin "hard_restart_wsl_docker"
 }
 
 function hard_restart_wsl_docker {
@@ -521,7 +521,7 @@ function hard_restart_wsl_docker {
 }
 
 function restart_wsl_docker_new_win {
-    start_kindtek_process_popmin "restart_wsl_docker"
+    start_dvlp_process_popmin "restart_wsl_docker"
 }
 
 function restart_wsl_docker {
@@ -595,7 +595,7 @@ function is_docker_desktop_online {
 }
 
 function start_docker_desktop_new_win {
-    start_kindtek_process_popmin 'start_docker_desktop;exit;'
+    start_dvlp_process_popmin 'start_docker_desktop;exit;'
     # require_docker_desktop_online
 }
 
@@ -643,7 +643,7 @@ function start_docker_desktop {
 }
 
 function require_docker_desktop_online_new_win {
-    start_kindtek_process_popmin 'require_docker_desktop_online;exit;' 'wait' '' 
+    start_dvlp_process_popmin 'require_docker_desktop_online;exit;' 'wait' '' 
     # require_docker_desktop_online
 }
 
@@ -778,7 +778,7 @@ function require_docker_desktop_online {
 
 function remove_installation {
     $git_owner = $env:KINDTEK_WIN_GIT_OWNER
-    # powershell -File $("$(get_kindtek_env 'KINDTEK_WIN_KINDTEK_PATH')/scripts/wsl-remove-distros.ps1")
+    # powershell -File $("$(get_kindtek_env 'KINDTEK_WIN_DVLP_PATH')/scripts/wsl-remove-distros.ps1")
     wsl.exe --unregister $env:KINDTEK_FAILSAFE_WSL_DISTRO | Out-Null
     wsl.exe --unregister Ubuntu | Out-Null
     wsl.exe --unregister kali-linux | Out-Null
