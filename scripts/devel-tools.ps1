@@ -70,7 +70,7 @@ function reboot_prompt {
             Write-Host "`r`n`r`n       --- USE CTRL + C TO CANCEL --- `r`n`r`n" -ForegroundColor Magenta -BackgroundColor Yellow
             start-sleep 1
             Write-Host "`r`nrestarting computer and continuing after restart... `r`n`r`n" -ForegroundColor Magenta -BackgroundColor Yellow
-            start_countdown_3210 "restarting " "in 3" "in 2" "in 1" "now"
+            start_countdown_3210_liftoff "restarting " "in 3" "in 2" "in 1" "now"
             if (!(Test-Path "$env:TEMP\spawnlogs.txt" -PathType Leaf)) {
                 New-Item "$env:TEMP\spawnlogs.txt" -Value ''
             }
