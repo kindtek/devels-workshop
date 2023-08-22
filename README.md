@@ -25,26 +25,27 @@ powershell.exe -Command "Invoke-WebRequest https://raw.githubusercontent.com/kin
 
 ---
 
-## With little more than a few key strokes and restarts, a suite of tightly connected developer productivity software will be pushed to your Windows 10+ machine. Easily rename/backup/restore your WSL distributions, hit the ground coding with VSCode, become a cybersecurity expert with Kali without debugging obscure error codes, and much more
+## With little more than a few key strokes and restarts, a suite of interconnected developer productivity software will be pushed to your Windows 10+ machine. The list of new capabilites added to your toolbox in this automated process is practically endless. Easily rename/backup/restore your WSL distributions, hit the ground coding in WSL with VSCode, configure the latest bleeding edge builds of Linux kernels for your system, etc, etc. You can even even put on your white hat and help Ukraine bring Russia's war to an end with [Kali Linux OS](https://www.kali.org/docs/wsl/win-kex/). Just kidding about effic bringing about world peace may be overselling your newfound capabilities... but not by much. Should you choose to do so, uninstalling everything introduced to your system by the devel's workshop is effortless as well
+
+# BONUS: if you have ever had problems with Windows Docker Desktop crashing (and/or WSL) you are in the right place. Included in the devels workshop is an automatic troubleshooting tool to keep you online without worrying about your productivity coming to an abrupt halt
 
 ![wsl_docker_devel](doc/devel_ui.png)
 
 ![kali_gui](doc/kali_gui.png)
 
-### Set up occurs so smoothly that you will likely feel like you skipped step 3 -- especially if you've been tripped up by any of these tricky procedures _(ie : installing WSL, Github, Docker, seting up SSH logins with Github and Docker, manually adding new app registries, building a kernel, installing a GUI on Linux)_ in the past. But don't worry, as long as you keep repeating step 1, have a reliable internet connection, and a handful of spare gigabytes, you are good to go - there is no technical expertise required. You can use some of the time you're saving during the installation process to make an informed choice on what shiny new toy you want to play with first. You can either try out your freshly installed WSL distribution and use Kali Linux to go straight to `/hel` in a ~~hand..~~ [sandboxed user environment](https://github.com/kindtek/devels-playground#line-dance-with-the-devel) or use the devel's playground to try out any of the thousands of Docker Linux images on the [Docker Hub](https://hub.docker.com/search?q=&image_filter=official) integrated seamlessly with ur machine. Check out this summary of user environments [images offered by Kindtek](https://github.com/kindtek/devels-playground#image-tags) that you can set as your main WSL environment with the devels-playground
+### Installation is so smooth that you will likely feel like you skipped a step -- especially if you have experience tangling with any of the several automated procedures included _(ie : setting up your system with automated builds for your Github/Docker repository, installing WSL with systemd or Docker-in-Docker, issuing keys for SSH logins, manually adding new app registries, building a Linux kernel from scratch, installing a Linux GUI on WSL, etc, etc)_. But don't worry, as long as you keep repeating step 1, have a reliable internet connection, and a handful of spare gigabytes on your machine, you are good to go - there is no technical expertise required. You can use some of the time you're saving (and waiting for the install to complete) to make an informed choice on what shiny new toy you want to play with first. You can either try out your freshly installed WSL distribution and use Kali Linux to go straight to `/hel` in a ~~hand..~~ [sandboxed user environment](https://github.com/kindtek/devels-playground#line-dance-with-the-devel) or use the devel's playground to try out any of the thousands of Docker Linux images on the [Docker Hub](https://hub.docker.com/search?q=&image_filter=official) integrated seamlessly with your machine. Check out the summary of user environments images offered by Kindtek [here](https://github.com/kindtek/devels-playground#image-tags)
 
-## At the end of the installation sequence, your WSL environment will be pushed a ~250MB [image](https://github.com/kindtek/devels-playground#kali-dind) and the capability to contribute to this repository using either Github or Docker immediately
+## At the end of the installation sequence, your WSL environment will be pushed a ~250MB [image](https://github.com/kindtek/devels-playground#kali-dind) image and the capability to contribute to this repository using either Github or Docker immediately. Depending on your machine and image choice this will roughly take an hour - or more especially if you choose an image with a kernel - and will save you 10+ times that amount of time even for an experienced developer. If you're a project leader with a medium to large team this is a very helpful time saver and you should consider [forking this repository](https://github.com/kindtek/devels-workshop/fork) or contacting Kindtek for help setting this up according to your needs
 
 ---
 
-### All of the menial technical labor is eliminated so you can get straight to the good stuff. [Fork this repository](https://github.com/kindtek/devels-workshop/fork) and see how easy it is to use the code as a template for setting up software that revolves around a Github repo like this one
+### The Docker Linux images created by Kindtek and hosted by Docker on the [Docker Hub](https://hub.docker.com/search?q=&image_filter=official) are available for free [here](https://github.com/kindtek/devels-playground#image-tags)
 
-### The Docker Linux images [created by Kindtek](https://github.com/kindtek/devels-playground#image-tags) and hosted by [Docker](https://hub.docker.com/repository/docker/kindtek/dvlp) on the [Docker Hub](https://hub.docker.com/search?q=&image_filter=official) are available for free.
+### Got an idea, suggestion, need help, want to contrinbute, become an beta tester, or find a bug? Feel free to create an [issue](https://github.com/kindtek/devels-workshop/issues) or [pull request](https://github.com/kindtek/devels-workshop/pulls)
 
+### Note 1: This project currently is in alpha status (although it is rapidly approaching beta). It is to be used only for development purposes until an official stable version is released
 
-# BONUS: if you have ever had problems with Docker Desktop and/or WSL crashing you are in the right place. Included in the devels workshop is a tool to keep it online and automatically recover when there are problems
-
-### Got an idea, suggestion, need help, or find a bug? Feel free to create an [issue](https://github.com/kindtek/devels-workshop/issues) or [pull request](https://github.com/kindtek/devels-workshop/pulls)
+### Note 2: Please be patient, Mac users. The devel's workshop is currently only available for Windows. But Mac integration is actually much easier to build for it than Windows but Mac support will be here before you know it
 
 ---
 
@@ -60,7 +61,7 @@ powershell.exe -Command "Invoke-WebRequest https://raw.githubusercontent.com/kin
 
 ## NEW FEATURES
 
-## Build a kernel and pop into a Kali KEX GUI with [kali-gui-kernel](https://hub.docker.com/r/kindtek/devels-playground/tags)
+## Build a kernel and pop into a [Kali KEX GUI](https://www.kali.org/docs/wsl/win-kex/) with [kali-gui-kernel](https://hub.docker.com/r/kindtek/devels-playground/tags)
 
 No setup necessary ( !!! )
 
