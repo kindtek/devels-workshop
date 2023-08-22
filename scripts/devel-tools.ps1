@@ -63,9 +63,9 @@ function reboot_prompt {
             Write-Host "`r`nrestarting computer ... `r`n"
         }
         elseif ($confirmation -ieq 'reboot continue') {
-            Write-Host "please log in and confirm admin access when prompted following restart" -ForegroundColor Magenta -BackgroundColor Yellow
+            Write-Host "please confirm admin access when prompted following restart" -ForegroundColor Magenta -BackgroundColor Yellow
             Start-Sleep 2
-            Write-Host "`t... otherwise run this script again and confirm admin access"
+            Write-Host "`t... otherwise use [WIN + x], [a] and hit the up arrow key"
             Start-Sleep 5
             Write-Host "`r`n`r`n       --- USE CTRL + C TO CANCEL --- `r`n`r`n" -ForegroundColor Magenta -BackgroundColor Yellow
             start-sleep 1
