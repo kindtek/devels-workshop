@@ -303,6 +303,8 @@ function install_python {
         else {
             Write-Host "$software_name already installed" -ForegroundColor DarkCyan
         }
+        reload_envs
+        pip install cdir
     }
     catch {}
 
