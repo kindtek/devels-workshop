@@ -1,13 +1,13 @@
 $host.UI.RawUI.ForegroundColor = "White"
 $host.UI.RawUI.BackgroundColor = "Black"
-$env:WSL_UTF8=1
+$env:WSL_UTF8 = 1
 # WSLENV="$WSLENV":WSL_UTF8
 
 $global:devel_tools = 'sourced'
 function include_devel_spawn {
     try {
         set_kindtek_envs $env:KINDTEK_DEBUG_MODE
-        if ($global:devel_spawn -ne 'sourced'){
+        if ($global:devel_spawn -ne 'sourced') {
             throw
         }
     }
@@ -17,7 +17,8 @@ function include_devel_spawn {
             . ${USERPROFILE}/dvlp.ps1
             $global:devel_spawn = 'sourced'
             echo 'devel_spawn sourced'
-        }  elseif ((!([string]::IsNullOrEmpty($env:KINDTEK_DEVEL_SPAWN))) -And (Test-Path -Path "$env:KINDTEK_DEVEL_SPAWN" -PathType Leaf)) {
+        }
+        elseif ((!([string]::IsNullOrEmpty($env:KINDTEK_DEVEL_SPAWN))) -And (Test-Path -Path "$env:KINDTEK_DEVEL_SPAWN" -PathType Leaf)) {
             # write-output "dvltls 8: dot sourcing devel-spawn"
             . $env:KINDTEK_DEVEL_SPAWN
             $global:devel_spawn = 'sourced'
@@ -93,7 +94,7 @@ function install_windows_features {
     param (
         $skipreboot
     )
-    if (!([string]::IsNullOrEmpty($skipreboot))){
+    if (!([string]::IsNullOrEmpty($skipreboot))) {
         $skipreboot = 'skip'
     }
     if ((!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.windows-installed" -PathType Leaf)) -Or $install_anyways -eq 'true') {
@@ -106,9 +107,10 @@ function uninstall_windows_features {
     param (
         $skipreboot
     )
-    if ([string]::IsNullOrEmpty($skipreboot)){
+    if ([string]::IsNullOrEmpty($skipreboot)) {
         Start-Process powershell.exe -Wait -ArgumentList "-File $env:KINDTEK_WIN_DVLADV_PATH/del-windows-features.ps1"
-    } else {
+    }
+    else {
         Start-Process powershell.exe -Wait -ArgumentList "-File $env:KINDTEK_WIN_DVLADV_PATH/del-windows-features.ps1", "skip"
     }
 
@@ -345,7 +347,7 @@ function install_recommends {
     }
     if ((!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.wterminal-installed" -PathType Leaf)) -or (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.vscode-installed" -PathType Leaf)) -or (!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.python-installed" -PathType Leaf))) {
         $confirm_install = Read-Host "hit ENTER to install`r`n  ... or enter any character to skip"
-        if ($confirm_install -eq ''){
+        if ($confirm_install -eq '') {
             if ((!(Test-Path -Path "$env:KINDTEK_WIN_GIT_PATH/.wterminal-installed" -PathType Leaf))) {
                 start_kindtek_process_pop "
                     try {
@@ -576,7 +578,7 @@ function is_docker_backend_online {
 function is_docker_desktop_online {
     try {
         $(docker search scratch --limit 1 --format helloworld) | Out-Null 2> $null
-        if ($?){
+        if ($?) {
             $docker_daemon_online = docker search scratch --limit 1 --format helloworld 2> $null
             if (($docker_daemon_online -eq 'helloworld') -And ($(is_docker_backend_online) -eq $true)) {
                 return $true
@@ -584,7 +586,8 @@ function is_docker_desktop_online {
             else {
                 return $false
             }
-        } else {
+        }
+        else {
             return $false
         }
         
@@ -641,9 +644,20 @@ function start_docker_desktop {
         }
     }
 }
+function keep_docker_desktop_online_new_win {
+    start_kindtek_process_popmin 'keep_docker_desktop_online 2> `$null;exit;' 'wait' '' 
+    # require_docker_desktop_online
+}
+
+function keep_docker_desktop_online {
+    while (!($(is_docker_desktop_online))) {
+        require_docker_desktop_online_new_win
+        start-sleep 5
+    }
+}
 
 function require_docker_desktop_online_new_win {
-    start_kindtek_process_popmin 'require_docker_desktop_online;exit;' 'wait' '' 
+    start_kindtek_process_popmin 'require_docker_desktop_online 2> `$null;exit;' 'wait' '' 
     # require_docker_desktop_online
 }
 
@@ -692,7 +706,7 @@ function require_docker_desktop_online {
                     if (($restart -ine 'n') -And ($restart -ine 'no') -And ($docker_tries % 9 -eq 0)) {
                         Write-Host -NoNewline " ......... restarting wsl "
                         # allowed to restart on cycle 9
-                        restart_wsl_docker | Out-Null
+                        restart_wsl_docker | Out-Null 2> $null
                     }
                     elseif ($docker_tries % 15 -eq 0) {
                         # next cycle 
@@ -766,14 +780,14 @@ function require_docker_desktop_online {
         catch {
             Write-Host "oops ... there was a problem starting docker"
         }
-    } while ( ($(is_docker_desktop_online) -eq $false) -And ($check_again -ine 'n') -And ($check_again -ine 'no')) 
+    } while ( ($(is_docker_desktop_online 2> $null) -eq $false) -And ($check_again -ine 'n') -And ($check_again -ine 'no')) 
     if ($(is_docker_desktop_online)) {
         Write-Host "connected to docker"
     }
     else {
         Write-Host "could not connect to docker"
     }
-    return $(is_docker_desktop_online)
+    return $(is_docker_desktop_online 2> $null)
 }
 
 function remove_installation {
@@ -787,29 +801,31 @@ function remove_installation {
     # make extra sure this is not a folder that is not important (ie: system32 - which is a default location)
     # if ($env:KINDTEK_WIN_DVLW_PATH.Contains('kindtek') -And $env:KINDTEK_WIN_DVLW_PATH.NotContains("System32") ) {
     $uninstall_docker = read-host "uninstall docker? (Y/n)"
-    if ($uninstall_docker -eq "" -or $uninstall_docker -ieq "y" -or $uninstall_docker -ieq "yes" ){
+    if ($uninstall_docker -eq "" -or $uninstall_docker -ieq "y" -or $uninstall_docker -ieq "yes" ) {
         write-output "" | uninstall_docker | out-string
     }
     $uninstall_git = read-host "uninstall git? (Y/n)"
-    if ($uninstall_git -eq "" -or $uninstall_git -ieq "y" -or $uninstall_git -ieq "yes" ){
+    if ($uninstall_git -eq "" -or $uninstall_git -ieq "y" -or $uninstall_git -ieq "yes" ) {
         uninstall_git | out-string
     }
-    if ((Test-Path "$env:USERPROFILE/DockerDesktopInstaller.exe" -PathType Leaf) -or (Test-Path "$env:USERPROFILE/kali-linux.AppxBundle" -PathType Leaf)){
+    if ((Test-Path "$env:USERPROFILE/DockerDesktopInstaller.exe" -PathType Leaf) -or (Test-Path "$env:USERPROFILE/kali-linux.AppxBundle" -PathType Leaf)) {
         try {
-            if (Test-Path "$env:USERPROFILE/DockerDesktopInstaller.exe"){
+            if (Test-Path "$env:USERPROFILE/DockerDesktopInstaller.exe") {
                 Write-Host "`r`n`r`n"
                 write-host -nonewline "remove DockerDesktopInstaller.exe? (Y/n)"
                 Remove-Item -Path "$env:USERPROFILE/DockerDesktopInstaller.exe" -Confirm:$true -ErrorAction SilentlyContinue
             }
 
-        } catch {}
+        }
+        catch {}
         try {
-            if (Test-Path "$env:USERPROFILE/kali-linux.AppxBundle"){
+            if (Test-Path "$env:USERPROFILE/kali-linux.AppxBundle") {
                 Write-Host "`r`n`r`n"
                 write-host -nonewline  "remove kali-linux.AppxBundle? (Y/n)"
                 Remove-Item -Path "$env:USERPROFILE/kali-linux.AppxBundle" -Confirm:$true -ErrorAction SilentlyContinue
             }
-        } catch {}
+        }
+        catch {}
     }
     write-output "" | uninstall_windows_features 'skip reboot' | out-string
     write-host "choose 'ignore' if prompted to close an application" -ForegroundColor Yellow
@@ -840,7 +856,7 @@ function remove_installation {
         Write-Host -nonewline "delete directory $env:USERPROFILE/kache ?"
         Remove-Item "$env:USERPROFILE/kache" -Recurse -Confirm:$true -Force -ErrorAction SilentlyContinue
     }
-    if (Test-Path "$env:USERPROFILE/.wslconfig" -PathType Leaf){
+    if (Test-Path "$env:USERPROFILE/.wslconfig" -PathType Leaf) {
         Write-Host "`r`n`r`n"
         Write-Host -nonewline "delete $env:USERPROFILE/.wslconfig ?"
         Remove-Item "$env:USERPROFILE/.wslconfig" -Confirm:$true -Force -ErrorAction SilentlyContinue
@@ -853,12 +869,13 @@ function remove_installation {
 function get_wsl_distro_list {
     $env:WSL_UTF8 = 1
     wsl.exe --list | Out-Null
-    if (($?)){
-        $wsl_distro_list = wsl.exe --list | Where-Object { (!([string]::isNullOrEmpty($_))) -And ($_ -ne 'Windows Subsystem for Linux Distributions:') -and ($_ -ne "docker-desktop") -and ($_ -ne "docker-desktop-data") -and ($_ -ne "$env:KINDTEK_FAILSAFE_WSL_DISTRO") -and ($_ -ne "$env:KINDTEK_FAILSAFE_WSL_DISTRO (Default)") -and ($_ -ne '')}
+    if (($?)) {
+        $wsl_distro_list = wsl.exe --list | Where-Object { (!([string]::isNullOrEmpty($_))) -And ($_ -ne 'Windows Subsystem for Linux Distributions:') -and ($_ -ne "docker-desktop") -and ($_ -ne "docker-desktop-data") -and ($_ -ne "$env:KINDTEK_FAILSAFE_WSL_DISTRO") -and ($_ -ne "$env:KINDTEK_FAILSAFE_WSL_DISTRO (Default)") -and ($_ -ne '') }
         $wsl_distro_list = $wsl_distro_list -replace '^(.*)\s.*$', '$1'
         $wsl_distro_list = $wsl_distro_list -replace "[^a-zA-Z0-9_-]", ''
         return $wsl_distro_list
-    } else {
+    }
+    else {
         return @()
     }
 }
@@ -877,7 +894,7 @@ function display_wsl_distro_list {
             $wsl_distro_name = "$($wsl_distro_list[$i])"
             if ($wsl_distro_list[$i].length -eq 1 ) {
                 $wsl_distro_name_single += "$($wsl_distro_list[$i])"
-                if ($i -eq $wsl_distro_list.length -1) {
+                if ($i -eq $wsl_distro_list.length - 1) {
                     if ($wsl_distro_name_single -eq "$default_wsl_distro") {
                         $default_tag = '(default)'
                     }
@@ -921,17 +938,18 @@ function select_wsl_distro_list_name {
         [string]$wsl_distro_name
     )
     try {    
-        if ($wsl_distro_list.contains($wsl_distro_name)){
+        if ($wsl_distro_list.contains($wsl_distro_name)) {
             for ($i = 0; $i -le $wsl_distro_list.length - 1; $i++) {
-                if ($wsl_distro_name -eq $wsl_distro_list[$i]){
+                if ($wsl_distro_name -eq $wsl_distro_list[$i]) {
                     return "$($i + 1)"
                 }
             }
             return $false
         }
-      } catch {
+    }
+    catch {
         return $false
-      }
+    }
 }
 function select_wsl_distro_list_num {
     param (
