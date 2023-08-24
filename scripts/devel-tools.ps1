@@ -790,6 +790,19 @@ function require_docker_desktop_online {
     return $(is_docker_desktop_online 2> $null)
 }
 
+function keep_devel_online {
+    start_kindtek_process_popmin "
+      while (`$true){
+        if (`$(dependencies_installed) -eq `$false){
+            # try setting envs first then do bare minimum
+            pull_kindtek_envs $env:KINDTEK_DEBUG_MODE;
+            safe_boot_devel;
+        }
+        keep_docker_desktop_online
+      start-sleep 5;
+      }" 'wait' 'noexit'
+}
+
 function remove_installation {
     $git_owner = $env:KINDTEK_WIN_GIT_OWNER
     # powershell -File $("$(get_kindtek_env 'KINDTEK_WIN_DVLP_PATH')/scripts/wsl-remove-distros.ps1")
