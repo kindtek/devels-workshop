@@ -16,7 +16,7 @@ powershell.exe -Command "Invoke-WebRequest https://raw.githubusercontent.com/kin
 
 ```
 
-1. copy/pasta the above line of code into a terminal ([CMD or Powershell](https://www.wikihow.com/Open-Terminal-in-Windows))
+1. copypasta the above line of code into a terminal ([CMD or Powershell](https://www.wikihow.com/Open-Terminal-in-Windows))
 2. follow instructions and log in to your machine between restarts
 3. ??
 4. profit
