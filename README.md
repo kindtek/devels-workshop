@@ -45,7 +45,7 @@ powershell.exe -Command "Invoke-WebRequest https://raw.githubusercontent.com/kin
 
 ### Note 1: This project currently is in alpha status (although it is rapidly approaching beta). It is to be used only for development purposes until an official stable version is released
 
-### Note 2: Please be patient, Mac users. The devel's workshop is currently only available for Windows. But Mac integration is actually much easier to build for it than Windows but Mac support will be here before you know it
+### Note 2: Please be patient, Mac users. The devel's workshop is currently only available for Windows. Mac integration is actually much easier to build for than Windows so Mac support will be here before you know it
 
 ---
 
