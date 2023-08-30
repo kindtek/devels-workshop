@@ -663,6 +663,10 @@ function require_docker_desktop_online_new_win {
     # require_docker_desktop_online
 }
 
+function require_docker_desktop_online_new_win_no_wait {
+    start_kindtek_process_popmin 'require_docker_desktop_online 2> `$null;exit;' '' '' 
+    # require_docker_desktop_online
+}
 function require_docker_desktop_online {
     # Set-PSDebug -Trace 2
 
