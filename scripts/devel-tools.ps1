@@ -387,7 +387,7 @@ function ini_docker_config {
     $config_json.disableTips = $true
     $config_json.disableUpdate = $false
     $config_json.autoDownloadUpdates = $true
-    $config_json.displayedTutorial = $true
+    $config_json.displayedOnboarding = $true
     $config_json.enableIntegrationWithDefaultWslDistro = $true
     # $config_json.kubernetesEnabled = $true
     $config_json.autoStart = $true
