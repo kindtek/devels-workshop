@@ -480,6 +480,9 @@ function hard_restart_wsl_docker_new_win {
     start_kindtek_process_popmin "hard_restart_wsl_docker"
 }
 
+function hard_restart_wsl_docker_new_win_wait {
+    start_kindtek_process_popmin "hard_restart_wsl_docker" 'wait'
+}
 function hard_restart_wsl_docker {
     
     Write-Host "resetting Docker engine and data ..."
@@ -527,6 +530,11 @@ function hard_restart_wsl_docker {
 function restart_wsl_docker_new_win {
     start_kindtek_process_popmin "restart_wsl_docker"
 }
+
+function restart_wsl_docker_new_win_wait {
+    start_kindtek_process_popmin "restart_wsl_docker" 'wait'
+}
+
 
 function restart_wsl_docker {
     
