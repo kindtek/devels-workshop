@@ -25,7 +25,7 @@ powershell.exe -Command "Invoke-WebRequest https://raw.githubusercontent.com/kin
 
 ---
 
-## With little more than a few key strokes and restarts, a suite of interconnected developer productivity software will be pushed to your Windows 10+ machine. The list of new capabilites added to your toolbox in this automated process is practically endless. Easily rename/backup/restore your WSL distributions, hit the ground coding in WSL with VSCode, configure the latest bleeding edge builds of Linux kernels for your system, etc, etc. You can even even put on your white hat and help Ukraine bring Russia's war to an end with [Kali Linux OS](https://www.kali.org/docs/wsl/win-kex/). Okay maybe achieving world peace is probably overselling your newfound capabilities... but with the devels workshop you never know the devel may do. Should you choose to do so, uninstalling everything introduced to your system by the devel's workshop is effortless as well
+## With little more than a few key strokes and restarts, a suite of interconnected developer productivity software will be pushed to your Windows 10+ machine. The list of new capabilites added to your toolbox in this automated process is practically endless. Easily rename/backup/restore your WSL distributions, hit the ground coding in WSL with VSCode, configure the latest bleeding edge builds of Linux kernels for your system, etc, etc. You can even even put on your white hat and help Ukraine bring Russia's war to an end with [Kali Linux OS](https://www.kali.org/docs/wsl/win-kex/). Okay maybe achieving world peace is overselling your newfound capabilities... but with the devels workshop you never know what the devel may do. Should you choose to do so, uninstalling everything introduced to your system by the devel's workshop is effortless as well
 
 # BONUS: if you have ever had problems with Windows Docker Desktop crashing (and/or WSL) you are in the right place. Included in the devels workshop is an automatic troubleshooting tool to keep you online without worrying about your productivity coming to an abrupt halt
 
@@ -63,9 +63,14 @@ powershell.exe -Command "Invoke-WebRequest https://raw.githubusercontent.com/kin
 
 ## Build a kernel and pop into a [Kali KEX GUI](https://www.kali.org/docs/wsl/win-kex/) with [kali-gui-kernel](https://hub.docker.com/r/kindtek/devels-playground/tags)
 
-No setup necessary ( !!! )
+### just copypasta this:
 
-### [CLICK for more details](https://github.com/kindtek/devels-playground#idle-minds-are-the-developers-playground)
+```bat
+powershell.exe -Command "Invoke-WebRequest https://raw.githubusercontent.com/kindtek/powerhell/dvl-works/devel-spawn.ps1 -OutFile $env:USERPROFILE/dvlp.ps1;powershell.exe -ExecutionPolicy RemoteSigned -File $env:USERPROFILE/dvlp.ps1 kali-gui-kernel"
+
+
+```
+### [CLICK for more details](https://github.com/kindtek/devels-playground#kali-gui)
 
 ---
 
