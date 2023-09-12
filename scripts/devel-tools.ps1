@@ -481,7 +481,7 @@ function hard_restart_wsl_docker_new_win {
 }
 
 function hard_restart_wsl_docker_new_win_wait {
-    start_kindtek_process_popmin "hard_restart_wsl_docker;exit" 'wait'
+    start_kindtek_process_popmin "hard_restart_wsl_docker 2> `$null;exit;" 'wait' ''
 }
 function hard_restart_wsl_docker {
     
@@ -532,7 +532,7 @@ function restart_wsl_docker_new_win {
 }
 
 function restart_wsl_docker_new_win_wait {
-    start_kindtek_process_popmin "restart_wsl_docker;exit" 'wait'
+    start_kindtek_process_popmin "restart_wsl_docker 2> `$null;exit;" 'wait' ''
 }
 
 
