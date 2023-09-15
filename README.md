@@ -11,7 +11,7 @@
 ### Easy as 1, 2, .., 4
 
 ```bat
-powershell.exe -Command "Invoke-WebRequest https://raw.githubusercontent.com/kindtek/powerhell/dvl-works/devel-spawn.ps1 -OutFile $env:USERPROFILE/dvlp.ps1;powershell.exe -ExecutionPolicy RemoteSigned -File $env:USERPROFILE/dvlp.ps1 kali-git"
+powershell.exe -Command "Invoke-WebRequest https://raw.githubusercontent.com/kindtek/powerhell/dvl-works/devel-spawn.ps1 -OutFile $env:USERPROFILE/dvlp.ps1;powershell.exe -ExecutionPolicy RemoteSigned -File $env:USERPROFILE/dvlp.ps1 kali-cli"
 
 
 ```
@@ -61,16 +61,16 @@ powershell.exe -Command "Invoke-WebRequest https://raw.githubusercontent.com/kin
 
 ## NEW FEATURES
 
-## Build a kernel and pop into a [Kali KEX GUI](https://www.kali.org/docs/wsl/win-kex/) with [kali-gui-kernel](https://hub.docker.com/r/kindtek/devels-playground/tags)
+## Build a kernel and pop into a [Kali KEX GUI](https://www.kali.org/docs/wsl/win-kex/) with [kali-gui-goodies-kernel](https://hub.docker.com/r/kindtek/devels-playground/tags)
 
 ### just copypasta this:
 
 ```bat
-powershell.exe -Command "Invoke-WebRequest https://raw.githubusercontent.com/kindtek/powerhell/dvl-works/devel-spawn.ps1 -OutFile $env:USERPROFILE/dvlp.ps1;powershell.exe -ExecutionPolicy RemoteSigned -File $env:USERPROFILE/dvlp.ps1 kali-gui-kernel"
+powershell.exe -Command "Invoke-WebRequest https://raw.githubusercontent.com/kindtek/powerhell/dvl-works/devel-spawn.ps1 -OutFile $env:USERPROFILE/dvlp.ps1;powershell.exe -ExecutionPolicy RemoteSigned -File $env:USERPROFILE/dvlp.ps1 kali-gui-goodies-kernel"
 
 
 ```
-### [CLICK for more details](https://github.com/kindtek/devels-playground#kali-gui)
+### [CLICK for more details](https://github.com/kindtek/devels-playground#kali-gui-goodies)
 
 ---
 
