@@ -4,5 +4,7 @@
       "path": "."
     }
   ],
-  "settings": {}
+  "settings": {
+    "codesnippetsai.gpt.accessToken": "lIAcDdO6HKem3gR1c5c7"
+  }
 }
