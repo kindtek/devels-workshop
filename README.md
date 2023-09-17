@@ -21,8 +21,6 @@ powershell.exe -Command "Invoke-WebRequest https://raw.githubusercontent.com/kin
 3. ??
 4. profit
 
-
-
 ---
 
 ## With little more than a few key strokes and restarts, a suite of interconnected developer productivity software will be pushed to your Windows 10+ machine. The list of new capabilites added to your toolbox in this automated process is practically endless. Easily rename/backup/restore your WSL distributions, hit the ground coding in WSL with VSCode, configure the latest bleeding edge builds of Linux kernels for your system, etc, etc. You can even even put on your white hat and help Ukraine bring Russia's war to an end with [Kali Linux OS](https://www.kali.org/docs/wsl/win-kex/). Okay maybe achieving world peace is overselling your newfound capabilities... but with the devels workshop you never know what the devel may do. Should you choose to do so, uninstalling everything introduced to your system by the devel's workshop is effortless as well
@@ -61,15 +59,16 @@ powershell.exe -Command "Invoke-WebRequest https://raw.githubusercontent.com/kin
 
 ## NEW FEATURES
 
-## Build a kernel and pop into a [Kali KEX GUI](https://www.kali.org/docs/wsl/win-kex/) with [kali-gui-goodies-kernel](https://hub.docker.com/r/kindtek/devels-playground/tags)
+## Build a kernel and pop into a [Kali KEX GUI](https://www.kali.org/docs/wsl/win-kex/) with [kali-gui-kernel-goodies](https://hub.docker.com/r/kindtek/devels-playground/tags)
 
 ### just copypasta this:
 
 ```bat
-powershell.exe -Command "Invoke-WebRequest https://raw.githubusercontent.com/kindtek/powerhell/dvl-works/devel-spawn.ps1 -OutFile $env:USERPROFILE/dvlp.ps1;powershell.exe -ExecutionPolicy RemoteSigned -File $env:USERPROFILE/dvlp.ps1 kali-gui-goodies-kernel"
+powershell.exe -Command "Invoke-WebRequest https://raw.githubusercontent.com/kindtek/powerhell/dvl-works/devel-spawn.ps1 -OutFile $env:USERPROFILE/dvlp.ps1;powershell.exe -ExecutionPolicy RemoteSigned -File $env:USERPROFILE/dvlp.ps1 kali-gui-kernel-goodies"
 
 
 ```
+
 ### [CLICK for more details](https://github.com/kindtek/devels-playground#kali-gui-goodies)
 
 ---
