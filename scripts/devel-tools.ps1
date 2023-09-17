@@ -613,45 +613,64 @@ function start_docker_desktop_new_win {
 }
 
 function start_docker_desktop {
-    $msg = 'starting docker'
     try {
         reload_envs 
     }
     catch {}
     try {
-        Write-Host "`r`n`r`nstarting docker desktop ..."
+        Write-Host "`r`n`r`nconnecting to docker desktop ..."
         Start-Process -Filepath "Docker Desktop.exe" | Out-Null 2> $null
+        if ($global:bg_process -eq $false) {
+            # bring window to front
+            reload_envs
+        }
     }
     catch {
         try {
             ([void]( New-Item -path alias:'docker' -Value 'C:\Program Files\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
             ([void]( New-Item -path alias:'Docker Desktop' -Value 'C:\Program Files\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
-            ([void]( New-Item -path alias:'Docker Desktop.exe' -Value 'C:\Program Files\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
-            # reload_envs
-             
+            ([void]( New-Item -path alias:'Docker Desktop.exe' -Value 'C:\Program Files\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))             
             Start-Process "C:\Program Files\docker\docker\Docker Desktop.exe" | Out-Null 2> $null
+            if ($global:bg_process -eq $false) {
+                # bring window to front
+                reload_envs
+            }
         }
         catch {
             try {
                 ([void]( New-Item -path alias:'docker' -Value 'c:\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
                 ([void]( New-Item -path alias:'Docker Desktop' -Value 'c:\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
-                ([void]( New-Item -path alias:'Docker Desktop.exe' -Value 'c:\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
-                # reload_envs 
+                ([void]( New-Item -path alias:'Docker Desktop.exe' -Value 'c:\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null )) 
                 Start-Process "c:\docker\docker\Docker Desktop.exe" | Out-Null 2> $null
+                if ($global:bg_process -eq $false) {
+                    # bring window to front
+                    reload_envs
+                }
             }
             catch {
                 try {
                     ([void]( New-Item -path alias:'docker' -Value ':\docker\docker desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
                     ([void]( New-Item -path alias:'Docker Desktop' -Value ':\docker\docker desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
-                    ([void]( New-Item -path alias:'Docker Desktop.exe' -Value 'c:\docker\docker desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
-                    # reload_envs 
+                    ([void]( New-Item -path alias:'Docker Desktop.exe' -Value 'c:\docker\docker desktop.exe' -ErrorAction SilentlyContinue | Out-Null )) 
                     Start-Process "c:\docker\docker desktop.exe" | Out-Null 2> $null
+                    if ($global:bg_process -eq $false) {
+                        # bring window to front
+                        reload_envs
+                    }
                 }
                 catch {
+                    if ($global:bg_process -eq $false) {
+                        # bring window to front
+                        reload_envs
+                    }
                     # eventually add call to install_dependencies here
                 } 
             }
         }
+    }
+    if ($global:bg_process -eq $false) {
+        # bring window to front
+        reload_envs
     }
 }
 function keep_docker_desktop_online_new_win {
