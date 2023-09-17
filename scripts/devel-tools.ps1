@@ -587,7 +587,7 @@ function is_docker_backend_online {
 }
 function is_docker_desktop_online {
     try {
-        $(docker search scratch --limit 1 --format helloworld) | Out-Null 2> $null
+        $(docker search scratch --limit 1 --format helloworld) 2> $null | Out-Null
         if ($?) {
             $docker_daemon_online = docker search scratch --limit 1 --format helloworld 2> $null
             if (($docker_daemon_online -eq 'helloworld') -And ($(is_docker_backend_online) -eq $true)) {
@@ -619,7 +619,7 @@ function start_docker_desktop {
     catch {}
     try {
         Write-Host "`r`n`r`nconnecting to docker desktop ..."
-        Start-Process -Filepath "Docker Desktop.exe" | Out-Null 2> $null
+        Start-Process -Filepath "Docker Desktop.exe" 2> $null | Out-Null
         if ($global:bg_process -eq $false) {
             # bring window to front
             reload_envs
@@ -630,7 +630,7 @@ function start_docker_desktop {
             ([void]( New-Item -path alias:'docker' -Value 'C:\Program Files\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
             ([void]( New-Item -path alias:'Docker Desktop' -Value 'C:\Program Files\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
             ([void]( New-Item -path alias:'Docker Desktop.exe' -Value 'C:\Program Files\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))             
-            Start-Process "C:\Program Files\docker\docker\Docker Desktop.exe" | Out-Null 2> $null
+            Start-Process "C:\Program Files\docker\docker\Docker Desktop.exe" 2> $null | Out-Null
             if ($global:bg_process -eq $false) {
                 # bring window to front
                 reload_envs
@@ -641,7 +641,7 @@ function start_docker_desktop {
                 ([void]( New-Item -path alias:'docker' -Value 'c:\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
                 ([void]( New-Item -path alias:'Docker Desktop' -Value 'c:\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
                 ([void]( New-Item -path alias:'Docker Desktop.exe' -Value 'c:\docker\docker\Docker Desktop.exe' -ErrorAction SilentlyContinue | Out-Null )) 
-                Start-Process "c:\docker\docker\Docker Desktop.exe" | Out-Null 2> $null
+                Start-Process "c:\docker\docker\Docker Desktop.exe" 2> $null | Out-Null
                 if ($global:bg_process -eq $false) {
                     # bring window to front
                     reload_envs
@@ -652,7 +652,7 @@ function start_docker_desktop {
                     ([void]( New-Item -path alias:'docker' -Value ':\docker\docker desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
                     ([void]( New-Item -path alias:'Docker Desktop' -Value ':\docker\docker desktop.exe' -ErrorAction SilentlyContinue | Out-Null ))
                     ([void]( New-Item -path alias:'Docker Desktop.exe' -Value 'c:\docker\docker desktop.exe' -ErrorAction SilentlyContinue | Out-Null )) 
-                    Start-Process "c:\docker\docker desktop.exe" | Out-Null 2> $null
+                    Start-Process "c:\docker\docker desktop.exe" 2> $null | Out-Null
                     if ($global:bg_process -eq $false) {
                         # bring window to front
                         reload_envs
@@ -708,7 +708,7 @@ function require_docker_desktop_online {
         try {
             $docker_tries += 1
             if ($(is_docker_desktop_online) -eq $false) {
-                start_docker_desktop | Out-Null 2> $null
+                start_docker_desktop 2> $null | Out-Null
             }
             # Write-Host "${docker_cycles}.${docker_tries}"
             if ($(is_docker_desktop_online) -eq $false) {
@@ -739,7 +739,7 @@ function require_docker_desktop_online {
                     if (($restart -ine 'n') -And ($restart -ine 'no') -And ($docker_tries % 9 -eq 0)) {
                         Write-Host -NoNewline " ......... restarting wsl "
                         # allowed to restart on cycle 9
-                        restart_wsl_docker | Out-Null 2> $null
+                        restart_wsl_docker 2> $null | Out-Null
                     }
                     elseif ($docker_tries % 15 -eq 0) {
                         # next cycle 
