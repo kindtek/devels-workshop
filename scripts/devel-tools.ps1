@@ -708,7 +708,7 @@ function require_docker_desktop_online {
         try {
             $docker_tries += 1
             if ($(is_docker_desktop_online) -eq $false) {
-                start_docker_desktop 2> $null | Out-Null
+                start_docker_desktop 2> $null 
             }
             # Write-Host "${docker_cycles}.${docker_tries}"
             if ($(is_docker_desktop_online) -eq $false) {
@@ -739,7 +739,7 @@ function require_docker_desktop_online {
                     if (($restart -ine 'n') -And ($restart -ine 'no') -And ($docker_tries % 9 -eq 0)) {
                         Write-Host -NoNewline " ......... restarting wsl "
                         # allowed to restart on cycle 9
-                        restart_wsl_docker 2> $null | Out-Null
+                        restart_wsl_docker 2> $null 
                     }
                     elseif ($docker_tries % 15 -eq 0) {
                         # next cycle 
