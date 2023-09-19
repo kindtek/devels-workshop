@@ -71,7 +71,7 @@ powershell.exe -Command "Invoke-WebRequest https://raw.githubusercontent.com/kin
 
 ### [CLICK for more details](https://github.com/kindtek/devels-playground#kali-gui-goodies)
 
-Tip: you can easily install all features at a later time even with the basic image, kali-cli [instructions for install here](https://github.com/kindtek/devels-workshop#setup). However, what you gain in flexibility is lost in the extra time it takes to install
+Tip: you can easily install all features at a later time even with the basic image, kali-cli ([instructions for install here](https://github.com/kindtek/devels-workshop#setup)). However, what you gain in flexibility is lost in the extra time it takes to install
 
 ---
 
